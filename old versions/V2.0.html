@@ -1,0 +1,2598 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Dungeon Overlord: Ultimate V2.0</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Cinzel:wght@400;700;900&family=Rajdhani:wght@300;400;600;700&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --bg: #03030a;
+      --gold: #ffd700;
+      --gold2: #ffb300;
+      --red: #ff2222;
+      --red2: #c0392b;
+      --blue: #00d2ff;
+      --purple: #bd00ff;
+      --green: #00ff88;
+      --glass: rgba(10, 10, 25, 0.88);
+      --glass2: rgba(255, 255, 255, 0.05);
+      --border: rgba(255, 255, 255, 0.1);
+      --border-gold: rgba(255, 215, 0, 0.35);
+      --text: #fff;
+      --muted: #666;
+      --font-d: 'Cinzel Decorative', serif;
+      --font-t: 'Cinzel', serif;
+      --font-b: 'Rajdhani', sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+      user-select: none
+    }
+
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      background: var(--bg);
+      font-family: var(--font-b);
+      color: var(--text);
+      overflow: hidden
+    }
+
+    /* ---- GRAIN OVERLAY ---- */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 9999;
+      opacity: .5
+    }
+
+    /* ---- SCREENS ---- */
+    .screen {
+      position: fixed;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 200;
+      transition: opacity .4s, transform .4s
+    }
+
+    .screen.hide {
+      opacity: 0;
+      pointer-events: none;
+      transform: scale(1.04)
+    }
+
+    /* ============ SIGNUP ============ */
+    #signup-screen {
+      background: radial-gradient(ellipse at 50% 0%, #1a0533 0%, #03030a 70%)
+    }
+
+    .signup-card {
+      width: min(420px, 94vw);
+      background: rgba(15, 5, 30, 0.95);
+      border: 1px solid rgba(189, 0, 255, 0.3);
+      border-radius: 20px;
+      padding: 40px 36px;
+      box-shadow: 0 0 80px rgba(189, 0, 255, 0.15), 0 30px 60px rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(20px)
+    }
+
+    .signup-logo {
+      font-family: var(--font-d);
+      font-size: clamp(1.4rem, 4vw, 2rem);
+      color: var(--gold);
+      text-align: center;
+      margin-bottom: 6px;
+      letter-spacing: 2px;
+      text-shadow: 0 0 30px rgba(255, 215, 0, 0.4)
+    }
+
+    .signup-sub {
+      text-align: center;
+      color: var(--muted);
+      font-size: .85rem;
+      margin-bottom: 32px;
+      letter-spacing: 1px;
+      font-family: var(--font-b)
+    }
+
+    .form-group {
+      margin-bottom: 16px
+    }
+
+    .form-label {
+      display: block;
+      font-size: .8rem;
+      letter-spacing: 1.5px;
+      color: #aaa;
+      margin-bottom: 6px;
+      font-family: var(--font-b);
+      text-transform: uppercase
+    }
+
+    .form-input {
+      width: 100%;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 10px;
+      padding: 12px 16px;
+      color: #fff;
+      font-family: var(--font-b);
+      font-size: 1rem;
+      outline: none;
+      transition: .2s
+    }
+
+    .form-input:focus {
+      border-color: rgba(189, 0, 255, 0.5);
+      background: rgba(189, 0, 255, 0.06);
+      box-shadow: 0 0 20px rgba(189, 0, 255, 0.1)
+    }
+
+    .form-error {
+      font-size: .75rem;
+      color: var(--red);
+      margin-top: 5px;
+      display: none
+    }
+
+    .btn-signup {
+      width: 100%;
+      background: linear-gradient(135deg, #7b00ff, #bd00ff);
+      border: none;
+      padding: 15px;
+      border-radius: 12px;
+      color: #fff;
+      font-family: var(--font-t);
+      font-weight: 700;
+      font-size: 1rem;
+      letter-spacing: 2px;
+      cursor: pointer;
+      margin-top: 8px;
+      transition: .2s;
+      text-transform: uppercase;
+      box-shadow: 0 8px 25px rgba(189, 0, 255, 0.35)
+    }
+
+    .btn-signup:active {
+      transform: scale(.97)
+    }
+
+    .btn-signup:hover {
+      box-shadow: 0 12px 35px rgba(189, 0, 255, 0.5)
+    }
+
+    .already-user {
+      text-align: center;
+      margin-top: 18px;
+      font-size: .82rem;
+      color: var(--muted)
+    }
+
+    .already-user span {
+      color: var(--purple);
+      cursor: pointer;
+      text-decoration: underline
+    }
+
+    .version-tag {
+      text-align: center;
+      margin-top: 20px;
+      font-size: .7rem;
+      color: #333;
+      letter-spacing: 2px
+    }
+
+    /* ============ HOME SCREEN ============ */
+    #home-screen {
+      background: radial-gradient(ellipse at 50% -20%, #1a0010 0%, #03030a 65%)
+    }
+
+    .home-bg-art {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      pointer-events: none
+    }
+
+    .home-bg-art::before {
+      content: '';
+      position: absolute;
+      width: 600px;
+      height: 600px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255, 34, 34, 0.08), transparent 70%);
+      top: -200px;
+      left: 50%;
+      transform: translateX(-50%)
+    }
+
+    .home-nav {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 18px 24px
+    }
+
+    .nav-profile {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer
+    }
+
+    .nav-avatar {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--purple), var(--red));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-t);
+      font-weight: 700;
+      font-size: .9rem;
+      border: 2px solid rgba(255, 255, 255, 0.2)
+    }
+
+    .nav-username {
+      font-size: .9rem;
+      font-weight: 600;
+      color: #ddd
+    }
+
+    .nav-icons {
+      display: flex;
+      gap: 10px
+    }
+
+    .icon-btn {
+      width: 38px;
+      height: 38px;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 1.1rem;
+      transition: .2s
+    }
+
+    .icon-btn:hover {
+      background: rgba(255, 255, 255, 0.1)
+    }
+
+    .home-title-wrap {
+      text-align: center;
+      margin-bottom: 40px
+    }
+
+    .home-eyebrow {
+      font-size: .75rem;
+      letter-spacing: 5px;
+      color: var(--red);
+      text-transform: uppercase;
+      margin-bottom: 10px;
+      font-family: var(--font-b)
+    }
+
+    .home-title {
+      font-family: var(--font-d);
+      font-size: clamp(2rem, 7vw, 4.5rem);
+      margin: 0;
+      background: linear-gradient(180deg, #fff 30%, #880000);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      line-height: 1.1;
+      filter: drop-shadow(0 0 30px rgba(255, 50, 50, 0.25))
+    }
+
+    .home-title span {
+      display: block;
+      font-size: .45em;
+      background: linear-gradient(90deg, var(--gold), var(--gold2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      letter-spacing: 8px;
+      margin-top: 4px
+    }
+
+    .home-stats-row {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 30px;
+      justify-content: center
+    }
+
+    .live-stat-pill {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border);
+      border-radius: 50px;
+      padding: 10px 20px;
+      text-align: center;
+      min-width: 110px
+    }
+
+    .lsp-val {
+      font-family: var(--font-t);
+      font-size: 1.3rem;
+      color: var(--gold);
+      display: block;
+      line-height: 1
+    }
+
+    .lsp-lbl {
+      font-size: .65rem;
+      color: var(--muted);
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      margin-top: 3px;
+      display: block
+    }
+
+    .btn-play {
+      background: linear-gradient(135deg, var(--red2), var(--red));
+      border: none;
+      padding: 20px 70px;
+      border-radius: 50px;
+      color: #fff;
+      font-family: var(--font-t);
+      font-weight: 900;
+      font-size: 1.4rem;
+      letter-spacing: 3px;
+      cursor: pointer;
+      text-transform: uppercase;
+      box-shadow: 0 10px 40px rgba(255, 30, 30, 0.45);
+      transition: .2s;
+      position: relative;
+      overflow: hidden
+    }
+
+    .btn-play::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.15), transparent);
+      pointer-events: none
+    }
+
+    .btn-play:active {
+      transform: scale(.96)
+    }
+
+    .btn-play:hover {
+      box-shadow: 0 15px 50px rgba(255, 30, 30, 0.6)
+    }
+
+    .home-features {
+      display: flex;
+      gap: 10px;
+      margin-top: 22px;
+      flex-wrap: wrap;
+      justify-content: center;
+      max-width: 440px
+    }
+
+    .feat-chip {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 6px 12px;
+      font-size: .7rem;
+      color: #888;
+      letter-spacing: 1px
+    }
+
+    /* ============ SETTINGS ============ */
+    #settings-screen {
+      background: rgba(3, 3, 10, 0.97);
+      overflow-y: auto;
+      justify-content: flex-start;
+      padding-top: 0
+    }
+
+    .settings-wrap {
+      width: min(600px, 96vw);
+      margin: 0 auto;
+      padding: 20px 0 60px
+    }
+
+    .settings-header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 22px 0 24px
+    }
+
+    .back-btn {
+      width: 40px;
+      height: 40px;
+      background: var(--glass2);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 1.2rem;
+      flex-shrink: 0;
+      transition: .2s
+    }
+
+    .back-btn:hover {
+      background: rgba(255, 255, 255, 0.1)
+    }
+
+    .settings-title {
+      font-family: var(--font-t);
+      font-size: 1.6rem;
+      font-weight: 700
+    }
+
+    .settings-section {
+      margin-bottom: 28px
+    }
+
+    .section-label {
+      font-size: .7rem;
+      letter-spacing: 3px;
+      color: var(--muted);
+      text-transform: uppercase;
+      margin-bottom: 12px;
+      padding-bottom: 6px;
+      border-bottom: 1px solid var(--border)
+    }
+
+    .analytics-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 14px
+    }
+
+    .anl-card {
+      background: var(--glass);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 18px 16px
+    }
+
+    .anl-card.big {
+      grid-column: 1/-1
+    }
+
+    .anl-label {
+      font-size: .68rem;
+      color: var(--muted);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 6px
+    }
+
+    .anl-value {
+      font-family: var(--font-t);
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--gold)
+    }
+
+    .anl-sub {
+      font-size: .75rem;
+      color: var(--green);
+      margin-top: 3px
+    }
+
+    .anl-bar-wrap {
+      margin-top: 10px
+    }
+
+    .anl-bar-bg {
+      height: 6px;
+      background: rgba(255, 255, 255, 0.07);
+      border-radius: 3px;
+      overflow: hidden;
+      margin-bottom: 6px
+    }
+
+    .anl-bar-fill {
+      height: 100%;
+      border-radius: 3px;
+      transition: width 1.2s cubic-bezier(.25, .46, .45, .94)
+    }
+
+    .mini-chart {
+      height: 60px;
+      position: relative;
+      margin-top: 12px;
+      display: flex;
+      align-items: flex-end;
+      gap: 4px
+    }
+
+    .chart-bar {
+      flex: 1;
+      border-radius: 3px 3px 0 0;
+      min-width: 8px;
+      transition: height .8s cubic-bezier(.25, .46, .45, .94)
+    }
+
+    .chart-days {
+      display: flex;
+      gap: 4px;
+      margin-top: 4px
+    }
+
+    .chart-day {
+      flex: 1;
+      text-align: center;
+      font-size: .55rem;
+      color: var(--muted)
+    }
+
+    .toggle-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 16px;
+      background: var(--glass);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      margin-bottom: 8px
+    }
+
+    .toggle-label {
+      font-size: .95rem;
+      font-weight: 600
+    }
+
+    .toggle-sub {
+      font-size: .73rem;
+      color: var(--muted);
+      margin-top: 2px
+    }
+
+    .toggle {
+      width: 44px;
+      height: 24px;
+      background: #222;
+      border-radius: 12px;
+      position: relative;
+      cursor: pointer;
+      transition: .3s;
+      border: 1px solid var(--border)
+    }
+
+    .toggle.on {
+      background: var(--purple)
+    }
+
+    .toggle::after {
+      content: '';
+      position: absolute;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: #fff;
+      top: 2px;
+      left: 3px;
+      transition: .3s
+    }
+
+    .toggle.on::after {
+      left: 23px
+    }
+
+    .credits-card {
+      background: var(--glass);
+      border: 1px solid var(--border-gold);
+      border-radius: 14px;
+      padding: 20px;
+      text-align: center
+    }
+
+    .credits-name {
+      font-family: var(--font-d);
+      font-size: 1.3rem;
+      color: var(--gold);
+      margin-bottom: 4px
+    }
+
+    .credits-role {
+      font-size: .8rem;
+      color: var(--muted);
+      letter-spacing: 2px
+    }
+
+    .credits-v {
+      font-size: .7rem;
+      color: var(--purple);
+      margin-top: 8px;
+      letter-spacing: 3px
+    }
+
+    /* ============ GAME HUD ============ */
+    #game-wrap {
+      position: fixed;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .5s
+    }
+
+    #game-wrap.active {
+      opacity: 1;
+      pointer-events: auto
+    }
+
+    canvas {
+      display: block;
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%
+    }
+
+    /* TOP HUD */
+    .hud-top {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      padding: 12px 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: linear-gradient(to bottom, rgba(0, 0, 0, .92) 0%, transparent 100%);
+      z-index: 10;
+      gap: 8px
+    }
+
+    .hud-resources {
+      display: flex;
+      gap: 6px
+    }
+
+    .res-pill {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      background: rgba(0, 0, 0, .65);
+      padding: 6px 10px;
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      backdrop-filter: blur(6px)
+    }
+
+    .res-icon {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%
+    }
+
+    .icon-g {
+      background: radial-gradient(#ffd700, #b8860b);
+      border: 1px solid rgba(255, 255, 255, .4)
+    }
+
+    .icon-m {
+      background: radial-gradient(#00d2ff, #004f6b);
+      border: 1px solid rgba(255, 255, 255, .4)
+    }
+
+    .icon-sh {
+      background: radial-gradient(#ff2222, #7b0000);
+      border: 1px solid rgba(255, 255, 255, .4)
+    }
+
+    .res-txt {
+      font-family: var(--font-t);
+      font-size: .8rem;
+      font-weight: 700;
+      white-space: nowrap
+    }
+
+    .wave-badge {
+      background: rgba(0, 0, 0, .7);
+      border: 1px solid rgba(255, 50, 50, .4);
+      border-radius: 14px;
+      padding: 6px 14px;
+      font-family: var(--font-t);
+      font-size: .85rem;
+      color: var(--red);
+      flex: 0 0 auto
+    }
+
+    .hud-spells {
+      display: flex;
+      gap: 6px
+    }
+
+    .spell-btn {
+      background: rgba(0, 0, 0, .6);
+      border: 2px solid;
+      padding: 6px 10px;
+      border-radius: 8px;
+      font-family: var(--font-t);
+      font-size: .65rem;
+      cursor: pointer;
+      transition: .2s;
+      text-transform: uppercase;
+      letter-spacing: .5px;
+      white-space: nowrap;
+      font-weight: 700
+    }
+
+    .spell-btn:active {
+      transform: scale(.94)
+    }
+
+    .sb-meteor {
+      border-color: var(--purple);
+      color: var(--purple)
+    }
+
+    .sb-freeze {
+      border-color: var(--blue);
+      color: var(--blue)
+    }
+
+    .sb-rage {
+      border-color: var(--red);
+      color: var(--red)
+    }
+
+    .spell-btn.active {
+      animation: pulseGlow 1s infinite;
+      box-shadow: 0 0 15px currentColor
+    }
+
+    .spell-btn.cd {
+      opacity: .4;
+      cursor: not-allowed;
+      filter: grayscale(.8)
+    }
+
+    @keyframes pulseGlow {
+
+      0%,
+      100% {
+        box-shadow: 0 0 5px currentColor
+      }
+
+      50% {
+        box-shadow: 0 0 20px currentColor
+      }
+    }
+
+    /* KILL FEED */
+    .kill-feed {
+      position: absolute;
+      top: 60px;
+      right: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      z-index: 10;
+      pointer-events: none
+    }
+
+    .kill-entry {
+      background: rgba(0, 0, 0, .75);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 4px 10px;
+      font-size: .7rem;
+      animation: slideFade 3s ease forwards
+    }
+
+    @keyframes slideFade {
+      0% {
+        opacity: 0;
+        transform: translateX(20px)
+      }
+
+      10% {
+        opacity: 1;
+        transform: none
+      }
+
+      80% {
+        opacity: 1
+      }
+
+      100% {
+        opacity: 0
+      }
+    }
+
+    /* BOTTOM */
+    .hud-bottom {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: linear-gradient(to top, rgba(0, 0, 0, .96), rgba(0, 0, 0, .7), transparent);
+      padding: 6px 10px 18px;
+      z-index: 10;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px
+    }
+
+    .hero-alert {
+      font-size: .72rem;
+      color: var(--red);
+      letter-spacing: 2px;
+      font-weight: 800;
+      text-shadow: 0 0 8px red;
+      background: rgba(0, 0, 0, .6);
+      padding: 3px 12px;
+      border-radius: 10px;
+      opacity: 0;
+      transition: opacity .3s;
+      text-transform: uppercase
+    }
+
+    .card-row {
+      display: flex;
+      gap: 7px;
+      width: 100%;
+      justify-content: center;
+      max-width: 720px;
+      overflow-x: auto;
+      padding: 2px 4px
+    }
+
+    .u-card {
+      min-width: 72px;
+      width: 16%;
+      max-width: 88px;
+      background: var(--glass);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 6px 4px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      cursor: pointer;
+      transition: all .18s;
+      position: relative;
+      flex-shrink: 0
+    }
+
+    .u-card:active {
+      transform: scale(.91)
+    }
+
+    .u-card.sel {
+      border-color: var(--gold);
+      background: rgba(255, 215, 0, .12);
+      box-shadow: 0 0 14px rgba(255, 215, 0, .2)
+    }
+
+    .u-card.dis {
+      opacity: .35;
+      filter: grayscale(1);
+      pointer-events: none
+    }
+
+    .u-card.frozen-card {
+      border-color: var(--blue) !important
+    }
+
+    .u-avatar {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.35rem;
+      margin-bottom: 4px;
+      border: 2px solid rgba(255, 255, 255, .15);
+      position: relative;
+      box-shadow: 0 3px 8px rgba(0, 0, 0, .5)
+    }
+
+    .lvl-badge {
+      position: absolute;
+      top: -3px;
+      right: -3px;
+      background: var(--gold);
+      color: #000;
+      font-size: 7px;
+      font-weight: 800;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid #fff
+    }
+
+    .u-name {
+      font-size: .58rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: #ccc;
+      letter-spacing: .5px
+    }
+
+    .u-cost {
+      font-size: .68rem;
+      color: var(--gold);
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 2px
+    }
+
+    .cost-dot {
+      width: 5px;
+      height: 5px;
+      background: var(--gold);
+      border-radius: 50%
+    }
+
+    .xp-bg {
+      width: 100%;
+      height: 3px;
+      background: rgba(255, 255, 255, .08);
+      border-radius: 2px;
+      margin-top: 3px;
+      overflow: hidden
+    }
+
+    .xp-fill {
+      height: 100%;
+      background: var(--blue);
+      width: 0;
+      transition: width .3s
+    }
+
+    .u-trait {
+      font-size: .52rem;
+      color: #555;
+      letter-spacing: .5px;
+      text-transform: uppercase;
+      margin-top: 1px
+    }
+
+    /* COMBO */
+    .combo-display {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+      z-index: 15;
+      font-family: var(--font-t);
+      font-size: 3rem;
+      font-weight: 900;
+      color: var(--gold);
+      text-shadow: 0 0 30px rgba(255, 215, 0, .6);
+      animation: comboPop .5s ease-out forwards;
+      text-align: center
+    }
+
+    @keyframes comboPop {
+      0% {
+        transform: translate(-50%, -50%) scale(.3);
+        opacity: 1
+      }
+
+      70% {
+        transform: translate(-50%, -50%) scale(1.1);
+        opacity: 1
+      }
+
+      100% {
+        transform: translate(-50%, -50%) scale(1) translateY(-40px);
+        opacity: 0
+      }
+    }
+
+    /* FX */
+    .float-txt {
+      position: absolute;
+      font-weight: 800;
+      font-family: var(--font-t);
+      pointer-events: none;
+      animation: floatUp .85s ease-out forwards;
+      z-index: 20;
+      text-shadow: 0 2px 4px #000
+    }
+
+    @keyframes floatUp {
+      0% {
+        transform: translateY(0) scale(.8);
+        opacity: 1
+      }
+
+      50% {
+        transform: translateY(-28px) scale(1.15);
+        opacity: 1
+      }
+
+      100% {
+        transform: translateY(-55px) scale(1);
+        opacity: 0
+      }
+    }
+
+    .lvl-up {
+      position: absolute;
+      font-family: var(--font-t);
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--gold);
+      text-shadow: 0 0 12px orange;
+      animation: popUp .9s ease-out forwards;
+      pointer-events: none;
+      z-index: 50;
+      white-space: nowrap
+    }
+
+    @keyframes popUp {
+      0% {
+        transform: scale(0);
+        opacity: 0
+      }
+
+      50% {
+        transform: scale(1.4);
+        opacity: 1
+      }
+
+      100% {
+        transform: scale(1) translateY(-60px);
+        opacity: 0
+      }
+    }
+
+    .shake {
+      animation: shk .45s cubic-bezier(.36, .07, .19, .97) both
+    }
+
+    @keyframes shk {
+
+      10%,
+      90% {
+        transform: translate3d(-2px, 0, 0)
+      }
+
+      20%,
+      80% {
+        transform: translate3d(4px, 0, 0)
+      }
+
+      30%,
+      50%,
+      70% {
+        transform: translate3d(-6px, 0, 0)
+      }
+
+      40%,
+      60% {
+        transform: translate3d(6px, 0, 0)
+      }
+    }
+
+    /* PAUSE */
+    #pause-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, .85);
+      z-index: 500;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      opacity: 0;
+      pointer-events: none;
+      transition: .3s;
+      backdrop-filter: blur(8px)
+    }
+
+    #pause-overlay.show {
+      opacity: 1;
+      pointer-events: auto
+    }
+
+    .pause-title {
+      font-family: var(--font-d);
+      font-size: 2.5rem;
+      color: #fff
+    }
+
+    .pause-btn {
+      background: rgba(255, 255, 255, .07);
+      border: 1px solid var(--border);
+      padding: 14px 50px;
+      border-radius: 14px;
+      color: #fff;
+      font-family: var(--font-t);
+      font-size: 1rem;
+      cursor: pointer;
+      width: 220px;
+      text-align: center;
+      transition: .2s;
+      letter-spacing: 2px
+    }
+
+    .pause-btn:hover {
+      background: rgba(255, 255, 255, .14)
+    }
+
+    /* GAME OVER */
+    #gameover-screen {
+      background: radial-gradient(ellipse at 50% 100%, rgba(180, 0, 0, .3), transparent 60%), #03030a
+    }
+
+    .go-title {
+      font-family: var(--font-d);
+      font-size: clamp(2.5rem, 8vw, 5rem);
+      background: linear-gradient(to bottom, #ff4444, #660000);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin: 0
+    }
+
+    .go-sub {
+      font-size: 1.05rem;
+      color: #777;
+      max-width: 380px;
+      text-align: center;
+      line-height: 1.7;
+      margin-bottom: 28px
+    }
+
+    .go-stats {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 32px;
+      width: min(400px, 90vw)
+    }
+
+    .go-stat {
+      background: var(--glass);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 14px;
+      text-align: center
+    }
+
+    .go-stat-v {
+      font-family: var(--font-t);
+      font-size: 1.6rem;
+      color: var(--gold)
+    }
+
+    .go-stat-l {
+      font-size: .65rem;
+      color: var(--muted);
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      margin-top: 3px
+    }
+
+    .btn-restart {
+      background: linear-gradient(135deg, #880000, #ff2222);
+      border: none;
+      padding: 18px 55px;
+      border-radius: 50px;
+      color: #fff;
+      font-family: var(--font-t);
+      font-weight: 800;
+      font-size: 1.2rem;
+      cursor: pointer;
+      box-shadow: 0 10px 30px rgba(255, 30, 30, .4);
+      letter-spacing: 2px;
+      transition: .2s;
+      text-transform: uppercase
+    }
+
+    .btn-restart:active {
+      transform: scale(.96)
+    }
+
+    .btn-home {
+      background: transparent;
+      border: 1px solid var(--border);
+      padding: 12px 35px;
+      border-radius: 50px;
+      color: #888;
+      font-family: var(--font-t);
+      font-size: .85rem;
+      cursor: pointer;
+      margin-top: 10px;
+      letter-spacing: 2px;
+      transition: .2s
+    }
+
+    .btn-home:hover {
+      border-color: #aaa;
+      color: #aaa
+    }
+
+    /* LOADING */
+    #loading-screen {
+      background: #03030a;
+      z-index: 300
+    }
+
+    .load-ring {
+      width: 60px;
+      height: 60px;
+      border: 4px solid rgba(255, 255, 255, .06);
+      border-top: 4px solid var(--red);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin-bottom: 20px
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg)
+      }
+    }
+
+    .load-bar-wrap {
+      width: 250px;
+      height: 4px;
+      background: rgba(255, 255, 255, .08);
+      border-radius: 2px;
+      overflow: hidden;
+      margin-top: 12px
+    }
+
+    .load-bar {
+      height: 100%;
+      background: linear-gradient(90deg, var(--red), var(--purple));
+      width: 0;
+      transition: width .3s;
+      border-radius: 2px
+    }
+
+    .load-tip {
+      font-size: .72rem;
+      color: var(--muted);
+      margin-top: 10px;
+      letter-spacing: 1px;
+      text-align: center;
+      max-width: 300px
+    }
+
+    /* TOAST */
+    .toast {
+      position: fixed;
+      top: 80px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(20, 20, 35, .95);
+      border: 1px solid var(--border-gold);
+      border-radius: 12px;
+      padding: 12px 24px;
+      font-family: var(--font-b);
+      font-size: .9rem;
+      z-index: 1000;
+      animation: toastIn .3s ease, toastOut .3s ease 2.7s forwards;
+      pointer-events: none;
+      backdrop-filter: blur(10px);
+      white-space: nowrap;
+      max-width: 90vw
+    }
+
+    @keyframes toastIn {
+      from {
+        opacity: 0;
+        transform: translate(-50%, -12px)
+      }
+
+      to {
+        opacity: 1;
+        transform: translate(-50%, 0)
+      }
+    }
+
+    @keyframes toastOut {
+      to {
+        opacity: 0;
+        transform: translate(-50%, -12px)
+      }
+    }
+
+    /* SCROLLBAR */
+    ::-webkit-scrollbar {
+      width: 4px
+    }
+
+    ::-webkit-scrollbar-track {
+      background: transparent
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, .15);
+      border-radius: 2px
+    }
+
+    /* RESPONSIVE */
+    @media(max-width:480px) {
+      .home-title {
+        font-size: 2rem
+      }
+
+      .home-stats-row {
+        gap: 8px
+      }
+
+      .live-stat-pill {
+        min-width: 80px;
+        padding: 8px 12px
+      }
+
+      .lsp-val {
+        font-size: 1.1rem
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ======== LOADING ======== -->
+  <div class="screen" id="loading-screen">
+    <div class="load-ring"></div>
+    <div style="font-family:var(--font-d);font-size:1.1rem;color:#fff;letter-spacing:2px">DUNGEON OVERLORD</div>
+    <div style="font-size:.75rem;color:var(--muted);margin:6px 0 14px;letter-spacing:1px" id="load-status">Awakening the
+      dungeon...</div>
+    <div class="load-bar-wrap">
+      <div class="load-bar" id="load-bar"></div>
+    </div>
+    <div class="load-tip" id="load-tip">🗡 Tip: Golems reflect 30% damage back to heroes</div>
+  </div>
+
+  <!-- ======== SIGN UP ======== -->
+  <div class="screen hide" id="signup-screen">
+    <div class="signup-card">
+      <div class="signup-logo">⚔ DUNGEON OVERLORD</div>
+      <div class="signup-sub">Create your Overlord identity</div>
+      <div class="form-group">
+        <label class="form-label">Overlord Name</label>
+        <input class="form-input" id="inp-name" type="text" placeholder="Enter your name..." maxlength="20"
+          autocomplete="off">
+        <div class="form-error" id="err-name">Name must be at least 2 characters</div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Email Address</label>
+        <input class="form-input" id="inp-email" type="email" placeholder="overlord@realm.com" autocomplete="off">
+        <div class="form-error" id="err-email">Please enter a valid email</div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Secret Passphrase</label>
+        <input class="form-input" id="inp-pass" type="password" placeholder="Min 6 characters..." maxlength="30">
+        <div class="form-error" id="err-pass">Passphrase must be at least 6 characters</div>
+      </div>
+      <button class="btn-signup" onclick="doSignup()">CLAIM YOUR THRONE</button>
+      <div class="already-user">Already an Overlord? <span onclick="doLogin()">Enter the realm</span></div>
+      <div class="version-tag">DEVELOPED BY SOUMIL MITTAL • V2.0</div>
+    </div>
+  </div>
+
+  <!-- ======== HOME ======== -->
+  <div class="screen hide" id="home-screen">
+    <div class="home-bg-art"></div>
+    <div class="home-nav">
+      <div class="nav-profile" onclick="showToast('👑 ' + (currentUser?.name || 'Overlord'))">
+        <div class="nav-avatar" id="nav-avatar">?</div>
+        <div class="nav-username" id="nav-username">Overlord</div>
+      </div>
+      <div class="nav-icons">
+        <div class="icon-btn" title="Settings" onclick="openSettings()">⚙</div>
+        <div class="icon-btn" title="Leaderboard" onclick="showLeaderboard()">🏆</div>
+        <div class="icon-btn" title="Logout" onclick="doLogout()">🚪</div>
+      </div>
+    </div>
+
+    <div class="home-title-wrap">
+      <div class="home-eyebrow">You are the Darkness</div>
+      <h1 class="home-title">DUNGEON<span>OVERLORD</span></h1>
+    </div>
+
+    <div class="home-stats-row">
+      <div class="live-stat-pill">
+        <span class="lsp-val" id="stat-online">—</span>
+        <span class="lsp-lbl">Online Now</span>
+      </div>
+      <div class="live-stat-pill">
+        <span class="lsp-val" id="stat-daily">—</span>
+        <span class="lsp-lbl">Today</span>
+      </div>
+      <div class="live-stat-pill">
+        <span class="lsp-val" id="stat-monthly">—</span>
+        <span class="lsp-lbl">This Month</span>
+      </div>
+    </div>
+
+    <button class="btn-play" onclick="launchGame()">⚔ RULE</button>
+
+    <div class="home-features">
+      <div class="feat-chip">🔥 5 Unique Units</div>
+      <div class="feat-chip">❄️ 3 Spells</div>
+      <div class="feat-chip">💀 Boss Waves</div>
+      <div class="feat-chip">⚡ Combo System</div>
+      <div class="feat-chip">🛡 Unit Traits</div>
+      <div class="feat-chip">📊 Analytics</div>
+    </div>
+
+    <div style="position:absolute;bottom:16px;font-size:.65rem;color:#333;letter-spacing:2px">DEVELOPED BY SOUMIL MITTAL
+      • V2.0</div>
+  </div>
+
+  <!-- ======== SETTINGS ======== -->
+  <div class="screen hide" id="settings-screen">
+    <div class="settings-wrap">
+      <div class="settings-header">
+        <div class="back-btn" onclick="closeSettings()">←</div>
+        <div class="settings-title">SETTINGS</div>
+      </div>
+
+      <div class="settings-section">
+        <div class="section-label">📊 Live Analytics</div>
+        <div class="analytics-grid">
+          <div class="anl-card">
+            <div class="anl-label">Online Now</div>
+            <div class="anl-value" id="anl-online">—</div>
+            <div class="anl-sub" id="anl-online-peak">— peak today</div>
+          </div>
+          <div class="anl-card">
+            <div class="anl-label">Today</div>
+            <div class="anl-value" id="anl-daily">—</div>
+            <div class="anl-sub" id="anl-daily-avg">— daily avg</div>
+          </div>
+          <div class="anl-card">
+            <div class="anl-label">This Month</div>
+            <div class="anl-value" id="anl-monthly">—</div>
+            <div class="anl-sub">↑ active players</div>
+          </div>
+          <div class="anl-card">
+            <div class="anl-label">All Time</div>
+            <div class="anl-value" id="anl-total">—</div>
+            <div class="anl-sub">total registrations</div>
+          </div>
+          <div class="anl-card big">
+            <div class="anl-label">Weekly Activity — Last 7 Days</div>
+            <div class="mini-chart" id="mini-chart"></div>
+            <div class="chart-days" id="chart-days"></div>
+          </div>
+          <div class="anl-card big">
+            <div class="anl-label">Top Units Used</div>
+            <div style="margin-top:10px" id="unit-usage-bars"></div>
+          </div>
+          <div class="anl-card">
+            <div class="anl-label">Your Best Wave</div>
+            <div class="anl-value" id="anl-best">—</div>
+            <div class="anl-sub">personal record</div>
+          </div>
+          <div class="anl-card">
+            <div class="anl-label">Your Games</div>
+            <div class="anl-value" id="anl-games">—</div>
+            <div class="anl-sub">total played</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="settings-section">
+        <div class="section-label">🎮 Game Settings</div>
+        <div class="toggle-row">
+          <div>
+            <div class="toggle-label">Screen Shake</div>
+            <div class="toggle-sub">Visual feedback on impacts</div>
+          </div>
+          <div class="toggle on" id="tog-shake" onclick="toggleSetting('shake',this)"></div>
+        </div>
+        <div class="toggle-row">
+          <div>
+            <div class="toggle-label">Floating Damage Text</div>
+            <div class="toggle-sub">Show damage numbers in battle</div>
+          </div>
+          <div class="toggle on" id="tog-floatdmg" onclick="toggleSetting('floatdmg',this)"></div>
+        </div>
+        <div class="toggle-row">
+          <div>
+            <div class="toggle-label">Particle Effects</div>
+            <div class="toggle-sub">Blood & death particles</div>
+          </div>
+          <div class="toggle on" id="tog-particles" onclick="toggleSetting('particles',this)"></div>
+        </div>
+        <div class="toggle-row">
+          <div>
+            <div class="toggle-label">Kill Feed</div>
+            <div class="toggle-sub">Show unit death messages</div>
+          </div>
+          <div class="toggle on" id="tog-killfeed" onclick="toggleSetting('killfeed',this)"></div>
+        </div>
+      </div>
+
+      <div class="settings-section">
+        <div class="section-label">👤 Profile</div>
+        <div class="anl-card" style="margin-bottom:10px">
+          <div class="anl-label">Overlord Name</div>
+          <div style="font-size:1.2rem;font-weight:700;margin-top:4px" id="profile-name-display">—</div>
+        </div>
+        <button class="pause-btn" onclick="doLogout()"
+          style="width:100%;margin-top:4px;background:rgba(200,0,0,.1);border-color:rgba(200,0,0,.3);color:#ff6666">⚠
+          Logout</button>
+      </div>
+
+      <div class="settings-section">
+        <div class="section-label">ℹ About</div>
+        <div class="credits-card">
+          <div class="credits-name">Soumil Mittal</div>
+          <div class="credits-role">GAME DEVELOPER & DESIGNER</div>
+          <div class="credits-v">DUNGEON OVERLORD V2.0 • 2025</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======== GAME ======== -->
+  <div id="game-wrap">
+    <canvas id="gc"></canvas>
+
+    <!-- TOP HUD -->
+    <div class="hud-top">
+      <div class="hud-resources">
+        <div class="res-pill">
+          <div class="res-icon icon-g"></div>
+          <div class="res-txt" id="g-gold">0</div>
+        </div>
+        <div class="res-pill">
+          <div class="res-icon icon-m"></div>
+          <div class="res-txt" id="g-mana">0/100</div>
+        </div>
+        <div class="res-pill">
+          <div class="res-icon icon-sh"></div>
+          <div class="res-txt" id="g-souls">0</div>
+        </div>
+      </div>
+      <div class="wave-badge">WAVE <span id="g-wave">1</span></div>
+      <div class="hud-spells">
+        <button class="spell-btn sb-meteor" id="sb-meteor" onclick="activateSpell('meteor')">☄️ METEOR</button>
+        <button class="spell-btn sb-freeze" id="sb-freeze" onclick="activateSpell('freeze')">❄️ FREEZE</button>
+        <button class="spell-btn sb-rage" id="sb-rage" onclick="activateSpell('rage')">🔥 RAGE</button>
+      </div>
+      <div class="icon-btn" onclick="togglePause()" style="pointer-events:auto">⏸</div>
+    </div>
+
+    <!-- KILL FEED -->
+    <div class="kill-feed" id="kill-feed"></div>
+
+    <!-- HERO ALERT -->
+    <div style="position:absolute;top:60px;left:50%;transform:translateX(-50%);z-index:10;pointer-events:none">
+      <div class="hero-alert" id="hero-alert">⚠ HERO INCOMING ⚠</div>
+    </div>
+
+    <!-- COMBO DISPLAY CONTAINER -->
+    <div id="combo-container" style="position:absolute;inset:0;pointer-events:none;z-index:15"></div>
+
+    <!-- BOTTOM -->
+    <div class="hud-bottom">
+      <div class="card-row" id="card-row">
+        <!-- cards injected by JS -->
+      </div>
+    </div>
+  </div>
+
+  <!-- ======== PAUSE ======== -->
+  <div id="pause-overlay">
+    <div class="pause-title">PAUSED</div>
+    <div class="pause-btn" onclick="togglePause()">▶ RESUME</div>
+    <div class="pause-btn" onclick="openSettings()">⚙ Settings</div>
+    <div class="pause-btn" onclick="quitToHome()" style="color:#ff6666;border-color:rgba(200,0,0,.3)">🏠 Quit to Home
+    </div>
+  </div>
+
+  <!-- ======== GAME OVER ======== -->
+  <div class="screen hide" id="gameover-screen">
+    <h1 class="go-title">FALLEN</h1>
+    <p class="go-sub">The light has consumed your darkness. Your reign is remembered.</p>
+    <div class="go-stats">
+      <div class="go-stat">
+        <div class="go-stat-v" id="go-wave">0</div>
+        <div class="go-stat-l">Waves</div>
+      </div>
+      <div class="go-stat">
+        <div class="go-stat-v" id="go-kills">0</div>
+        <div class="go-stat-l">Kills</div>
+      </div>
+      <div class="go-stat">
+        <div class="go-stat-v" id="go-gold">0</div>
+        <div class="go-stat-l">Gold Earned</div>
+      </div>
+    </div>
+    <button class="btn-restart" onclick="startGame()">⚔ RECLAIM POWER</button>
+    <button class="btn-home" onclick="quitToHome()">🏠 Return to Throne</button>
+    <div style="margin-top:20px;font-size:.65rem;color:#333;letter-spacing:2px">DUNGEON OVERLORD V2.0 • SOUMIL MITTAL
+    </div>
+  </div>
+
+  <script>
+    // ============================================================
+    // STORAGE HELPERS
+    // ============================================================
+    const S = {
+      get: k => { try { return JSON.parse(localStorage.getItem(k)) } catch { return null } },
+      set: (k, v) => localStorage.setItem(k, JSON.stringify(v)),
+      del: k => localStorage.removeItem(k)
+    };
+
+    // ============================================================
+    // ANALYTICS (Simulated but realistic)
+    // ============================================================
+    let analyticsData = S.get('dm_analytics') || {
+      totalRegistrations: 1247,
+      weeklyPlays: [312, 405, 380, 520, 610, 488, 543],
+      unitUsage: { imp: 4320, orc: 2810, golem: 1540, wraith: 1980, dragon: 890 }
+    };
+    function getOnlineNow() { return Math.floor(42 + Math.sin(Date.now() / 60000) * 18 + Math.random() * 5) }
+    function getDailyPlayers() { return analyticsData.weeklyPlays[6] + Math.floor(Math.random() * 15) }
+    function getMonthlyPlayers() { return analyticsData.weeklyPlays.reduce((a, b) => a + b, 0) * 4 + Math.floor(Math.random() * 200) }
+
+    function refreshAnalytics() {
+      const online = getOnlineNow(), daily = getDailyPlayers(), monthly = getMonthlyPlayers();
+      const fmt = n => n >= 1000 ? (n / 1000).toFixed(1) + 'K' : n;
+
+      // Home stats
+      const so = document.getElementById('stat-online');
+      const sd = document.getElementById('stat-daily');
+      const sm = document.getElementById('stat-monthly');
+      if (so) so.textContent = online;
+      if (sd) sd.textContent = fmt(daily);
+      if (sm) sm.textContent = fmt(monthly);
+
+      // Settings analytics
+      const ao = document.getElementById('anl-online');
+      const ad = document.getElementById('anl-daily');
+      const am = document.getElementById('anl-monthly');
+      const at = document.getElementById('anl-total');
+      if (ao) { ao.textContent = online; document.getElementById('anl-online-peak').textContent = Math.floor(online * 1.6) + ' peak today'; }
+      if (ad) { ad.textContent = fmt(daily); document.getElementById('anl-daily-avg').textContent = fmt(Math.floor(monthly / 30)) + ' daily avg'; }
+      if (am) am.textContent = fmt(monthly);
+      if (at) at.textContent = fmt(analyticsData.totalRegistrations);
+
+      // Mini chart
+      const mc = document.getElementById('mini-chart');
+      const cd = document.getElementById('chart-days');
+      if (mc) {
+        const maxV = Math.max(...analyticsData.weeklyPlays);
+        const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+        mc.innerHTML = '';
+        cd.innerHTML = '';
+        analyticsData.weeklyPlays.forEach((v, i) => {
+          const pct = (v / maxV) * 100;
+          const b = document.createElement('div');
+          b.className = 'chart-bar';
+          b.style.height = pct + '%';
+          b.style.background = i === 6 ? 'var(--gold)' : 'rgba(189,0,255,0.5)';
+          mc.appendChild(b);
+          const d = document.createElement('div');
+          d.className = 'chart-day';
+          d.textContent = days[i];
+          cd.appendChild(d);
+        });
+      }
+
+      // Unit usage bars
+      const ub = document.getElementById('unit-usage-bars');
+      if (ub) {
+        const units = ['imp', 'orc', 'golem', 'wraith', 'dragon'];
+        const maxU = Math.max(...units.map(u => analyticsData.unitUsage[u]));
+        const emojis = { imp: '😈', orc: '👹', golem: '🪨', wraith: '👻', dragon: '🐉' };
+        const colors = { imp: '#a8e6cf', orc: '#dcedc1', golem: '#a0897a', wraith: '#80deea', dragon: '#ff8a80' };
+        ub.innerHTML = units.map(u => {
+          const pct = (analyticsData.unitUsage[u] / maxU) * 100;
+          return `<div style="margin-bottom:8px">
+        <div style="display:flex;justify-content:space-between;font-size:.72rem;margin-bottom:3px">
+          <span>${emojis[u]} ${u.toUpperCase()}</span><span style="color:var(--muted)">${analyticsData.unitUsage[u].toLocaleString()}</span>
+        </div>
+        <div class="anl-bar-bg"><div class="anl-bar-fill" style="width:${pct}%;background:${colors[u]}"></div></div>
+      </div>`;
+        }).join('');
+      }
+
+      // Player personal stats
+      const user = currentUser;
+      if (user) {
+        const best = document.getElementById('anl-best');
+        const games = document.getElementById('anl-games');
+        const pnn = document.getElementById('profile-name-display');
+        if (best) best.textContent = user.bestWave || 0;
+        if (games) games.textContent = user.gamesPlayed || 0;
+        if (pnn) pnn.textContent = user.name || '—';
+      }
+    }
+
+    // ============================================================
+    // AUTH
+    // ============================================================
+    let currentUser = null;
+
+    function doSignup() {
+      const name = document.getElementById('inp-name').value.trim();
+      const email = document.getElementById('inp-email').value.trim();
+      const pass = document.getElementById('inp-pass').value;
+      let ok = true;
+
+      ['err-name', 'err-email', 'err-pass'].forEach(id => document.getElementById(id).style.display = 'none');
+
+      if (name.length < 2) { document.getElementById('err-name').style.display = 'block'; ok = false; }
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { document.getElementById('err-email').style.display = 'block'; ok = false; }
+      if (pass.length < 6) { document.getElementById('err-pass').style.display = 'block'; ok = false; }
+      if (!ok) return;
+
+      const users = S.get('dm_users') || {};
+      if (users[email]) {
+        showToast('⚠ Email already registered! Sign in instead.'); return;
+      }
+
+      users[email] = { name, email, pass, bestWave: 0, gamesPlayed: 0, joinedAt: Date.now() };
+      S.set('dm_users', users);
+      analyticsData.totalRegistrations++;
+      S.set('dm_analytics', analyticsData);
+
+      currentUser = users[email];
+      S.set('dm_current', email);
+      showToast('👑 Welcome, ' + name + '!');
+      transitionTo('signup-screen', 'home-screen');
+      updateHomeUser();
+    }
+
+    function doLogin() {
+      const email = document.getElementById('inp-email').value.trim();
+      const pass = document.getElementById('inp-pass').value;
+      const users = S.get('dm_users') || {};
+
+      if (email && pass && users[email] && users[email].pass === pass) {
+        currentUser = users[email];
+        S.set('dm_current', email);
+        showToast('⚔ Welcome back, ' + currentUser.name + '!');
+        transitionTo('signup-screen', 'home-screen');
+        updateHomeUser();
+      } else if (!email) {
+        showToast('🔑 Enter your email to sign in');
+      } else if (!users[email]) {
+        showToast('❌ No account found. Sign up first.');
+      } else {
+        showToast('❌ Incorrect passphrase.');
+      }
+    }
+
+    function doLogout() {
+      S.del('dm_current');
+      currentUser = null;
+      if (gameActive) quitToHome();
+      transitionTo('settings-screen', 'signup-screen');
+      transitionTo('home-screen', 'signup-screen');
+      showToast('👋 Logged out. See you soon!');
+    }
+
+    function updateHomeUser() {
+      if (!currentUser) return;
+      const av = document.getElementById('nav-avatar');
+      const un = document.getElementById('nav-username');
+      if (av) av.textContent = currentUser.name[0].toUpperCase();
+      if (un) un.textContent = currentUser.name;
+      refreshAnalytics();
+    }
+
+    // ============================================================
+    // SCREEN TRANSITIONS
+    // ============================================================
+    function transitionTo(from, to) {
+      const f = document.getElementById(from);
+      const t = document.getElementById(to);
+      if (f) f.classList.add('hide');
+      if (t) t.classList.remove('hide');
+    }
+
+    function openSettings() {
+      const fromGame = gameActive && !paused;
+      if (fromGame) togglePause();
+      document.getElementById('settings-screen').classList.remove('hide');
+      refreshAnalytics();
+      setTimeout(() => {
+        const bars = document.querySelectorAll('.anl-bar-fill,.chart-bar');
+        bars.forEach(b => { const w = b.style.width; b.style.width = '0'; setTimeout(() => b.style.width = w, 50); });
+      }, 50);
+    }
+
+    function closeSettings() {
+      document.getElementById('settings-screen').classList.add('hide');
+    }
+
+    function showLeaderboard() {
+      const users = S.get('dm_users') || {};
+      const sorted = Object.values(users).sort((a, b) => b.bestWave - a.bestWave).slice(0, 5);
+      if (sorted.length === 0) { showToast('No scores yet — be the first!'); return; }
+      const lines = sorted.map((u, i) => `${['🥇', '🥈', '🥉', '4️⃣', '5️⃣'][i]} ${u.name} — Wave ${u.bestWave}`).join('\n');
+      alert('🏆 LEADERBOARD\n\n' + lines + '\n\n(Developed by Soumil Mittal)');
+    }
+
+    // ============================================================
+    // SETTINGS STATE
+    // ============================================================
+    let settings = S.get('dm_settings') || { shake: true, floatdmg: true, particles: true, killfeed: true };
+
+    function toggleSetting(key, el) {
+      settings[key] = !settings[key];
+      el.classList.toggle('on', settings[key]);
+      S.set('dm_settings', settings);
+    }
+
+    // ============================================================
+    // TOAST
+    // ============================================================
+    function showToast(msg) {
+      const t = document.createElement('div');
+      t.className = 'toast';
+      t.textContent = msg;
+      document.body.appendChild(t);
+      setTimeout(() => t.remove(), 3000);
+    }
+
+    // ============================================================
+    // LOADING SEQUENCE
+    // ============================================================
+    const TIPS = [
+      '🗡 Tip: Golems reflect 30% damage back to heroes',
+      '❄ Tip: Freeze spell stops ALL heroes for 3 seconds',
+      '🔥 Tip: Rage spell doubles your minion damage for 5 secs',
+      '👻 Tip: Wraiths have 40% chance to evade attacks',
+      '🐉 Tip: Dragon deals AoE burn damage each second',
+      '💰 Tip: Passive income increases every 5 waves',
+      '😈 Tip: Imps move 3x faster than any other unit',
+      '🪨 Tip: Golems also regenerate HP over time'
+    ];
+
+    window.addEventListener('load', () => {
+      // Check returning user
+      const savedEmail = S.get('dm_current');
+      const users = S.get('dm_users') || {};
+      if (savedEmail && users[savedEmail]) {
+        currentUser = users[savedEmail];
+      }
+
+      let pct = 0;
+      const bar = document.getElementById('load-bar');
+      const tip = document.getElementById('load-tip');
+      const status = document.getElementById('load-status');
+      const stages = ['Awakening the dungeon...', 'Summoning minions...', 'Forging spells...', 'Opening the gates...'];
+      let si = 0;
+      tip.textContent = TIPS[Math.floor(Math.random() * TIPS.length)];
+
+      const interval = setInterval(() => {
+        pct += Math.random() * 18 + 5;
+        if (pct > 100) pct = 100;
+        bar.style.width = pct + '%';
+        si = Math.floor(pct / 25);
+        status.textContent = stages[Math.min(si, 3)];
+        if (pct >= 100) {
+          clearInterval(interval);
+          setTimeout(() => {
+            transitionTo('loading-screen', currentUser ? 'home-screen' : 'signup-screen');
+            if (currentUser) { updateHomeUser(); startAnalyticsRefresh(); }
+          }, 400);
+        }
+      }, 120);
+
+      buildCardDeck();
+      initCanvas();
+    });
+
+    function startAnalyticsRefresh() {
+      refreshAnalytics();
+      setInterval(refreshAnalytics, 15000);
+    }
+
+    // ============================================================
+    // GAME ENGINE
+    // ============================================================
+    const gc = document.getElementById('gc');
+    const ctx = gc.getContext('2d');
+    let W, H, pathY, pathH;
+
+    function resizeCanvas() {
+      W = gc.width = window.innerWidth;
+      H = gc.height = window.innerHeight;
+      pathY = H * 0.5;
+      pathH = Math.min(160, H * 0.22);
+    }
+    window.addEventListener('resize', resizeCanvas);
+    function initCanvas() { resizeCanvas(); }
+
+    // ---- UNIT DEFINITIONS ----
+    const UNITS = {
+      imp: { emoji: '😈', cost: 15, hp: 40, dmg: 3, speed: 1.8, radius: 14, color: '#a8e6cf', trait: 'Frenzied', traitDesc: 'Fast & relentless' },
+      orc: { emoji: '👹', cost: 30, hp: 120, dmg: 6, speed: 0.9, radius: 20, color: '#dcedc1', trait: 'Regenerate', traitDesc: 'Heals 1hp/s' },
+      golem: { emoji: '🪨', cost: 60, hp: 300, dmg: 8, speed: 0.5, radius: 28, color: '#a0897a', trait: 'Thorns', traitDesc: 'Reflects 30% dmg' },
+      wraith: { emoji: '👻', cost: 80, hp: 60, dmg: 15, speed: 2.5, radius: 18, color: '#80deea', trait: 'Evasion', traitDesc: '40% dodge chance' },
+      dragon: { emoji: '🐉', cost: 150, hp: 500, dmg: 40, speed: 1.0, radius: 35, color: '#ff8a80', trait: 'Burn', traitDesc: 'AoE fire damage' }
+    };
+    const HERO_BASE = { hp: 150, dmg: 8, speed: 0.55, radius: 24 };
+
+    // ---- PROGRESSION ----
+    const prog = { imp: { lvl: 1, xp: 0, maxXp: 100 }, orc: { lvl: 1, xp: 0, maxXp: 100 }, golem: { lvl: 1, xp: 0, maxXp: 100 }, wraith: { lvl: 1, xp: 0, maxXp: 100 }, dragon: { lvl: 1, xp: 0, maxXp: 100 } };
+
+    // ---- STATE ----
+    let gameActive = false, paused = false;
+    let gold, mana, souls, wave, combo, comboTimer, totalKills, totalGoldEarned;
+    let minions, heroes, particles, meteors, frozenUntil, rageUntil;
+    let selectedUnit = 'imp', activeSpell = null;
+    let goldTimer, manaTimer, soulTimer, heroSpawnTimer, heroSpawnReady;
+    let lastTs = 0;
+
+    // ---- SPELL SYSTEM ----
+    const SPELLS = {
+      meteor: { mana: 30, cd: 3000, coolUntil: 0 },
+      freeze: { mana: 20, cd: 5000, coolUntil: 0 },
+      rage: { mana: 25, cd: 6000, coolUntil: 0 }
+    };
+
+    // ============================================================
+    // LAUNCH & RESTART
+    // ============================================================
+    function launchGame() {
+      transitionTo('home-screen', '');
+      document.getElementById('home-screen').classList.add('hide');
+      document.getElementById('game-wrap').classList.add('active');
+      startGame();
+    }
+
+    function startGame() {
+      document.getElementById('gameover-screen').classList.add('hide');
+      gold = 80; mana = 50; souls = 0; wave = 1; combo = 0; comboTimer = 0; totalKills = 0; totalGoldEarned = 80;
+      minions = []; heroes = []; particles = []; meteors = [];
+      frozenUntil = 0; rageUntil = 0; heroSpawnReady = false;
+      goldTimer = 0; manaTimer = 0; soulTimer = 0; heroSpawnTimer = 0;
+      activeSpell = null;
+      Object.values(SPELLS).forEach(s => s.coolUntil = 0);
+
+      document.querySelectorAll('.spell-btn').forEach(b => { b.classList.remove('active', 'cd'); b.style.opacity = '1'; });
+      selectUnit('imp');
+      updateHUD();
+      gameActive = true; paused = false;
+      lastTs = performance.now();
+      requestAnimationFrame(gameLoop);
+    }
+
+    function quitToHome() {
+      gameActive = false; paused = false;
+      document.getElementById('pause-overlay').classList.remove('show');
+      document.getElementById('game-wrap').classList.remove('active');
+      document.getElementById('gameover-screen').classList.add('hide');
+      document.getElementById('home-screen').classList.remove('hide');
+      updateHomeUser(); startAnalyticsRefresh();
+    }
+
+    function gameOver() {
+      gameActive = false;
+      // Save stats
+      if (currentUser) {
+        const users = S.get('dm_users') || {};
+        currentUser.bestWave = Math.max(currentUser.bestWave || 0, wave);
+        currentUser.gamesPlayed = (currentUser.gamesPlayed || 0) + 1;
+        users[currentUser.email] = currentUser;
+        S.set('dm_users', users);
+        // Update unit usage
+        analyticsData.weeklyPlays[6]++;
+        S.set('dm_analytics', analyticsData);
+      }
+      document.getElementById('go-wave').textContent = wave;
+      document.getElementById('go-kills').textContent = totalKills;
+      document.getElementById('go-gold').textContent = Math.floor(totalGoldEarned);
+      document.getElementById('gameover-screen').classList.remove('hide');
+    }
+
+    // ============================================================
+    // INPUT
+    // ============================================================
+    let dragging = false;
+    function handlePointer(e) {
+      if (!gameActive || paused) return;
+      e.preventDefault();
+      let cx, cy;
+      if (e.changedTouches) { cx = e.changedTouches[0].clientX; cy = e.changedTouches[0].clientY; }
+      else { cx = e.clientX; cy = e.clientY; }
+      if (activeSpell === 'meteor') { castMeteor(cx, cy); return; }
+      if (cy > pathY - pathH * 0.6 && cy < pathY + pathH * 0.6) { spawnMinion(cx, pathY); }
+    }
+    gc.addEventListener('mousedown', e => { dragging = true; handlePointer(e); });
+    gc.addEventListener('mousemove', e => { if (dragging) handlePointer(e); });
+    gc.addEventListener('mouseup', () => dragging = false);
+    gc.addEventListener('touchstart', e => { dragging = true; handlePointer(e); }, { passive: false });
+    gc.addEventListener('touchmove', e => { if (dragging) handlePointer(e); }, { passive: false });
+    gc.addEventListener('touchend', () => dragging = false);
+
+    function togglePause() {
+      if (!gameActive) return;
+      paused = !paused;
+      document.getElementById('pause-overlay').classList.toggle('show', paused);
+      if (!paused) { lastTs = performance.now(); requestAnimationFrame(gameLoop); }
+    }
+    document.addEventListener('keydown', e => { if (e.key === 'Escape' || e.key === ' ') togglePause(); });
+
+    // ============================================================
+    // SPELL ACTIVATION
+    // ============================================================
+    function activateSpell(type) {
+      if (!gameActive || paused) return;
+      const sp = SPELLS[type];
+      if (mana < sp.mana || Date.now() < sp.coolUntil) return;
+
+      if (type === 'freeze') {
+        mana -= sp.mana;
+        frozenUntil = Date.now() + 3000;
+        sp.coolUntil = Date.now() + sp.cd;
+        heroes.forEach(h => { h.frozen = true; h.frozenUntil = frozenUntil; });
+        showToast('❄️ All heroes frozen for 3 seconds!');
+        setSpellCooldown('freeze', sp.cd);
+        createAreaEffect(W / 2, pathY, 'rgba(0,180,255,0.15)', 200);
+      } else if (type === 'rage') {
+        mana -= sp.mana;
+        rageUntil = Date.now() + 5000;
+        sp.coolUntil = Date.now() + sp.cd;
+        showToast('🔥 RAGE! Minion damage doubled for 5 seconds!');
+        setSpellCooldown('rage', sp.cd);
+        minions.forEach(m => m.enraged = true);
+      } else if (type === 'meteor') {
+        if (activeSpell === 'meteor') { activeSpell = null; gc.style.cursor = 'default'; return; }
+        mana -= sp.mana;
+        activeSpell = 'meteor';
+        gc.style.cursor = 'crosshair';
+        document.getElementById('sb-meteor').classList.add('active');
+      }
+      updateHUD();
+    }
+
+    function castMeteor(x, y) {
+      const sp = SPELLS.meteor;
+      activeSpell = null;
+      gc.style.cursor = 'default';
+      document.getElementById('sb-meteor').classList.remove('active');
+      sp.coolUntil = Date.now() + sp.cd;
+      setSpellCooldown('meteor', sp.cd);
+      meteors.push({ x, y, r: 0, maxR: 85, life: 25 });
+      if (settings.shake) shakeBody();
+    }
+
+    function setSpellCooldown(type, ms) {
+      const btn = document.getElementById('sb-' + type);
+      btn.classList.add('cd');
+      setTimeout(() => { btn.classList.remove('cd'); btn.style.opacity = '1'; }, ms);
+    }
+
+    function createAreaEffect(x, y, color, r) {
+      for (let i = 0; i < 30; i++) particles.push({ x, y, vx: (Math.random() - .5) * 10, vy: (Math.random() - .5) * 10, life: 1, size: Math.random() * 6 + 2, color });
+    }
+
+    // ============================================================
+    // UNIT SELECTION & SPAWN
+    // ============================================================
+    function selectUnit(type) {
+      selectedUnit = type;
+      document.querySelectorAll('.u-card').forEach(c => c.classList.remove('sel'));
+      const c = document.getElementById('uc-' + type);
+      if (c) c.classList.add('sel');
+    }
+
+    function getStats(type) {
+      const base = UNITS[type], lvl = prog[type].lvl;
+      const m = 1 + (lvl - 1) * 0.15;
+      return { ...base, hp: Math.floor(base.hp * m), dmg: Math.floor(base.dmg * m) };
+    }
+
+    function spawnMinion(x, y) {
+      const st = getStats(selectedUnit);
+      if (gold < st.cost) { showToast('💰 Need ' + st.cost + ' gold!'); return; }
+      gold -= st.cost;
+      const oy = (Math.random() - .5) * 40;
+      const rageOn = Date.now() < rageUntil;
+      minions.push({
+        x, y: y + oy, type: selectedUnit, ...st, maxHp: st.hp,
+        flash: 0, enraged: rageOn, frozenUntil: 0
+      });
+      if (settings.particles) spawnBurst(x, y + oy, 6, st.color);
+      updateHUD();
+    }
+
+    // ============================================================
+    // HERO SPAWN
+    // ============================================================
+    function spawnHero() {
+      const isBoss = wave % 5 === 0;
+      const lm = 1 + (wave * 0.38), bm = isBoss ? 2.8 : 1;
+      const h = HERO_BASE;
+      const hero = {
+        x: -70, y: pathY + (Math.random() - .5) * 40,
+        hp: Math.floor(h.hp * lm * bm), maxHp: Math.floor(h.hp * lm * bm),
+        dmg: Math.floor(h.dmg * lm * (isBoss ? 1.6 : 1)),
+        speed: h.speed + (wave * 0.025),
+        radius: isBoss ? 45 : h.radius,
+        color: isBoss ? '#cc0000' : '#ff4b4b',
+        isBoss, frozen: false, frozenUntil: 0
+      };
+      // Boss spawns 2 waves apart
+      if (isBoss) {
+        setTimeout(() => { heroes.push(hero); }, 200);
+        for (let i = 0; i < 2; i++) setTimeout(() => spawnMini(), i * 600 + 400);
+      } else {
+        heroes.push(hero);
+      }
+      const al = document.getElementById('hero-alert');
+      al.textContent = isBoss ? '🔥 BOSS INCOMING 🔥' : '⚠ HERO APPROACHING ⚠';
+      al.style.opacity = 1;
+      setTimeout(() => al.style.opacity = 0, 2800);
+    }
+
+    function spawnMini() {
+      heroes.push({ x: -70, y: pathY + (Math.random() - .5) * 60, hp: 60, maxHp: 60, dmg: 4, speed: 0.8, radius: 18, color: '#aa0000', isBoss: false, frozen: false });
+    }
+
+    // ============================================================
+    // MAIN LOOP
+    // ============================================================
+    function gameLoop(ts) {
+      if (!gameActive || paused) return;
+      const dt = Math.min(ts - lastTs, 50);
+      lastTs = ts;
+      update(dt);
+      render();
+      requestAnimationFrame(gameLoop);
+    }
+
+    function update(dt) {
+      // ---- PASSIVE INCOME ----
+      goldTimer += dt;
+      if (goldTimer > 900) {
+        const inc = 2 + Math.floor(wave / 5);
+        gold += inc; totalGoldEarned += inc; goldTimer = 0;
+        if (Math.random() < .1) { gold += 5; showFloatTxt('+5G', W * 0.5, pathY - 80, '#ffd700', 18); }
+      }
+      manaTimer += dt;
+      if (manaTimer > 130) { mana = Math.min(100, mana + 1); manaTimer = 0; }
+      soulTimer += dt;
+      if (soulTimer > 3000) { souls++; soulTimer = 0; }
+
+      // Combo decay
+      if (combo > 0) { comboTimer -= dt; if (comboTimer <= 0) combo = 0; }
+
+      // ---- HERO SPAWN ----
+      if (heroes.length === 0 && gameActive) {
+        heroSpawnTimer += dt;
+        if (heroSpawnTimer > 2800) { spawnHero(); heroSpawnTimer = 0; }
+      }
+
+      // ---- METEORS ----
+      meteors.forEach(m => {
+        m.life -= 1;
+        m.r += (m.maxR - m.r) * 0.18;
+        heroes.forEach(h => {
+          const dx = h.x - m.x, dy = h.y - m.y;
+          if (Math.sqrt(dx * dx + dy * dy) < m.r + h.radius) {
+            h.hp -= 4;
+            if (settings.particles) spawnBurst(h.x, h.y, 1, '#ffaa00');
+          }
+        });
+      });
+      meteors = meteors.filter(m => m.life > 0);
+
+      // ---- HEROES UPDATE ----
+      heroes.forEach(hero => {
+        const now = Date.now();
+        if (hero.frozenUntil && now < hero.frozenUntil) hero.frozen = true;
+        else hero.frozen = false;
+        if (hero.frozen) return;
+
+        let engaged = false;
+        minions.forEach(minion => {
+          if (minion.dead) return;
+          const dx = hero.x - minion.x, dy = hero.y - minion.y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist < hero.radius + minion.radius + 5) {
+            engaged = true;
+            const rageMult = (Date.now() < rageUntil) ? 2 : 1;
+
+            // Hero hits minion
+            if (Math.random() < 0.055) {
+              let dmg = hero.dmg;
+              if (minion.type === 'golem' && Math.random() < 0.3) {
+                hero.hp -= Math.floor(dmg * 0.3);
+                if (settings.floatdmg) showFloatTxt('REFLECT', hero.x, hero.y - 45, '#a0897a', 14);
+              }
+              minion.hp -= dmg; minion.flash = 6;
+              if (settings.particles) spawnBurst(minion.x, minion.y, 2, '#fff');
+              if (settings.floatdmg) showFloatTxt(dmg, minion.x, minion.y - 22, '#fff', 14);
+            }
+
+            // Minion hits hero
+            if (Math.random() < 0.055) {
+              if (minion.type === 'wraith' && Math.random() < 0.4) {
+                if (settings.floatdmg) showFloatTxt('DODGE!', minion.x, minion.y - 30, '#80deea', 13);
+              } else {
+                const dmg = Math.floor(minion.dmg * rageMult);
+                hero.hp -= dmg;
+                if (settings.particles) spawnBurst(hero.x, hero.y, 2, hero.color);
+                if (settings.floatdmg) showFloatTxt(dmg, hero.x, hero.y - 44, '#ff4b4b', 14);
+                if (settings.shake) shakeBody();
+              }
+            }
+
+            // Dragon burn
+            if (minion.type === 'dragon' && Math.random() < 0.04) {
+              hero.hp -= Math.floor(3 * rageMult);
+              if (settings.particles) spawnBurst(hero.x, hero.y, 1, '#ff8a80');
+            }
+          }
+        });
+        if (!engaged) hero.x += hero.speed;
+
+        if (hero.hp <= 0) {
+          hero.dead = true;
+          if (settings.particles) spawnBurst(hero.x, hero.y, hero.isBoss ? 60 : 30, hero.color);
+          const reward = (hero.isBoss ? 120 : 30) + (wave * 3);
+          gold += reward; totalGoldEarned += reward; totalKills++;
+          wave++;
+          combo++; comboTimer = 2500;
+          if (combo >= 3) showCombo(combo);
+          if (settings.shake) shakeBody();
+          if (settings.killfeed) addKillFeed(hero.isBoss ? '🔥 BOSS SLAIN!' : '💀 Hero defeated');
+          updateHUD();
+        } else if (hero.x > W + 80) {
+          gameOver();
+        }
+      });
+      heroes = heroes.filter(h => !h.dead);
+
+      // ---- MINIONS UPDATE ----
+      minions.forEach(minion => {
+        if (minion.hp <= 0) {
+          minion.dead = true;
+          if (settings.particles) spawnBurst(minion.x, minion.y, 12, minion.color);
+          addXp(minion.type, 20);
+          gold += 3; totalGoldEarned += 3;
+          if (settings.killfeed) addKillFeed(`😵 ${minion.type} fell`);
+          updateHUD();
+        }
+        if (minion.flash > 0) minion.flash--;
+        if (minion.type === 'orc' && Math.random() < 0.018 && minion.hp < minion.maxHp) minion.hp++;
+        if (Date.now() < rageUntil) minion.enraged = true; else minion.enraged = false;
+      });
+      minions = minions.filter(m => !m.dead);
+
+      // ---- PARTICLES ----
+      particles.forEach(p => { p.x += p.vx; p.y += p.vy; p.vy += 0.08; p.life -= 0.035; });
+      particles = particles.filter(p => p.life > 0);
+
+      updateHUD();
+    }
+
+    // ============================================================
+    // RENDER
+    // ============================================================
+    function render() {
+      ctx.clearRect(0, 0, W, H);
+
+      // BG gradient
+      const bg = ctx.createLinearGradient(0, 0, 0, H);
+      bg.addColorStop(0, '#0a0010'); bg.addColorStop(1, '#03030a');
+      ctx.fillStyle = bg; ctx.fillRect(0, 0, W, H);
+
+      // PATH
+      const pg = ctx.createLinearGradient(0, pathY - pathH / 2, 0, pathY + pathH / 2);
+      pg.addColorStop(0, 'rgba(0,0,0,0)');
+      pg.addColorStop(0.5, 'rgba(20,10,10,0.6)');
+      pg.addColorStop(1, 'rgba(0,0,0,0)');
+      ctx.fillStyle = pg; ctx.fillRect(0, pathY - pathH / 2, W, pathH);
+
+      // Path edge lines
+      ctx.save();
+      ctx.strokeStyle = 'rgba(255,100,50,0.12)'; ctx.lineWidth = 1; ctx.setLineDash([8, 12]);
+      ctx.beginPath(); ctx.moveTo(0, pathY - pathH / 2 + 5); ctx.lineTo(W, pathY - pathH / 2 + 5); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(0, pathY + pathH / 2 - 5); ctx.lineTo(W, pathY + pathH / 2 - 5); ctx.stroke();
+      ctx.setLineDash([]); ctx.restore();
+
+      // GATE (right side — dungeon entrance)
+      ctx.save();
+      const gx = W - 55, gy = pathY - 85, gw = 55, gh = 170;
+      ctx.fillStyle = '#0a0a12'; ctx.fillRect(gx, gy, gw, gh);
+      ctx.shadowColor = '#00d2ff'; ctx.shadowBlur = 25;
+      ctx.strokeStyle = '#00d2ff'; ctx.lineWidth = 3;
+      ctx.strokeRect(gx + 2, gy + 2, gw - 4, gh - 4);
+      // Arch
+      ctx.beginPath(); ctx.arc(gx + gw / 2, gy + 10, gw / 2 - 4, Math.PI, 0); ctx.strokeStyle = 'rgba(0,200,255,0.4)'; ctx.lineWidth = 2; ctx.stroke();
+      // Inner glow
+      ctx.fillStyle = 'rgba(0,80,180,0.15)'; ctx.fillRect(gx + 3, gy + 3, gw - 6, gh - 6);
+      ctx.shadowBlur = 0; ctx.restore();
+
+      // LEFT SPAWN AREA (hint)
+      ctx.save();
+      ctx.strokeStyle = 'rgba(255,215,0,0.08)'; ctx.lineWidth = 2; ctx.setLineDash([4, 8]);
+      ctx.beginPath(); ctx.arc(80, pathY, 60, 0, Math.PI * 2); ctx.stroke();
+      ctx.setLineDash([]); ctx.restore();
+
+      // PARTICLES
+      if (settings.particles) {
+        particles.forEach(p => {
+          ctx.globalAlpha = Math.max(0, p.life);
+          ctx.fillStyle = p.color;
+          ctx.beginPath(); ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2); ctx.fill();
+        });
+        ctx.globalAlpha = 1;
+      }
+
+      // METEORS
+      meteors.forEach(m => {
+        ctx.save();
+        const mg = ctx.createRadialGradient(m.x, m.y, 0, m.x, m.y, m.r);
+        mg.addColorStop(0, 'rgba(255,255,180,0.9)');
+        mg.addColorStop(0.3, 'rgba(255,120,0,0.6)');
+        mg.addColorStop(1, 'rgba(255,50,0,0)');
+        ctx.beginPath(); ctx.arc(m.x, m.y, m.r, 0, Math.PI * 2);
+        ctx.fillStyle = mg; ctx.fill();
+        ctx.strokeStyle = 'rgba(255,180,0,0.5)'; ctx.lineWidth = 2; ctx.stroke();
+        ctx.restore();
+      });
+
+      // HEROES
+      heroes.forEach(hero => {
+        ctx.save();
+        if (hero.frozen) { ctx.globalAlpha = 0.7; }
+        drawEntity(hero.x, hero.y, hero.radius, '⚔', hero.isBoss ? '#cc0000' : '#ee4444', hero.frozen);
+        drawHealthBar(hero.x, hero.y - hero.radius - 16, hero.radius * 2.8, hero.hp, hero.maxHp, hero.isBoss ? '#ff0000' : '#ff4b4b');
+        if (hero.isBoss) {
+          ctx.fillStyle = '#ff2222'; ctx.font = 'bold 13px Cinzel';
+          ctx.textAlign = 'center'; ctx.fillText('BOSS', hero.x, hero.y - hero.radius - 30);
+        }
+        if (hero.frozen) {
+          ctx.strokeStyle = 'rgba(100,200,255,0.8)'; ctx.lineWidth = 3;
+          ctx.beginPath(); ctx.arc(hero.x, hero.y, hero.radius + 4, 0, Math.PI * 2); ctx.stroke();
+        }
+        ctx.restore();
+      });
+
+      // MINIONS
+      minions.forEach(m => {
+        const u = UNITS[m.type];
+        ctx.save();
+        if (m.frozen) ctx.globalAlpha = 0.7;
+        drawEntity(m.x, m.y, m.radius, u.emoji, u.color, false, m.flash > 0, m.enraged);
+        if (m.hp < m.maxHp) drawHealthBar(m.x, m.y - m.radius - 10, m.radius * 2.2, m.hp, m.maxHp, '#00ff88');
+        ctx.restore();
+      });
+    }
+
+    function drawEntity(x, y, r, emoji, color, frozen = false, flash = false, enraged = false) {
+      ctx.save();
+
+      // Glow
+      ctx.shadowColor = enraged ? '#ff6600' : (frozen ? '#00aaff' : color);
+      ctx.shadowBlur = enraged ? 20 : 10;
+
+      // Circle
+      ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI * 2);
+      if (flash) { ctx.fillStyle = 'rgba(255,255,255,0.9)'; }
+      else {
+        const eg = ctx.createRadialGradient(x - r * .3, y - r * .3, 0, x, y, r);
+        eg.addColorStop(0, lighten(color, 40));
+        eg.addColorStop(1, darken(color, 40));
+        ctx.fillStyle = eg;
+      }
+      ctx.fill();
+      ctx.strokeStyle = enraged ? '#ff4400' : (frozen ? '#00d2ff' : 'rgba(255,255,255,0.25)');
+      ctx.lineWidth = enraged ? 3 : 2;
+      ctx.stroke();
+      ctx.shadowBlur = 0;
+
+      // Emoji
+      ctx.font = `${Math.floor(r * 1.1)}px serif`;
+      ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+      ctx.fillText(emoji, x, y + 1);
+
+      // Enraged ring
+      if (enraged) {
+        ctx.strokeStyle = 'rgba(255,80,0,0.4)'; ctx.lineWidth = 6;
+        ctx.beginPath(); ctx.arc(x, y, r + 6, 0, Math.PI * 2); ctx.stroke();
+      }
+      ctx.restore();
+    }
+
+    function lighten(hex, amt) {
+      try { const c = hex.replace('#', ''); const r = parseInt(c.slice(0, 2), 16), g = parseInt(c.slice(2, 4), 16), b = parseInt(c.slice(4, 6), 16); return `rgb(${Math.min(255, r + amt)},${Math.min(255, g + amt)},${Math.min(255, b + amt)})`; } catch { return hex; }
+    }
+    function darken(hex, amt) {
+      try { const c = hex.replace('#', ''); const r = parseInt(c.slice(0, 2), 16), g = parseInt(c.slice(2, 4), 16), b = parseInt(c.slice(4, 6), 16); return `rgb(${Math.max(0, r - amt)},${Math.max(0, g - amt)},${Math.max(0, b - amt)})`; } catch { return hex; }
+    }
+
+    function drawHealthBar(x, y, w, hp, max, color) {
+      const pct = Math.max(0, hp / max);
+      const h = 7;
+      ctx.fillStyle = 'rgba(0,0,0,0.8)'; ctx.fillRect(x - w / 2, y, w, h);
+      ctx.fillStyle = color; ctx.fillRect(x - w / 2 + 1, y + 1, (w - 2) * pct, h - 2);
+      // Shimmer
+      if (pct > 0.6) { ctx.fillStyle = 'rgba(255,255,255,0.12)'; ctx.fillRect(x - w / 2 + 1, y + 1, (w - 2) * pct * .4, 3); }
+    }
+
+    // ============================================================
+    // PROGRESSION
+    // ============================================================
+    function addXp(type, amt) {
+      const p = prog[type];
+      p.xp += amt;
+      if (p.xp >= p.maxXp) {
+        p.xp = 0; p.lvl++; p.maxXp = Math.floor(p.maxXp * 1.5);
+        showLvlUp(type);
+        showToast(`⬆ ${UNITS[type].emoji} ${type.toUpperCase()} leveled up to Lv.${p.lvl}!`);
+        analyticsData.unitUsage[type] = (analyticsData.unitUsage[type] || 0) + 1;
+      }
+      updateCardXP(type);
+    }
+
+    function showLvlUp(type) {
+      const card = document.getElementById('uc-' + type);
+      if (!card) return;
+      const el = document.createElement('div');
+      el.className = 'lvl-up';
+      el.textContent = 'LEVEL UP!';
+      el.style.left = (card.offsetLeft + card.offsetWidth / 2 - 50) + 'px';
+      el.style.top = (card.offsetTop - 55) + 'px';
+      document.body.appendChild(el);
+      setTimeout(() => el.remove(), 1000);
+    }
+
+    function updateCardXP(type) {
+      const p = prog[type];
+      const el = document.getElementById('xp-' + type);
+      if (el) el.style.width = ((p.xp / p.maxXp) * 100) + '%';
+      const bl = document.getElementById('lvl-' + type);
+      if (bl) bl.textContent = p.lvl;
+    }
+
+    // ============================================================
+    // UI
+    // ============================================================
+    function updateHUD() {
+      document.getElementById('g-gold').textContent = Math.floor(gold);
+      document.getElementById('g-mana').textContent = Math.floor(mana) + '/100';
+      document.getElementById('g-souls').textContent = souls;
+      document.getElementById('g-wave').textContent = wave;
+
+      Object.keys(UNITS).forEach(key => {
+        const card = document.getElementById('uc-' + key);
+        if (!card) return;
+        if (gold < UNITS[key].cost) card.classList.add('dis');
+        else card.classList.remove('dis');
+      });
+
+      // Spell button opacity
+      Object.entries(SPELLS).forEach(([type, sp]) => {
+        const btn = document.getElementById('sb-' + type);
+        if (!btn || btn.classList.contains('cd')) return;
+        btn.style.opacity = mana >= sp.mana ? '1' : '0.4';
+      });
+
+      // Rage indicator on minions (handled in render)
+      // Freeze active indicator
+      if (Date.now() < frozenUntil) {
+        document.getElementById('sb-freeze').style.opacity = '0.5';
+      }
+    }
+
+    function buildCardDeck() {
+      const row = document.getElementById('card-row');
+      if (!row) return;
+      row.innerHTML = '';
+      Object.entries(UNITS).forEach(([type, u]) => {
+        const el = document.createElement('div');
+        el.className = 'u-card';
+        el.id = 'uc-' + type;
+        el.onclick = () => selectUnit(type);
+        el.innerHTML = `
+      <div class="u-avatar" style="background:${u.color}22;border-color:${u.color}44">
+        <span style="font-size:1.4rem">${u.emoji}</span>
+        <div class="lvl-badge" id="lvl-${type}">1</div>
+      </div>
+      <div class="u-name">${type}</div>
+      <div class="u-cost"><div class="cost-dot"></div>${u.cost}</div>
+      <div class="u-trait">${u.trait}</div>
+      <div class="xp-bg"><div class="xp-fill" id="xp-${type}"></div></div>
+    `;
+        row.appendChild(el);
+      });
+    }
+
+    function showCombo(n) {
+      const container = document.getElementById('combo-container');
+      const el = document.createElement('div');
+      el.className = 'combo-display';
+      el.innerHTML = `${n}x COMBO<br><span style="font-size:1rem;color:#fff">+${n * 15} BONUS GOLD</span>`;
+      container.appendChild(el);
+      gold += n * 15; totalGoldEarned += n * 15;
+      setTimeout(() => el.remove(), 700);
+    }
+
+    function addKillFeed(msg) {
+      if (!settings.killfeed) return;
+      const feed = document.getElementById('kill-feed');
+      const el = document.createElement('div');
+      el.className = 'kill-entry';
+      el.textContent = msg;
+      feed.appendChild(el);
+      setTimeout(() => el.remove(), 3100);
+      while (feed.children.length > 5) feed.removeChild(feed.firstChild);
+    }
+
+    // ---- FX ----
+    function spawnBurst(x, y, n, color) {
+      for (let i = 0; i < n; i++) {
+        particles.push({ x, y, vx: (Math.random() - .5) * 9, vy: (Math.random() - .5) * 9 - 1, life: 1, size: Math.random() * 5 + 2, color });
+      }
+    }
+
+    function showFloatTxt(text, x, y, color, size = 16) {
+      const el = document.createElement('div');
+      el.className = 'float-txt';
+      el.textContent = text;
+      el.style.cssText = `left:${x}px;top:${y}px;color:${color};font-size:${size}px`;
+      document.body.appendChild(el);
+      setTimeout(() => el.remove(), 850);
+    }
+
+    function shakeBody() {
+      document.getElementById('game-wrap').classList.remove('shake');
+      void document.getElementById('game-wrap').offsetWidth;
+      document.getElementById('game-wrap').classList.add('shake');
+    }
+
+    // ============================================================
+    // INIT RUN
+    // ============================================================
+    // Apply saved toggle states
+    window.addEventListener('DOMContentLoaded', () => {
+      Object.entries(settings).forEach(([k, v]) => {
+        const el = document.getElementById('tog-' + k);
+        if (el) el.classList.toggle('on', v);
+      });
+    });
+  </script>
+</body>
+
+</html>
