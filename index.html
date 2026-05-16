@@ -1,2598 +1,1372 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Dungeon Overlord: Ultimate V2.0</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link
-    href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Cinzel:wght@400;700;900&family=Rajdhani:wght@300;400;600;700&display=swap"
-    rel="stylesheet">
-  <style>
-    :root {
-      --bg: #03030a;
-      --gold: #ffd700;
-      --gold2: #ffb300;
-      --red: #ff2222;
-      --red2: #c0392b;
-      --blue: #00d2ff;
-      --purple: #bd00ff;
-      --green: #00ff88;
-      --glass: rgba(10, 10, 25, 0.88);
-      --glass2: rgba(255, 255, 255, 0.05);
-      --border: rgba(255, 255, 255, 0.1);
-      --border-gold: rgba(255, 215, 0, 0.35);
-      --text: #fff;
-      --muted: #666;
-      --font-d: 'Cinzel Decorative', serif;
-      --font-t: 'Cinzel', serif;
-      --font-b: 'Rajdhani', sans-serif;
-    }
-
-    * {
-      box-sizing: border-box;
-      -webkit-tap-highlight-color: transparent;
-      user-select: none
-    }
-
-    html,
-    body {
-      margin: 0;
-      padding: 0;
-      width: 100%;
-      height: 100%;
-      background: var(--bg);
-      font-family: var(--font-b);
-      color: var(--text);
-      overflow: hidden
-    }
-
-    /* ---- GRAIN OVERLAY ---- */
-    body::before {
-      content: '';
-      position: fixed;
-      inset: 0;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
-      pointer-events: none;
-      z-index: 9999;
-      opacity: .5
-    }
-
-    /* ---- SCREENS ---- */
-    .screen {
-      position: fixed;
-      inset: 0;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      z-index: 200;
-      transition: opacity .4s, transform .4s
-    }
-
-    .screen.hide {
-      opacity: 0;
-      pointer-events: none;
-      transform: scale(1.04)
-    }
-
-    /* ============ SIGNUP ============ */
-    #signup-screen {
-      background: radial-gradient(ellipse at 50% 0%, #1a0533 0%, #03030a 70%)
-    }
-
-    .signup-card {
-      width: min(420px, 94vw);
-      background: rgba(15, 5, 30, 0.95);
-      border: 1px solid rgba(189, 0, 255, 0.3);
-      border-radius: 20px;
-      padding: 40px 36px;
-      box-shadow: 0 0 80px rgba(189, 0, 255, 0.15), 0 30px 60px rgba(0, 0, 0, 0.6);
-      backdrop-filter: blur(20px)
-    }
-
-    .signup-logo {
-      font-family: var(--font-d);
-      font-size: clamp(1.4rem, 4vw, 2rem);
-      color: var(--gold);
-      text-align: center;
-      margin-bottom: 6px;
-      letter-spacing: 2px;
-      text-shadow: 0 0 30px rgba(255, 215, 0, 0.4)
-    }
-
-    .signup-sub {
-      text-align: center;
-      color: var(--muted);
-      font-size: .85rem;
-      margin-bottom: 32px;
-      letter-spacing: 1px;
-      font-family: var(--font-b)
-    }
-
-    .form-group {
-      margin-bottom: 16px
-    }
-
-    .form-label {
-      display: block;
-      font-size: .8rem;
-      letter-spacing: 1.5px;
-      color: #aaa;
-      margin-bottom: 6px;
-      font-family: var(--font-b);
-      text-transform: uppercase
-    }
-
-    .form-input {
-      width: 100%;
-      background: rgba(255, 255, 255, 0.04);
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      border-radius: 10px;
-      padding: 12px 16px;
-      color: #fff;
-      font-family: var(--font-b);
-      font-size: 1rem;
-      outline: none;
-      transition: .2s
-    }
-
-    .form-input:focus {
-      border-color: rgba(189, 0, 255, 0.5);
-      background: rgba(189, 0, 255, 0.06);
-      box-shadow: 0 0 20px rgba(189, 0, 255, 0.1)
-    }
-
-    .form-error {
-      font-size: .75rem;
-      color: var(--red);
-      margin-top: 5px;
-      display: none
-    }
-
-    .btn-signup {
-      width: 100%;
-      background: linear-gradient(135deg, #7b00ff, #bd00ff);
-      border: none;
-      padding: 15px;
-      border-radius: 12px;
-      color: #fff;
-      font-family: var(--font-t);
-      font-weight: 700;
-      font-size: 1rem;
-      letter-spacing: 2px;
-      cursor: pointer;
-      margin-top: 8px;
-      transition: .2s;
-      text-transform: uppercase;
-      box-shadow: 0 8px 25px rgba(189, 0, 255, 0.35)
-    }
-
-    .btn-signup:active {
-      transform: scale(.97)
-    }
-
-    .btn-signup:hover {
-      box-shadow: 0 12px 35px rgba(189, 0, 255, 0.5)
-    }
-
-    .already-user {
-      text-align: center;
-      margin-top: 18px;
-      font-size: .82rem;
-      color: var(--muted)
-    }
-
-    .already-user span {
-      color: var(--purple);
-      cursor: pointer;
-      text-decoration: underline
-    }
-
-    .version-tag {
-      text-align: center;
-      margin-top: 20px;
-      font-size: .7rem;
-      color: #333;
-      letter-spacing: 2px
-    }
-
-    /* ============ HOME SCREEN ============ */
-    #home-screen {
-      background: radial-gradient(ellipse at 50% -20%, #1a0010 0%, #03030a 65%)
-    }
-
-    .home-bg-art {
-      position: absolute;
-      inset: 0;
-      overflow: hidden;
-      pointer-events: none
-    }
-
-    .home-bg-art::before {
-      content: '';
-      position: absolute;
-      width: 600px;
-      height: 600px;
-      border-radius: 50%;
-      background: radial-gradient(circle, rgba(255, 34, 34, 0.08), transparent 70%);
-      top: -200px;
-      left: 50%;
-      transform: translateX(-50%)
-    }
-
-    .home-nav {
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 18px 24px
-    }
-
-    .nav-profile {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      cursor: pointer
-    }
-
-    .nav-avatar {
-      width: 38px;
-      height: 38px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, var(--purple), var(--red));
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-family: var(--font-t);
-      font-weight: 700;
-      font-size: .9rem;
-      border: 2px solid rgba(255, 255, 255, 0.2)
-    }
-
-    .nav-username {
-      font-size: .9rem;
-      font-weight: 600;
-      color: #ddd
-    }
-
-    .nav-icons {
-      display: flex;
-      gap: 10px
-    }
-
-    .icon-btn {
-      width: 38px;
-      height: 38px;
-      background: rgba(255, 255, 255, 0.06);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      font-size: 1.1rem;
-      transition: .2s
-    }
-
-    .icon-btn:hover {
-      background: rgba(255, 255, 255, 0.1)
-    }
-
-    .home-title-wrap {
-      text-align: center;
-      margin-bottom: 40px
-    }
-
-    .home-eyebrow {
-      font-size: .75rem;
-      letter-spacing: 5px;
-      color: var(--red);
-      text-transform: uppercase;
-      margin-bottom: 10px;
-      font-family: var(--font-b)
-    }
-
-    .home-title {
-      font-family: var(--font-d);
-      font-size: clamp(2rem, 7vw, 4.5rem);
-      margin: 0;
-      background: linear-gradient(180deg, #fff 30%, #880000);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      line-height: 1.1;
-      filter: drop-shadow(0 0 30px rgba(255, 50, 50, 0.25))
-    }
-
-    .home-title span {
-      display: block;
-      font-size: .45em;
-      background: linear-gradient(90deg, var(--gold), var(--gold2));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      letter-spacing: 8px;
-      margin-top: 4px
-    }
-
-    .home-stats-row {
-      display: flex;
-      gap: 12px;
-      margin-bottom: 30px;
-      justify-content: center
-    }
-
-    .live-stat-pill {
-      background: rgba(255, 255, 255, 0.04);
-      border: 1px solid var(--border);
-      border-radius: 50px;
-      padding: 10px 20px;
-      text-align: center;
-      min-width: 110px
-    }
-
-    .lsp-val {
-      font-family: var(--font-t);
-      font-size: 1.3rem;
-      color: var(--gold);
-      display: block;
-      line-height: 1
-    }
-
-    .lsp-lbl {
-      font-size: .65rem;
-      color: var(--muted);
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
-      margin-top: 3px;
-      display: block
-    }
-
-    .btn-play {
-      background: linear-gradient(135deg, var(--red2), var(--red));
-      border: none;
-      padding: 20px 70px;
-      border-radius: 50px;
-      color: #fff;
-      font-family: var(--font-t);
-      font-weight: 900;
-      font-size: 1.4rem;
-      letter-spacing: 3px;
-      cursor: pointer;
-      text-transform: uppercase;
-      box-shadow: 0 10px 40px rgba(255, 30, 30, 0.45);
-      transition: .2s;
-      position: relative;
-      overflow: hidden
-    }
-
-    .btn-play::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(135deg, rgba(255, 255, 255, 0.15), transparent);
-      pointer-events: none
-    }
-
-    .btn-play:active {
-      transform: scale(.96)
-    }
-
-    .btn-play:hover {
-      box-shadow: 0 15px 50px rgba(255, 30, 30, 0.6)
-    }
-
-    .home-features {
-      display: flex;
-      gap: 10px;
-      margin-top: 22px;
-      flex-wrap: wrap;
-      justify-content: center;
-      max-width: 440px
-    }
-
-    .feat-chip {
-      background: rgba(255, 255, 255, 0.04);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 6px 12px;
-      font-size: .7rem;
-      color: #888;
-      letter-spacing: 1px
-    }
-
-    /* ============ SETTINGS ============ */
-    #settings-screen {
-      background: rgba(3, 3, 10, 0.97);
-      overflow-y: auto;
-      justify-content: flex-start;
-      padding-top: 0
-    }
-
-    .settings-wrap {
-      width: min(600px, 96vw);
-      margin: 0 auto;
-      padding: 20px 0 60px
-    }
-
-    .settings-header {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      padding: 22px 0 24px
-    }
-
-    .back-btn {
-      width: 40px;
-      height: 40px;
-      background: var(--glass2);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      font-size: 1.2rem;
-      flex-shrink: 0;
-      transition: .2s
-    }
-
-    .back-btn:hover {
-      background: rgba(255, 255, 255, 0.1)
-    }
-
-    .settings-title {
-      font-family: var(--font-t);
-      font-size: 1.6rem;
-      font-weight: 700
-    }
-
-    .settings-section {
-      margin-bottom: 28px
-    }
-
-    .section-label {
-      font-size: .7rem;
-      letter-spacing: 3px;
-      color: var(--muted);
-      text-transform: uppercase;
-      margin-bottom: 12px;
-      padding-bottom: 6px;
-      border-bottom: 1px solid var(--border)
-    }
-
-    .analytics-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-      margin-bottom: 14px
-    }
-
-    .anl-card {
-      background: var(--glass);
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 18px 16px
-    }
-
-    .anl-card.big {
-      grid-column: 1/-1
-    }
-
-    .anl-label {
-      font-size: .68rem;
-      color: var(--muted);
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      margin-bottom: 6px
-    }
-
-    .anl-value {
-      font-family: var(--font-t);
-      font-size: 2rem;
-      font-weight: 700;
-      color: var(--gold)
-    }
-
-    .anl-sub {
-      font-size: .75rem;
-      color: var(--green);
-      margin-top: 3px
-    }
-
-    .anl-bar-wrap {
-      margin-top: 10px
-    }
-
-    .anl-bar-bg {
-      height: 6px;
-      background: rgba(255, 255, 255, 0.07);
-      border-radius: 3px;
-      overflow: hidden;
-      margin-bottom: 6px
-    }
-
-    .anl-bar-fill {
-      height: 100%;
-      border-radius: 3px;
-      transition: width 1.2s cubic-bezier(.25, .46, .45, .94)
-    }
-
-    .mini-chart {
-      height: 60px;
-      position: relative;
-      margin-top: 12px;
-      display: flex;
-      align-items: flex-end;
-      gap: 4px
-    }
-
-    .chart-bar {
-      flex: 1;
-      border-radius: 3px 3px 0 0;
-      min-width: 8px;
-      transition: height .8s cubic-bezier(.25, .46, .45, .94)
-    }
-
-    .chart-days {
-      display: flex;
-      gap: 4px;
-      margin-top: 4px
-    }
-
-    .chart-day {
-      flex: 1;
-      text-align: center;
-      font-size: .55rem;
-      color: var(--muted)
-    }
-
-    .toggle-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 14px 16px;
-      background: var(--glass);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      margin-bottom: 8px
-    }
-
-    .toggle-label {
-      font-size: .95rem;
-      font-weight: 600
-    }
-
-    .toggle-sub {
-      font-size: .73rem;
-      color: var(--muted);
-      margin-top: 2px
-    }
-
-    .toggle {
-      width: 44px;
-      height: 24px;
-      background: #222;
-      border-radius: 12px;
-      position: relative;
-      cursor: pointer;
-      transition: .3s;
-      border: 1px solid var(--border)
-    }
-
-    .toggle.on {
-      background: var(--purple)
-    }
-
-    .toggle::after {
-      content: '';
-      position: absolute;
-      width: 18px;
-      height: 18px;
-      border-radius: 50%;
-      background: #fff;
-      top: 2px;
-      left: 3px;
-      transition: .3s
-    }
-
-    .toggle.on::after {
-      left: 23px
-    }
-
-    .credits-card {
-      background: var(--glass);
-      border: 1px solid var(--border-gold);
-      border-radius: 14px;
-      padding: 20px;
-      text-align: center
-    }
-
-    .credits-name {
-      font-family: var(--font-d);
-      font-size: 1.3rem;
-      color: var(--gold);
-      margin-bottom: 4px
-    }
-
-    .credits-role {
-      font-size: .8rem;
-      color: var(--muted);
-      letter-spacing: 2px
-    }
-
-    .credits-v {
-      font-size: .7rem;
-      color: var(--purple);
-      margin-top: 8px;
-      letter-spacing: 3px
-    }
-
-    /* ============ GAME HUD ============ */
-    #game-wrap {
-      position: fixed;
-      inset: 0;
-      display: flex;
-      flex-direction: column;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity .5s
-    }
-
-    #game-wrap.active {
-      opacity: 1;
-      pointer-events: auto
-    }
-
-    canvas {
-      display: block;
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%
-    }
-
-    /* TOP HUD */
-    .hud-top {
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      padding: 12px 14px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      background: linear-gradient(to bottom, rgba(0, 0, 0, .92) 0%, transparent 100%);
-      z-index: 10;
-      gap: 8px
-    }
-
-    .hud-resources {
-      display: flex;
-      gap: 6px
-    }
-
-    .res-pill {
-      display: flex;
-      align-items: center;
-      gap: 5px;
-      background: rgba(0, 0, 0, .65);
-      padding: 6px 10px;
-      border-radius: 14px;
-      border: 1px solid var(--border);
-      backdrop-filter: blur(6px)
-    }
-
-    .res-icon {
-      width: 12px;
-      height: 12px;
-      border-radius: 50%
-    }
-
-    .icon-g {
-      background: radial-gradient(#ffd700, #b8860b);
-      border: 1px solid rgba(255, 255, 255, .4)
-    }
-
-    .icon-m {
-      background: radial-gradient(#00d2ff, #004f6b);
-      border: 1px solid rgba(255, 255, 255, .4)
-    }
-
-    .icon-sh {
-      background: radial-gradient(#ff2222, #7b0000);
-      border: 1px solid rgba(255, 255, 255, .4)
-    }
-
-    .res-txt {
-      font-family: var(--font-t);
-      font-size: .8rem;
-      font-weight: 700;
-      white-space: nowrap
-    }
-
-    .wave-badge {
-      background: rgba(0, 0, 0, .7);
-      border: 1px solid rgba(255, 50, 50, .4);
-      border-radius: 14px;
-      padding: 6px 14px;
-      font-family: var(--font-t);
-      font-size: .85rem;
-      color: var(--red);
-      flex: 0 0 auto
-    }
-
-    .hud-spells {
-      display: flex;
-      gap: 6px
-    }
-
-    .spell-btn {
-      background: rgba(0, 0, 0, .6);
-      border: 2px solid;
-      padding: 6px 10px;
-      border-radius: 8px;
-      font-family: var(--font-t);
-      font-size: .65rem;
-      cursor: pointer;
-      transition: .2s;
-      text-transform: uppercase;
-      letter-spacing: .5px;
-      white-space: nowrap;
-      font-weight: 700
-    }
-
-    .spell-btn:active {
-      transform: scale(.94)
-    }
-
-    .sb-meteor {
-      border-color: var(--purple);
-      color: var(--purple)
-    }
-
-    .sb-freeze {
-      border-color: var(--blue);
-      color: var(--blue)
-    }
-
-    .sb-rage {
-      border-color: var(--red);
-      color: var(--red)
-    }
-
-    .spell-btn.active {
-      animation: pulseGlow 1s infinite;
-      box-shadow: 0 0 15px currentColor
-    }
-
-    .spell-btn.cd {
-      opacity: .4;
-      cursor: not-allowed;
-      filter: grayscale(.8)
-    }
-
-    @keyframes pulseGlow {
-
-      0%,
-      100% {
-        box-shadow: 0 0 5px currentColor
-      }
-
-      50% {
-        box-shadow: 0 0 20px currentColor
-      }
-    }
-
-    /* KILL FEED */
-    .kill-feed {
-      position: absolute;
-      top: 60px;
-      right: 12px;
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-      z-index: 10;
-      pointer-events: none
-    }
-
-    .kill-entry {
-      background: rgba(0, 0, 0, .75);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 4px 10px;
-      font-size: .7rem;
-      animation: slideFade 3s ease forwards
-    }
-
-    @keyframes slideFade {
-      0% {
-        opacity: 0;
-        transform: translateX(20px)
-      }
-
-      10% {
-        opacity: 1;
-        transform: none
-      }
-
-      80% {
-        opacity: 1
-      }
-
-      100% {
-        opacity: 0
-      }
-    }
-
-    /* BOTTOM */
-    .hud-bottom {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      background: linear-gradient(to top, rgba(0, 0, 0, .96), rgba(0, 0, 0, .7), transparent);
-      padding: 6px 10px 18px;
-      z-index: 10;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 6px
-    }
-
-    .hero-alert {
-      font-size: .72rem;
-      color: var(--red);
-      letter-spacing: 2px;
-      font-weight: 800;
-      text-shadow: 0 0 8px red;
-      background: rgba(0, 0, 0, .6);
-      padding: 3px 12px;
-      border-radius: 10px;
-      opacity: 0;
-      transition: opacity .3s;
-      text-transform: uppercase
-    }
-
-    .card-row {
-      display: flex;
-      gap: 7px;
-      width: 100%;
-      justify-content: center;
-      max-width: 720px;
-      overflow-x: auto;
-      padding: 2px 4px
-    }
-
-    .u-card {
-      min-width: 72px;
-      width: 16%;
-      max-width: 88px;
-      background: var(--glass);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 6px 4px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      cursor: pointer;
-      transition: all .18s;
-      position: relative;
-      flex-shrink: 0
-    }
-
-    .u-card:active {
-      transform: scale(.91)
-    }
-
-    .u-card.sel {
-      border-color: var(--gold);
-      background: rgba(255, 215, 0, .12);
-      box-shadow: 0 0 14px rgba(255, 215, 0, .2)
-    }
-
-    .u-card.dis {
-      opacity: .35;
-      filter: grayscale(1);
-      pointer-events: none
-    }
-
-    .u-card.frozen-card {
-      border-color: var(--blue) !important
-    }
-
-    .u-avatar {
-      width: 34px;
-      height: 34px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.35rem;
-      margin-bottom: 4px;
-      border: 2px solid rgba(255, 255, 255, .15);
-      position: relative;
-      box-shadow: 0 3px 8px rgba(0, 0, 0, .5)
-    }
-
-    .lvl-badge {
-      position: absolute;
-      top: -3px;
-      right: -3px;
-      background: var(--gold);
-      color: #000;
-      font-size: 7px;
-      font-weight: 800;
-      width: 14px;
-      height: 14px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border: 1px solid #fff
-    }
-
-    .u-name {
-      font-size: .58rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      color: #ccc;
-      letter-spacing: .5px
-    }
-
-    .u-cost {
-      font-size: .68rem;
-      color: var(--gold);
-      font-weight: 700;
-      display: flex;
-      align-items: center;
-      gap: 2px
-    }
-
-    .cost-dot {
-      width: 5px;
-      height: 5px;
-      background: var(--gold);
-      border-radius: 50%
-    }
-
-    .xp-bg {
-      width: 100%;
-      height: 3px;
-      background: rgba(255, 255, 255, .08);
-      border-radius: 2px;
-      margin-top: 3px;
-      overflow: hidden
-    }
-
-    .xp-fill {
-      height: 100%;
-      background: var(--blue);
-      width: 0;
-      transition: width .3s
-    }
-
-    .u-trait {
-      font-size: .52rem;
-      color: #555;
-      letter-spacing: .5px;
-      text-transform: uppercase;
-      margin-top: 1px
-    }
-
-    /* COMBO */
-    .combo-display {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      pointer-events: none;
-      z-index: 15;
-      font-family: var(--font-t);
-      font-size: 3rem;
-      font-weight: 900;
-      color: var(--gold);
-      text-shadow: 0 0 30px rgba(255, 215, 0, .6);
-      animation: comboPop .5s ease-out forwards;
-      text-align: center
-    }
-
-    @keyframes comboPop {
-      0% {
-        transform: translate(-50%, -50%) scale(.3);
-        opacity: 1
-      }
-
-      70% {
-        transform: translate(-50%, -50%) scale(1.1);
-        opacity: 1
-      }
-
-      100% {
-        transform: translate(-50%, -50%) scale(1) translateY(-40px);
-        opacity: 0
-      }
-    }
-
-    /* FX */
-    .float-txt {
-      position: absolute;
-      font-weight: 800;
-      font-family: var(--font-t);
-      pointer-events: none;
-      animation: floatUp .85s ease-out forwards;
-      z-index: 20;
-      text-shadow: 0 2px 4px #000
-    }
-
-    @keyframes floatUp {
-      0% {
-        transform: translateY(0) scale(.8);
-        opacity: 1
-      }
-
-      50% {
-        transform: translateY(-28px) scale(1.15);
-        opacity: 1
-      }
-
-      100% {
-        transform: translateY(-55px) scale(1);
-        opacity: 0
-      }
-    }
-
-    .lvl-up {
-      position: absolute;
-      font-family: var(--font-t);
-      font-size: 1.2rem;
-      font-weight: 700;
-      color: var(--gold);
-      text-shadow: 0 0 12px orange;
-      animation: popUp .9s ease-out forwards;
-      pointer-events: none;
-      z-index: 50;
-      white-space: nowrap
-    }
-
-    @keyframes popUp {
-      0% {
-        transform: scale(0);
-        opacity: 0
-      }
-
-      50% {
-        transform: scale(1.4);
-        opacity: 1
-      }
-
-      100% {
-        transform: scale(1) translateY(-60px);
-        opacity: 0
-      }
-    }
-
-    .shake {
-      animation: shk .45s cubic-bezier(.36, .07, .19, .97) both
-    }
-
-    @keyframes shk {
-
-      10%,
-      90% {
-        transform: translate3d(-2px, 0, 0)
-      }
-
-      20%,
-      80% {
-        transform: translate3d(4px, 0, 0)
-      }
-
-      30%,
-      50%,
-      70% {
-        transform: translate3d(-6px, 0, 0)
-      }
-
-      40%,
-      60% {
-        transform: translate3d(6px, 0, 0)
-      }
-    }
-
-    /* PAUSE */
-    #pause-overlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(0, 0, 0, .85);
-      z-index: 500;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 16px;
-      opacity: 0;
-      pointer-events: none;
-      transition: .3s;
-      backdrop-filter: blur(8px)
-    }
-
-    #pause-overlay.show {
-      opacity: 1;
-      pointer-events: auto
-    }
-
-    .pause-title {
-      font-family: var(--font-d);
-      font-size: 2.5rem;
-      color: #fff
-    }
-
-    .pause-btn {
-      background: rgba(255, 255, 255, .07);
-      border: 1px solid var(--border);
-      padding: 14px 50px;
-      border-radius: 14px;
-      color: #fff;
-      font-family: var(--font-t);
-      font-size: 1rem;
-      cursor: pointer;
-      width: 220px;
-      text-align: center;
-      transition: .2s;
-      letter-spacing: 2px
-    }
-
-    .pause-btn:hover {
-      background: rgba(255, 255, 255, .14)
-    }
-
-    /* GAME OVER */
-    #gameover-screen {
-      background: radial-gradient(ellipse at 50% 100%, rgba(180, 0, 0, .3), transparent 60%), #03030a
-    }
-
-    .go-title {
-      font-family: var(--font-d);
-      font-size: clamp(2.5rem, 8vw, 5rem);
-      background: linear-gradient(to bottom, #ff4444, #660000);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      margin: 0
-    }
-
-    .go-sub {
-      font-size: 1.05rem;
-      color: #777;
-      max-width: 380px;
-      text-align: center;
-      line-height: 1.7;
-      margin-bottom: 28px
-    }
-
-    .go-stats {
-      display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
-      gap: 10px;
-      margin-bottom: 32px;
-      width: min(400px, 90vw)
-    }
-
-    .go-stat {
-      background: var(--glass);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 14px;
-      text-align: center
-    }
-
-    .go-stat-v {
-      font-family: var(--font-t);
-      font-size: 1.6rem;
-      color: var(--gold)
-    }
-
-    .go-stat-l {
-      font-size: .65rem;
-      color: var(--muted);
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
-      margin-top: 3px
-    }
-
-    .btn-restart {
-      background: linear-gradient(135deg, #880000, #ff2222);
-      border: none;
-      padding: 18px 55px;
-      border-radius: 50px;
-      color: #fff;
-      font-family: var(--font-t);
-      font-weight: 800;
-      font-size: 1.2rem;
-      cursor: pointer;
-      box-shadow: 0 10px 30px rgba(255, 30, 30, .4);
-      letter-spacing: 2px;
-      transition: .2s;
-      text-transform: uppercase
-    }
-
-    .btn-restart:active {
-      transform: scale(.96)
-    }
-
-    .btn-home {
-      background: transparent;
-      border: 1px solid var(--border);
-      padding: 12px 35px;
-      border-radius: 50px;
-      color: #888;
-      font-family: var(--font-t);
-      font-size: .85rem;
-      cursor: pointer;
-      margin-top: 10px;
-      letter-spacing: 2px;
-      transition: .2s
-    }
-
-    .btn-home:hover {
-      border-color: #aaa;
-      color: #aaa
-    }
-
-    /* LOADING */
-    #loading-screen {
-      background: #03030a;
-      z-index: 300
-    }
-
-    .load-ring {
-      width: 60px;
-      height: 60px;
-      border: 4px solid rgba(255, 255, 255, .06);
-      border-top: 4px solid var(--red);
-      border-radius: 50%;
-      animation: spin 1s linear infinite;
-      margin-bottom: 20px
-    }
-
-    @keyframes spin {
-      to {
-        transform: rotate(360deg)
-      }
-    }
-
-    .load-bar-wrap {
-      width: 250px;
-      height: 4px;
-      background: rgba(255, 255, 255, .08);
-      border-radius: 2px;
-      overflow: hidden;
-      margin-top: 12px
-    }
-
-    .load-bar {
-      height: 100%;
-      background: linear-gradient(90deg, var(--red), var(--purple));
-      width: 0;
-      transition: width .3s;
-      border-radius: 2px
-    }
-
-    .load-tip {
-      font-size: .72rem;
-      color: var(--muted);
-      margin-top: 10px;
-      letter-spacing: 1px;
-      text-align: center;
-      max-width: 300px
-    }
-
-    /* TOAST */
-    .toast {
-      position: fixed;
-      top: 80px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: rgba(20, 20, 35, .95);
-      border: 1px solid var(--border-gold);
-      border-radius: 12px;
-      padding: 12px 24px;
-      font-family: var(--font-b);
-      font-size: .9rem;
-      z-index: 1000;
-      animation: toastIn .3s ease, toastOut .3s ease 2.7s forwards;
-      pointer-events: none;
-      backdrop-filter: blur(10px);
-      white-space: nowrap;
-      max-width: 90vw
-    }
-
-    @keyframes toastIn {
-      from {
-        opacity: 0;
-        transform: translate(-50%, -12px)
-      }
-
-      to {
-        opacity: 1;
-        transform: translate(-50%, 0)
-      }
-    }
-
-    @keyframes toastOut {
-      to {
-        opacity: 0;
-        transform: translate(-50%, -12px)
-      }
-    }
-
-    /* SCROLLBAR */
-    ::-webkit-scrollbar {
-      width: 4px
-    }
-
-    ::-webkit-scrollbar-track {
-      background: transparent
-    }
-
-    ::-webkit-scrollbar-thumb {
-      background: rgba(255, 255, 255, .15);
-      border-radius: 2px
-    }
-
-    /* RESPONSIVE */
-    @media(max-width:480px) {
-      .home-title {
-        font-size: 2rem
-      }
-
-      .home-stats-row {
-        gap: 8px
-      }
-
-      .live-stat-pill {
-        min-width: 80px;
-        padding: 8px 12px
-      }
-
-      .lsp-val {
-        font-size: 1.1rem
-      }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#040008">
+<title>Dungeon Overlord V2.5</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Cinzel:wght@400;600;700;900&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════ ROOT ═══════════════════ */
+:root{
+  --gold:#ffd700;--red:#e82020;--blue:#00c8ff;
+  --purple:#aa00ff;--green:#00e676;--orange:#ff8c00;
+  --bg:#040008;--glass:rgba(8,2,18,.93);
+  --brd:rgba(255,255,255,.08);--bgold:rgba(255,215,0,.15);
+  --fd:'Cinzel Decorative',serif;--ft:'Cinzel',serif;--fb:'Rajdhani',sans-serif;
+  --st:env(safe-area-inset-top,0px);--sb:env(safe-area-inset-bottom,0px);
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;touch-action:manipulation;user-select:none}
+html,body{margin:0;padding:0;width:100%;height:100%;background:var(--bg);font-family:var(--fb);color:#fff;overflow:hidden;overscroll-behavior:none}
+
+/* ═══════════════════ SCREENS ═══════════════════ */
+.scr{position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:100;transition:opacity .38s,transform .38s}
+.scr.off{opacity:0;pointer-events:none;transform:scale(1.04)}
+
+/* ═══════════════════ ① PRELOADER ═══════════════════ */
+#pre{z-index:999;background:#000;overflow:hidden}
+#pre .pbg{
+  position:absolute;inset:0;
+  background:linear-gradient(to bottom,rgba(0,0,0,.42) 0%,rgba(4,0,12,.8) 55%,#040008 100%),
+             url('https://images.unsplash.com/photo-1578662996442-48f60103fc96?q=80&w=1080&auto=format&fit=crop') center/cover no-repeat;
+  animation:bgB 7s ease-in-out infinite;
+}
+@keyframes bgB{0%,100%{filter:brightness(.85) saturate(1.1)}50%{filter:brightness(1.06) saturate(1.35)}}
+.emb{position:absolute;border-radius:50%;pointer-events:none;animation:rE linear infinite}
+@keyframes rE{0%{transform:translateY(110vh) translateX(0) scale(1);opacity:1}100%{transform:translateY(-30px) translateX(var(--d)) scale(.2);opacity:0}}
+#pre .pc{position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;padding:30px 24px;text-align:center}
+.psw{font-size:clamp(2.4rem,7vw,3.8rem);animation:swH 3s ease-in-out infinite;margin-bottom:16px;filter:drop-shadow(0 0 18px rgba(255,160,0,.5))}
+@keyframes swH{0%,100%{transform:rotate(-8deg) scale(1)}50%{transform:rotate(8deg) scale(1.08)}}
+.plo{font-family:var(--fd);font-size:clamp(1.4rem,5vw,2.6rem);color:var(--gold);letter-spacing:2px;text-shadow:0 0 40px rgba(255,180,0,.5);animation:loF 2.5s ease-in-out infinite alternate}
+@keyframes loF{from{text-shadow:0 0 20px rgba(255,180,0,.4)}to{text-shadow:0 0 60px rgba(255,180,0,.85),0 0 100px rgba(255,80,0,.4)}}
+.pve{font-family:var(--ft);font-size:.68rem;color:rgba(255,215,0,.35);letter-spacing:5px;margin:4px 0 28px}
+.ppc{font-family:var(--ft);font-size:1.1rem;color:var(--gold);margin-bottom:6px}
+.ptr{width:min(300px,78vw);height:5px;background:rgba(255,255,255,.06);border-radius:3px;overflow:hidden;border:1px solid rgba(255,215,0,.12)}
+.pfi{height:100%;width:0;background:linear-gradient(90deg,#880000,#ff4400,#ffd700);border-radius:3px;transition:width .22s ease;box-shadow:0 0 10px rgba(255,100,0,.5)}
+.pmg{font-size:.7rem;color:rgba(255,255,255,.32);letter-spacing:1.5px;margin-top:8px;min-height:1.2em}
+.pti{margin-top:20px;width:min(280px,80vw);background:rgba(255,215,0,.05);border:1px solid rgba(255,215,0,.1);border-radius:10px;padding:10px 14px;font-size:.74rem;color:rgba(255,215,0,.55);line-height:1.55;text-align:center}
+.pde{position:absolute;bottom:calc(var(--sb)+14px);font-size:.58rem;color:rgba(255,255,255,.1);letter-spacing:2px;font-family:var(--ft)}
+
+/* ═══════════════════ ② AUTH ═══════════════════ */
+#auth{background:radial-gradient(ellipse at 50% -10%,#1a0025 0%,#040008 65%)}
+.acard{width:min(420px,95vw);background:rgba(10,2,22,.94);border:1px solid rgba(150,0,255,.18);border-radius:20px;padding:clamp(20px,5vw,36px) clamp(16px,5vw,32px);box-shadow:0 0 70px rgba(150,0,255,.08),0 30px 60px rgba(0,0,0,.7);backdrop-filter:blur(18px);max-height:92vh;overflow-y:auto}
+.acard::-webkit-scrollbar{display:none}
+.alo{font-family:var(--fd);font-size:clamp(.95rem,3.5vw,1.45rem);color:var(--gold);text-align:center;letter-spacing:2px;margin-bottom:3px}
+.asu{text-align:center;color:rgba(255,255,255,.28);font-size:.73rem;margin-bottom:20px;letter-spacing:1px}
+.atbs{display:flex;border-radius:10px;overflow:hidden;border:1px solid var(--brd);margin-bottom:20px}
+.atb{flex:1;padding:12px;text-align:center;font-family:var(--ft);font-size:.73rem;letter-spacing:1px;cursor:pointer;background:transparent;border:none;color:#555;transition:.2s;min-height:44px}
+.atb.on{background:rgba(150,0,255,.18);color:#fff}
+.fg{margin-bottom:12px}
+.fl{display:block;font-size:.66rem;letter-spacing:1.5px;color:#666;margin-bottom:5px;text-transform:uppercase}
+.fi{width:100%;background:rgba(255,255,255,.04);border:1.5px solid rgba(255,255,255,.09);border-radius:11px;padding:clamp(11px,3vw,14px) 14px;color:#fff;font-family:var(--fb);font-size:1rem;outline:none;transition:.2s;-webkit-appearance:none}
+.fi:focus{border-color:rgba(150,0,255,.45);background:rgba(150,0,255,.05)}
+.fi::placeholder{color:rgba(255,255,255,.18)}
+.ferr{font-size:.68rem;color:#ff6060;margin-top:4px;display:none;padding-left:2px}
+.abtn{width:100%;background:linear-gradient(135deg,#5500bb,#aa00ff);border:none;padding:clamp(12px,3.5vw,15px);border-radius:13px;color:#fff;font-family:var(--ft);font-weight:700;font-size:.88rem;letter-spacing:2px;cursor:pointer;margin-top:5px;transition:transform .14s,box-shadow .18s;box-shadow:0 8px 22px rgba(150,0,255,.28);text-transform:uppercase;min-height:50px}
+.abtn:active{transform:scale(.97)}
+.esnd{display:none;align-items:center;justify-content:center;gap:8px;padding:9px;font-size:.76rem;color:#00e676;margin-top:9px;background:rgba(0,200,100,.05);border:1px solid rgba(0,200,100,.12);border-radius:9px}
+.espi{width:15px;height:15px;border:2px solid rgba(0,200,100,.2);border-top:2px solid #00e676;border-radius:50%;animation:sp .8s linear infinite;flex-shrink:0}
+@keyframes sp{to{transform:rotate(360deg)}}
+.adev{text-align:center;margin-top:14px;font-size:.6rem;color:#1e1e1e;letter-spacing:2px}
+
+/* email modal */
+.emb-bg{position:fixed;inset:0;background:rgba(0,0,0,.82);backdrop-filter:blur(8px);z-index:800;display:flex;align-items:center;justify-content:center;padding:16px;opacity:0;pointer-events:none;transition:.3s}
+.emb-bg.on{opacity:1;pointer-events:auto}
+.emb-m{width:min(450px,96vw);background:rgba(8,2,18,.98);border:1px solid rgba(0,200,100,.22);border-radius:18px;padding:24px 20px;max-height:88vh;overflow-y:auto}
+.emb-m::-webkit-scrollbar{display:none}
+.em-ic{font-size:2rem;text-align:center;display:block;margin-bottom:9px}
+.em-ti{font-family:var(--ft);font-size:.95rem;color:#00e676;text-align:center;margin-bottom:3px;letter-spacing:1px}
+.em-to{font-size:.7rem;color:#444;text-align:center;margin-bottom:14px}
+.em-bd{background:rgba(0,180,80,.04);border:1px solid rgba(0,180,80,.1);border-radius:9px;padding:14px;font-size:.76rem;line-height:1.72;color:#aaa;white-space:pre-wrap;word-break:break-word}
+.em-nt{font-size:.64rem;color:#2a2a2a;text-align:center;margin-top:10px;line-height:1.5;padding:0 4px}
+.em-cl{width:100%;margin-top:11px;background:rgba(0,200,100,.09);border:1px solid rgba(0,200,100,.18);border-radius:10px;padding:12px;color:#00e676;font-family:var(--ft);font-size:.8rem;cursor:pointer;letter-spacing:1px;transition:.14s;min-height:48px}
+.em-cl:active{background:rgba(0,200,100,.18)}
+.em-gen{display:flex;align-items:center;gap:10px;color:#555;font-size:.78rem;padding:16px 0}
+
+/* ═══════════════════ ③ HOME ═══════════════════ */
+#home{background:radial-gradient(ellipse at 50% -5%,rgba(170,0,0,.18) 0%,transparent 55%),radial-gradient(ellipse at 90% 90%,rgba(80,0,100,.12) 0%,transparent 45%),var(--bg);justify-content:flex-start;overflow-y:auto;-webkit-overflow-scrolling:touch}
+.hnav{width:100%;display:flex;justify-content:space-between;align-items:center;padding:calc(var(--st)+12px) 14px 12px;background:linear-gradient(to bottom,rgba(0,0,0,.85),transparent);position:sticky;top:0;z-index:10;backdrop-filter:blur(10px)}
+.hlft{display:flex;align-items:center;gap:9px;cursor:pointer;min-height:48px;padding:4px 0}
+.hav{width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,var(--purple),var(--red));display:flex;align-items:center;justify-content:center;font-family:var(--ft);font-size:.95rem;border:2px solid rgba(255,255,255,.14);flex-shrink:0}
+.hnm{font-size:.9rem;font-weight:600;color:#ddd;max-width:130px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.hrgt{display:flex;gap:7px}
+/* currency pill in nav */
+.dc-pill{display:flex;align-items:center;gap:5px;background:rgba(0,0,0,.6);border:1px solid rgba(255,215,0,.25);border-radius:20px;padding:5px 11px;font-family:var(--ft);font-size:.8rem;color:var(--gold)}
+.dc-ico{font-size:.9rem}
+.nico{width:44px;height:44px;background:rgba(255,255,255,.05);border:1px solid var(--brd);border-radius:11px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:1.2rem;transition:.14s}
+.nico:active{background:rgba(255,255,255,.12);transform:scale(.93)}
+
+.hbdy{width:100%;max-width:520px;margin:0 auto;padding:14px 15px 28px;display:flex;flex-direction:column;align-items:center;gap:18px}
+.hban{text-align:center;width:100%}
+.hban-ey{font-size:.68rem;letter-spacing:5px;color:rgba(255,60,60,.65);text-transform:uppercase;margin-bottom:7px}
+.hban-t{font-family:var(--fd);font-size:clamp(1.9rem,8vw,4rem);margin:0;line-height:1.05;background:linear-gradient(170deg,#fff 20%,#660000 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;filter:drop-shadow(0 0 16px rgba(255,40,40,.18))}
+.hban-v{font-size:.62rem;letter-spacing:4px;color:rgba(255,215,0,.3);margin-top:5px;font-family:var(--ft)}
+
+/* wallet card */
+.wallet-card{width:100%;background:linear-gradient(135deg,rgba(255,215,0,.08),rgba(255,150,0,.04));border:1px solid rgba(255,215,0,.2);border-radius:16px;padding:16px 18px;display:flex;align-items:center;justify-content:space-between}
+.wc-left{display:flex;flex-direction:column}
+.wc-lbl{font-size:.62rem;letter-spacing:2px;color:rgba(255,215,0,.45);text-transform:uppercase;margin-bottom:4px}
+.wc-val{font-family:var(--ft);font-size:2rem;color:var(--gold);line-height:1;display:flex;align-items:center;gap:8px}
+.wc-ico{font-size:1.6rem}
+.wc-note{font-size:.65rem;color:#444;margin-top:4px}
+
+.hstats-row{display:flex;gap:8px;width:100%}
+.hsc{flex:1;background:rgba(255,255,255,.03);border:1px solid var(--brd);border-radius:12px;padding:12px 8px;text-align:center}
+.hscv{font-family:var(--ft);font-size:1.35rem;color:var(--gold);display:block;line-height:1}
+.hscl{font-size:.56rem;color:rgba(255,255,255,.25);letter-spacing:1.5px;text-transform:uppercase;margin-top:3px;display:block}
+
+.hplay{width:100%}
+.btnp{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;max-width:340px;margin:0 auto;background:linear-gradient(135deg,#7a0000,#e82020,#ff5533);border:none;padding:clamp(17px,4vw,21px);border-radius:60px;color:#fff;font-family:var(--ft);font-weight:900;font-size:clamp(1.05rem,4.5vw,1.45rem);letter-spacing:3px;cursor:pointer;box-shadow:0 14px 36px rgba(232,30,30,.5);transition:transform .14s,box-shadow .18s;text-transform:uppercase;min-height:60px;position:relative;overflow:hidden}
+.btnp::before{content:'';position:absolute;top:0;left:0;right:0;height:50%;background:rgba(255,255,255,.1);border-radius:60px 60px 0 0;pointer-events:none}
+.btnp:active{transform:scale(.96)}
+
+.hfrow{display:flex;flex-wrap:wrap;gap:7px;justify-content:center;width:100%}
+.hfeat{background:rgba(255,255,255,.04);border:1px solid var(--brd);border-radius:8px;padding:6px 11px;font-size:.68rem;color:#666;letter-spacing:.5px}
+
+.hmyst{width:100%}
+.shd{font-size:.6rem;letter-spacing:3px;color:rgba(255,255,255,.18);text-transform:uppercase;margin-bottom:9px;font-family:var(--ft)}
+.mystg{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+.msc{background:rgba(255,255,255,.03);border:1px solid var(--brd);border-radius:11px;padding:12px}
+.mscv{font-family:var(--ft);font-size:1.5rem;color:var(--gold);line-height:1}
+.mscl{font-size:.6rem;color:#444;letter-spacing:1px;text-transform:uppercase;margin-top:2px}
+
+/* ═══════════════════ ④ SHOP ═══════════════════ */
+#shop{background:radial-gradient(ellipse at 50% -10%,rgba(255,180,0,.08) 0%,transparent 50%),#04020a;justify-content:flex-start;overflow-y:auto;-webkit-overflow-scrolling:touch}
+.shop-inner{width:min(600px,100%);margin:0 auto;padding:calc(var(--st)+8px) 14px calc(var(--sb)+40px)}
+.shop-hdr{display:flex;align-items:center;justify-content:space-between;padding:14px 0 18px;position:sticky;top:0;background:#04020a;z-index:5}
+.shop-hdr-left{display:flex;align-items:center;gap:12px}
+.bck{width:46px;height:46px;background:rgba(255,255,255,.05);border:1px solid var(--brd);border-radius:12px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:1.3rem;flex-shrink:0;transition:.14s;min-height:46px}
+.bck:active{background:rgba(255,255,255,.12);transform:scale(.93)}
+.shop-title{font-family:var(--ft);font-size:1.4rem}
+.shop-bal{display:flex;align-items:center;gap:6px;background:rgba(255,215,0,.07);border:1px solid rgba(255,215,0,.18);border-radius:12px;padding:8px 14px;font-family:var(--ft);font-size:.92rem;color:var(--gold)}
+
+/* Shop tabs */
+.stabs{display:flex;gap:0;border-radius:12px;overflow:hidden;border:1px solid var(--brd);margin-bottom:20px}
+.stab{flex:1;padding:12px;text-align:center;font-family:var(--ft);font-size:.7rem;letter-spacing:1px;cursor:pointer;background:transparent;border:none;color:#444;transition:.2s;min-height:46px}
+.stab.on{background:rgba(255,215,0,.1);color:var(--gold)}
+
+/* Shop section */
+.ssec-t{font-size:.62rem;letter-spacing:3px;color:#333;text-transform:uppercase;margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid rgba(255,255,255,.04);font-family:var(--ft)}
+
+/* UNIT UPGRADE CARDS */
+.uup-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px}
+.uup-card{background:rgba(255,255,255,.03);border:1.5px solid rgba(255,255,255,.07);border-radius:16px;padding:16px 12px;display:flex;flex-direction:column;align-items:center;gap:6px;position:relative;overflow:hidden;transition:.18s}
+.uup-card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.02),transparent);pointer-events:none}
+.uup-card.maxed{border-color:rgba(255,215,0,.3);background:rgba(255,215,0,.04)}
+.uup-emoji{font-size:2rem;margin-bottom:2px}
+.uup-name{font-family:var(--ft);font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:1px}
+.uup-lvl{font-size:.62rem;color:#555;letter-spacing:1px}
+.uup-stats{width:100%;background:rgba(255,255,255,.04);border-radius:8px;padding:8px 10px;font-size:.7rem;color:#666;line-height:1.6}
+.uup-stats span{color:#aaa;font-weight:600}
+.uup-upgrow{width:100%;display:flex;flex-direction:column;gap:6px;margin-top:4px}
+.uup-upbtn{
+  width:100%;padding:9px 8px;border-radius:9px;border:none;cursor:pointer;
+  font-family:var(--ft);font-size:.68rem;letter-spacing:1px;font-weight:700;
+  transition:.14s;min-height:40px;display:flex;align-items:center;justify-content:center;gap:5px;
+}
+.uup-upbtn:active{transform:scale(.95)}
+.uup-btn-hp{background:rgba(0,200,100,.1);border:1px solid rgba(0,200,100,.2);color:#00e676}
+.uup-btn-hp:active{background:rgba(0,200,100,.2)}
+.uup-btn-dmg{background:rgba(232,32,32,.1);border:1px solid rgba(232,32,32,.2);color:#ff6060}
+.uup-btn-dmg:active{background:rgba(232,32,32,.2)}
+.uup-btn-spd{background:rgba(0,200,255,.1);border:1px solid rgba(0,200,255,.2);color:#00c8ff}
+.uup-btn-spd:active{background:rgba(0,200,255,.2)}
+.uup-btn-dis{opacity:.35;pointer-events:none;filter:grayscale(.7)}
+.uup-maxbadge{background:linear-gradient(135deg,var(--gold),#b8860b);color:#000;font-family:var(--ft);font-size:.7rem;font-weight:900;padding:8px;border-radius:9px;text-align:center;width:100%;letter-spacing:1px}
+
+/* SPELL SHOP CARDS */
+.spl-grid{display:grid;grid-template-columns:1fr;gap:10px;margin-bottom:20px}
+.spl-card{background:rgba(255,255,255,.03);border:1.5px solid rgba(255,255,255,.07);border-radius:14px;padding:14px 16px;display:flex;align-items:center;gap:14px}
+.spl-ico{font-size:1.8rem;flex-shrink:0}
+.spl-info{flex:1}
+.spl-name{font-family:var(--ft);font-size:.85rem;font-weight:700;margin-bottom:3px}
+.spl-desc{font-size:.7rem;color:#555;line-height:1.4;margin-bottom:6px}
+.spl-stat{font-size:.7rem;color:#aaa}
+.spl-stat span{color:var(--gold)}
+.spl-buy{padding:9px 16px;border-radius:9px;border:1px solid rgba(255,215,0,.25);background:rgba(255,215,0,.08);color:var(--gold);font-family:var(--ft);font-size:.7rem;font-weight:700;cursor:pointer;transition:.14s;white-space:nowrap;min-height:40px;min-width:80px}
+.spl-buy:active{background:rgba(255,215,0,.18)}
+.spl-buy.owned{border-color:rgba(0,200,100,.25);background:rgba(0,200,100,.08);color:#00e676;cursor:default}
+
+/* BOOST CARDS */
+.boost-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px}
+.bst-card{background:rgba(255,255,255,.03);border:1.5px solid rgba(255,255,255,.07);border-radius:14px;padding:14px 12px;display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center}
+.bst-ico{font-size:1.8rem}
+.bst-name{font-family:var(--ft);font-size:.72rem;font-weight:700}
+.bst-desc{font-size:.65rem;color:#555;line-height:1.4}
+.bst-buy{width:100%;padding:9px;border-radius:9px;border:1px solid rgba(255,150,0,.25);background:rgba(255,150,0,.08);color:var(--orange);font-family:var(--ft);font-size:.7rem;font-weight:700;cursor:pointer;transition:.14s;min-height:40px}
+.bst-buy:active{background:rgba(255,150,0,.2)}
+.bst-buy.owned{border-color:rgba(0,200,100,.25);background:rgba(0,200,100,.08);color:#00e676;cursor:default}
+
+/* ═══════════════════ ⑤ SETTINGS ═══════════════════ */
+#sett{background:#050010;justify-content:flex-start;overflow-y:auto;-webkit-overflow-scrolling:touch}
+.seti{width:min(580px,100%);margin:0 auto;padding:calc(var(--st)+8px) 14px calc(var(--sb)+40px)}
+.seth{display:flex;align-items:center;gap:12px;padding:14px 0 20px;position:sticky;top:0;background:#050010;z-index:5}
+.stit{font-family:var(--ft);font-size:1.4rem}
+.ssec2{margin-bottom:22px}
+.slbl2{font-size:.6rem;letter-spacing:3px;color:#333;text-transform:uppercase;margin-bottom:9px;padding-bottom:6px;border-bottom:1px solid rgba(255,255,255,.04);font-family:var(--ft)}
+.anlgr{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px}
+.ac{background:rgba(255,255,255,.03);border:1px solid var(--brd);border-radius:12px;padding:13px 12px}
+.ac.s2{grid-column:1/-1}
+.alb{font-size:.57rem;color:#3a3a3a;letter-spacing:2px;text-transform:uppercase;margin-bottom:5px}
+.avl{font-family:var(--ft);font-size:1.8rem;color:var(--gold);line-height:1}
+.asb{font-size:.67rem;color:#444;margin-top:3px}
+.asb.g{color:var(--green)}
+.real-note{background:rgba(255,215,0,.04);border:1px solid rgba(255,215,0,.09);border-radius:9px;padding:9px 12px;font-size:.68rem;color:rgba(255,215,0,.38);line-height:1.5;margin-bottom:9px;text-align:center}
+.mchr{height:52px;display:flex;align-items:flex-end;gap:3px;margin-top:9px}
+.cbar{flex:1;border-radius:2px 2px 0 0;transition:height 1s cubic-bezier(.25,.46,.45,.94)}
+.cday{flex:1;text-align:center;font-size:.48rem;color:#333}
+.ubrow{margin-bottom:8px}
+.ubtop{display:flex;justify-content:space-between;font-size:.67rem;margin-bottom:3px}
+.ubbg{height:5px;background:rgba(255,255,255,.05);border-radius:3px;overflow:hidden}
+.ubfi{height:100%;border-radius:3px;transition:width 1.1s cubic-bezier(.25,.46,.45,.94)}
+.togrow{display:flex;justify-content:space-between;align-items:center;padding:clamp(12px,3vw,15px) 14px;background:rgba(255,255,255,.03);border:1px solid var(--brd);border-radius:12px;margin-bottom:7px;min-height:60px}
+.togl{font-size:.9rem;font-weight:600;margin-bottom:2px}
+.togs{font-size:.67rem;color:#444}
+.tgl{width:48px;height:26px;background:#181818;border-radius:13px;position:relative;cursor:pointer;transition:.25s;border:1px solid rgba(255,255,255,.08);flex-shrink:0}
+.tgl.on{background:var(--purple)}
+.tgl::after{content:'';position:absolute;width:20px;height:20px;border-radius:50%;background:#fff;top:2px;left:2px;transition:.25s;box-shadow:0 1px 4px rgba(0,0,0,.4)}
+.tgl.on::after{left:24px}
+.crdcard{background:rgba(255,255,255,.03);border:1px solid rgba(255,215,0,.13);border-radius:13px;padding:20px;text-align:center}
+.crn{font-family:var(--fd);font-size:1.1rem;color:var(--gold);margin-bottom:3px}
+.crr{font-size:.7rem;color:#444;letter-spacing:2px}
+.crv{font-size:.63rem;color:var(--purple);margin-top:7px;letter-spacing:2px}
+
+/* ═══════════════════ ⑥ GAME HUD ═══════════════════ */
+#gw{position:fixed;inset:0;opacity:0;pointer-events:none;transition:opacity .4s}
+#gw.on{opacity:1;pointer-events:auto}
+#gc{display:block;width:100%;height:100%;touch-action:none}
+.hudtop{position:absolute;top:0;left:0;right:0;padding:calc(var(--st)+9px) 10px 8px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:5px;background:linear-gradient(to bottom,rgba(0,0,0,.93),transparent);z-index:10;pointer-events:none}
+.hres{display:flex;gap:5px;flex-wrap:wrap}
+.rp{display:flex;align-items:center;gap:4px;background:rgba(0,0,0,.65);padding:5px 9px;border-radius:11px;border:1px solid var(--brd);backdrop-filter:blur(4px)}
+.rdo{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.rdg{background:radial-gradient(#ffd700,#b8860b)}
+.rdm{background:radial-gradient(#00c8ff,#005568)}
+.rds{background:radial-gradient(#cc44ff,#550099)}
+.rtx{font-family:var(--ft);font-size:.75rem;font-weight:700;white-space:nowrap}
+.wbg{background:rgba(0,0,0,.7);border:1px solid rgba(255,50,50,.32);border-radius:11px;padding:5px 12px;font-family:var(--ft);font-size:.78rem;color:#ff5555}
+.hspells{display:flex;gap:5px;pointer-events:auto;flex-wrap:wrap;justify-content:flex-end}
+.spb{background:rgba(0,0,0,.65);border:2px solid;padding:6px 9px;border-radius:9px;font-family:var(--ft);font-size:.58rem;cursor:pointer;transition:.14s;text-transform:uppercase;letter-spacing:.4px;font-weight:700;white-space:nowrap;min-height:40px;min-width:68px;display:flex;align-items:center;justify-content:center;gap:3px;pointer-events:auto}
+.spb:active{transform:scale(.93)}
+.spm{border-color:var(--purple);color:var(--purple)}
+.spf{border-color:var(--blue);color:var(--blue)}
+.spr{border-color:var(--red);color:var(--red)}
+.spb.asp{animation:spgl .8s infinite alternate;box-shadow:0 0 10px currentColor}
+@keyframes spgl{from{box-shadow:0 0 4px currentColor}to{box-shadow:0 0 18px currentColor}}
+.spb.cd{opacity:.35;filter:grayscale(.8);cursor:not-allowed}
+.pico{background:rgba(0,0,0,.65);border:1px solid var(--brd);width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:1rem;pointer-events:auto}
+.pico:active{background:rgba(255,255,255,.1)}
+.kfw{position:absolute;top:66px;right:9px;display:flex;flex-direction:column;gap:3px;z-index:10;pointer-events:none;max-width:185px}
+.kfe{background:rgba(0,0,0,.75);border:1px solid var(--brd);border-radius:7px;padding:4px 9px;font-size:.62rem;animation:kfA 3s ease forwards;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+@keyframes kfA{0%{opacity:0;transform:translateX(16px)}10%{opacity:1;transform:none}80%{opacity:1}100%{opacity:0}}
+.hwrn{position:absolute;top:clamp(55px,11vw,72px);left:50%;transform:translateX(-50%);z-index:10;pointer-events:none;font-size:.66rem;color:var(--red);letter-spacing:2px;font-weight:800;text-shadow:0 0 8px red;background:rgba(0,0,0,.72);padding:4px 12px;border-radius:10px;opacity:0;transition:opacity .3s;text-transform:uppercase;white-space:nowrap}
+.wann{position:absolute;top:38%;left:50%;transform:translate(-50%,-50%);z-index:20;pointer-events:none;text-align:center;font-family:var(--ft);animation:wanA 2.2s ease-out forwards}
+@keyframes wanA{0%{opacity:0;transform:translate(-50%,-50%) scale(.5)}18%{opacity:1;transform:translate(-50%,-50%) scale(1.04)}65%{opacity:1;transform:translate(-50%,-50%) scale(1)}100%{opacity:0;transform:translate(-50%,-50%) translateY(-22px)}}
+.hudbot{position:absolute;bottom:0;left:0;right:0;background:linear-gradient(to top,rgba(0,0,0,.97),rgba(0,0,0,.68),transparent);padding:7px 9px calc(var(--sb)+14px);z-index:10;display:flex;flex-direction:column;align-items:center;gap:5px}
+.crow{display:flex;gap:6px;width:100%;justify-content:center;max-width:720px;overflow-x:auto;padding:2px 4px;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+.crow::-webkit-scrollbar{display:none}
+.uc{min-width:68px;flex:1;max-width:86px;background:rgba(8,2,18,.92);border:1.5px solid rgba(255,255,255,.08);border-radius:12px;padding:7px 4px 5px;display:flex;flex-direction:column;align-items:center;cursor:pointer;transition:all .14s;position:relative;flex-shrink:0;min-height:96px}
+.uc:active{transform:scale(.89);background:rgba(255,215,0,.06)}
+.uc.sel{border-color:var(--gold);background:rgba(255,215,0,.09);box-shadow:0 0 12px rgba(255,215,0,.16)}
+.uc.dis{opacity:.3;filter:grayscale(1);pointer-events:none}
+.ucav{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.35rem;margin-bottom:4px;border:2px solid rgba(255,255,255,.1);position:relative}
+.ulvl{position:absolute;top:-3px;right:-3px;background:var(--gold);color:#000;font-size:7px;font-weight:900;width:14px;height:14px;border-radius:50%;display:flex;align-items:center;justify-content:center;border:1px solid #fff}
+.ucn{font-size:.55rem;font-weight:700;text-transform:uppercase;color:#bbb;letter-spacing:.4px}
+.ucc{font-size:.64rem;color:var(--gold);font-weight:700;display:flex;align-items:center;gap:2px}
+.ucd{width:5px;height:5px;background:var(--gold);border-radius:50%}
+.uct{font-size:.47rem;color:#3a3a3a;text-transform:uppercase;letter-spacing:.3px;margin-top:1px}
+.xpbg{width:100%;height:3px;background:rgba(255,255,255,.06);border-radius:2px;margin-top:3px;overflow:hidden}
+.xpf{height:100%;background:var(--blue);width:0;transition:width .28s}
+/* boost badge on card */
+.uc-boost{position:absolute;top:-4px;left:-4px;background:var(--orange);color:#000;font-size:7px;font-weight:900;padding:2px 4px;border-radius:5px;border:1px solid #fff}
+
+/* ═══════════════════ ⑦ POST-MATCH REWARD ═══════════════════ */
+#reward-screen{
+  background:radial-gradient(ellipse at 50% 0%,rgba(255,180,0,.12) 0%,transparent 55%),#030010;
+  padding:24px 18px;overflow-y:auto;-webkit-overflow-scrolling:touch;
+  z-index:150;
+}
+.rw-title{font-family:var(--fd);font-size:clamp(1.6rem,6vw,2.8rem);color:var(--gold);text-align:center;margin-bottom:4px;text-shadow:0 0 30px rgba(255,215,0,.3)}
+.rw-sub{font-size:.8rem;color:#555;text-align:center;margin-bottom:20px;letter-spacing:1px}
+/* formula breakdown */
+.rw-formula{width:min(380px,90vw);background:rgba(255,215,0,.04);border:1px solid rgba(255,215,0,.12);border-radius:14px;padding:16px 18px;margin-bottom:18px;text-align:center}
+.rw-frow{display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;margin-bottom:8px;font-size:.82rem;color:#666}
+.rw-fval{font-family:var(--ft);font-size:1.1rem;color:#fff}
+.rw-fop{color:#444;font-size:1rem}
+.rw-feq{font-family:var(--ft);font-size:1.3rem;color:var(--gold)}
+/* reward coin animation */
+.rw-earned{text-align:center;margin-bottom:20px}
+.rw-coin-wrap{display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:6px}
+.rw-coin-ico{font-size:2.2rem;animation:coinSpin 1.5s ease-out}
+@keyframes coinSpin{0%{transform:scale(0) rotate(-180deg);opacity:0}60%{transform:scale(1.2) rotate(10deg);opacity:1}100%{transform:scale(1) rotate(0);opacity:1}}
+.rw-coin-amt{font-family:var(--fd);font-size:clamp(2rem,7vw,3.2rem);color:var(--gold);text-shadow:0 0 20px rgba(255,215,0,.4);animation:cntUp .8s ease-out}
+@keyframes cntUp{from{transform:scale(.5);opacity:0}to{transform:scale(1);opacity:1}}
+.rw-coin-lbl{font-size:.7rem;color:rgba(255,215,0,.4);letter-spacing:2px;text-transform:uppercase;font-family:var(--ft)}
+/* stat tiles */
+.rw-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;width:min(400px,90vw);margin-bottom:22px}
+.rw-st{background:rgba(255,255,255,.03);border:1px solid var(--brd);border-radius:11px;padding:12px 6px;text-align:center}
+.rw-stv{font-family:var(--ft);font-size:1.4rem;color:var(--gold)}
+.rw-stl{font-size:.57rem;color:#3a3a3a;letter-spacing:1px;text-transform:uppercase;margin-top:2px}
+/* buttons */
+.rw-btns{display:flex;flex-direction:column;align-items:center;gap:10px;width:100%}
+.rw-btn-shop{
+  display:flex;align-items:center;justify-content:center;gap:9px;
+  width:min(280px,85vw);padding:16px;border-radius:50px;
+  background:linear-gradient(135deg,rgba(255,180,0,.15),rgba(255,215,0,.08));
+  border:1.5px solid rgba(255,215,0,.3);
+  color:var(--gold);font-family:var(--ft);font-size:.95rem;
+  cursor:pointer;letter-spacing:2px;transition:.14s;text-transform:uppercase;min-height:54px;
+}
+.rw-btn-shop:active{background:rgba(255,215,0,.15)}
+.rw-btn-play{
+  width:min(280px,85vw);padding:16px;border-radius:50px;
+  background:linear-gradient(135deg,#7a0000,#e82020);border:none;
+  color:#fff;font-family:var(--ft);font-weight:900;font-size:.95rem;
+  cursor:pointer;letter-spacing:2px;transition:.14s;text-transform:uppercase;
+  box-shadow:0 10px 28px rgba(232,30,30,.35);min-height:54px;
+}
+.rw-btn-play:active{transform:scale(.97)}
+.rw-btn-home{background:transparent;border:1px solid var(--brd);padding:12px;border-radius:50px;color:#555;font-family:var(--ft);font-size:.78rem;cursor:pointer;letter-spacing:2px;transition:.14s;width:min(200px,68vw);min-height:46px}
+.rw-btn-home:active{border-color:#888;color:#888}
+.rw-dev{margin-top:18px;font-size:.57rem;color:#1a1a1a;letter-spacing:2px;text-align:center}
+
+/* ═══════════════════ ⑧ PAUSE ═══════════════════ */
+#pov{position:fixed;inset:0;background:rgba(0,0,0,.88);backdrop-filter:blur(12px);z-index:500;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;opacity:0;pointer-events:none;transition:.3s}
+#pov.on{opacity:1;pointer-events:auto}
+.povt{font-family:var(--fd);font-size:2rem;color:#fff;margin-bottom:8px}
+.povb{background:rgba(255,255,255,.06);border:1px solid var(--brd);padding:15px 0;border-radius:13px;color:#fff;font-family:var(--ft);font-size:.86rem;cursor:pointer;width:230px;text-align:center;transition:.14s;letter-spacing:2px;min-height:52px}
+.povb:active{background:rgba(255,255,255,.13);transform:scale(.97)}
+
+/* ═══════════════════ FX ═══════════════════ */
+.cpop{position:absolute;top:36%;left:50%;pointer-events:none;z-index:18;font-family:var(--ft);font-weight:900;color:var(--gold);text-shadow:0 0 28px rgba(255,215,0,.6);text-align:center;animation:cpA .55s cubic-bezier(.17,.67,.35,1.3) forwards}
+@keyframes cpA{0%{transform:translate(-50%,-50%) scale(.15);opacity:0}55%{transform:translate(-50%,-50%) scale(1.06);opacity:1}100%{transform:translate(-50%,-50%) scale(1) translateY(-18px);opacity:0}}
+.ftx{position:absolute;font-weight:800;font-family:var(--ft);pointer-events:none;text-shadow:0 2px 4px #000;z-index:20;animation:ftxU .85s ease-out forwards}
+@keyframes ftxU{0%{transform:translateY(0) scale(.8);opacity:1}50%{transform:translateY(-26px) scale(1.1);opacity:1}100%{transform:translateY(-55px);opacity:0}}
+.lvlp{position:absolute;font-family:var(--ft);font-size:1rem;font-weight:700;color:var(--gold);text-shadow:0 0 10px orange;animation:lvlA .9s ease-out forwards;pointer-events:none;z-index:50;white-space:nowrap}
+@keyframes lvlA{0%{transform:scale(0);opacity:0}50%{transform:scale(1.3);opacity:1}100%{transform:scale(1) translateY(-55px);opacity:0}}
+.shake{animation:shk .38s cubic-bezier(.36,.07,.19,.97) both}
+@keyframes shk{10%,90%{transform:translate3d(-1px,0,0)}30%,70%{transform:translate3d(-5px,0,0)}50%{transform:translate3d(5px,0,0)}}
+
+/* TOAST */
+.toast{position:fixed;top:calc(var(--st)+64px);left:50%;transform:translateX(-50%);background:rgba(14,6,30,.96);border:1px solid rgba(255,215,0,.18);border-radius:12px;padding:10px 20px;font-size:.8rem;z-index:2000;animation:tIn .28s ease,tOut .28s ease 2.7s forwards;pointer-events:none;backdrop-filter:blur(12px);white-space:nowrap;max-width:88vw;overflow:hidden;text-overflow:ellipsis;font-family:var(--fb);font-weight:600}
+@keyframes tIn{from{opacity:0;transform:translate(-50%,-12px)}to{opacity:1;transform:translate(-50%,0)}}
+@keyframes tOut{to{opacity:0;transform:translate(-50%,-12px)}}
+::-webkit-scrollbar{width:3px}
+::-webkit-scrollbar-thumb{background:rgba(255,255,255,.09);border-radius:2px}
+</style>
 </head>
-
 <body>
 
-  <!-- ======== LOADING ======== -->
-  <div class="screen" id="loading-screen">
-    <div class="load-ring"></div>
-    <div style="font-family:var(--font-d);font-size:1.1rem;color:#fff;letter-spacing:2px">DUNGEON OVERLORD</div>
-    <div style="font-size:.75rem;color:var(--muted);margin:6px 0 14px;letter-spacing:1px" id="load-status">Awakening the
-      dungeon...</div>
-    <div class="load-bar-wrap">
-      <div class="load-bar" id="load-bar"></div>
-    </div>
-    <div class="load-tip" id="load-tip">🗡 Tip: Golems reflect 30% damage back to heroes</div>
+<!-- ══════════════ PRELOADER ══════════════ -->
+<div class="scr" id="pre">
+  <div class="pbg"></div>
+  <div id="embers"></div>
+  <div class="pc">
+    <div class="psw">⚔️</div>
+    <div class="plo">DUNGEON OVERLORD</div>
+    <div class="pve">V 2 . 5 · BY SOUMIL MITTAL</div>
+    <div class="ppc" id="ppct">0%</div>
+    <div class="ptr"><div class="pfi" id="pfill"></div></div>
+    <div class="pmg" id="pmsg">Awakening the dungeon…</div>
+    <div class="pti" id="ptip">Loading tip…</div>
   </div>
+  <div class="pde">DEVELOPED BY SOUMIL MITTAL · 2025</div>
+</div>
 
-  <!-- ======== SIGN UP ======== -->
-  <div class="screen hide" id="signup-screen">
-    <div class="signup-card">
-      <div class="signup-logo">⚔ DUNGEON OVERLORD</div>
-      <div class="signup-sub">Create your Overlord identity</div>
-      <div class="form-group">
-        <label class="form-label">Overlord Name</label>
-        <input class="form-input" id="inp-name" type="text" placeholder="Enter your name..." maxlength="20"
-          autocomplete="off">
-        <div class="form-error" id="err-name">Name must be at least 2 characters</div>
-      </div>
-      <div class="form-group">
-        <label class="form-label">Email Address</label>
-        <input class="form-input" id="inp-email" type="email" placeholder="overlord@realm.com" autocomplete="off">
-        <div class="form-error" id="err-email">Please enter a valid email</div>
-      </div>
-      <div class="form-group">
-        <label class="form-label">Secret Passphrase</label>
-        <input class="form-input" id="inp-pass" type="password" placeholder="Min 6 characters..." maxlength="30">
-        <div class="form-error" id="err-pass">Passphrase must be at least 6 characters</div>
-      </div>
-      <button class="btn-signup" onclick="doSignup()">CLAIM YOUR THRONE</button>
-      <div class="already-user">Already an Overlord? <span onclick="doLogin()">Enter the realm</span></div>
-      <div class="version-tag">DEVELOPED BY SOUMIL MITTAL • V2.0</div>
+<!-- ══════════════ AUTH ══════════════ -->
+<div class="scr off" id="auth">
+  <div class="acard">
+    <div class="alo">⚔ DUNGEON OVERLORD</div>
+    <div class="asu">V2.5 · By Soumil Mittal</div>
+    <div class="atbs">
+      <button class="atb on" id="tab-su" onclick="switchTab('su')">SIGN UP</button>
+      <button class="atb" id="tab-li" onclick="switchTab('li')">SIGN IN</button>
     </div>
+    <div id="sufields">
+      <div class="fg"><label class="fl">Overlord Name</label><input class="fi" id="si-name" type="text" placeholder="Your battle name…" maxlength="20" autocomplete="given-name" autocorrect="off"><div class="ferr" id="err-name">Name must be 2+ characters</div></div>
+      <div class="fg"><label class="fl">Email Address</label><input class="fi" id="si-email" type="email" placeholder="overlord@realm.com" autocomplete="email" inputmode="email"><div class="ferr" id="err-email">Enter a valid email</div></div>
+      <div class="fg"><label class="fl">Passphrase</label><input class="fi" id="si-pass" type="password" placeholder="Min. 6 characters…" maxlength="40" autocomplete="new-password"><div class="ferr" id="err-pass">Passphrase must be 6+ characters</div></div>
+      <button class="abtn" id="subtn" onclick="doSignup()">CLAIM YOUR THRONE</button>
+      <div class="esnd" id="esnd"><div class="espi"></div>Sending welcome scroll…</div>
+    </div>
+    <div id="lifields" style="display:none">
+      <div class="fg"><label class="fl">Email</label><input class="fi" id="li-email" type="email" placeholder="overlord@realm.com" autocomplete="email" inputmode="email"><div class="ferr" id="err-li">Email not found or wrong passphrase</div></div>
+      <div class="fg"><label class="fl">Passphrase</label><input class="fi" id="li-pass" type="password" placeholder="Your passphrase…" autocomplete="current-password"></div>
+      <button class="abtn" onclick="doLogin()">ENTER THE REALM</button>
+    </div>
+    <div class="adev">DEVELOPED BY SOUMIL MITTAL · DUNGEON OVERLORD V2.5 · 2025</div>
   </div>
+</div>
 
-  <!-- ======== HOME ======== -->
-  <div class="screen hide" id="home-screen">
-    <div class="home-bg-art"></div>
-    <div class="home-nav">
-      <div class="nav-profile" onclick="showToast('👑 ' + (currentUser?.name || 'Overlord'))">
-        <div class="nav-avatar" id="nav-avatar">?</div>
-        <div class="nav-username" id="nav-username">Overlord</div>
-      </div>
-      <div class="nav-icons">
-        <div class="icon-btn" title="Settings" onclick="openSettings()">⚙</div>
-        <div class="icon-btn" title="Leaderboard" onclick="showLeaderboard()">🏆</div>
-        <div class="icon-btn" title="Logout" onclick="doLogout()">🚪</div>
-      </div>
-    </div>
-
-    <div class="home-title-wrap">
-      <div class="home-eyebrow">You are the Darkness</div>
-      <h1 class="home-title">DUNGEON<span>OVERLORD</span></h1>
-    </div>
-
-    <div class="home-stats-row">
-      <div class="live-stat-pill">
-        <span class="lsp-val" id="stat-online">—</span>
-        <span class="lsp-lbl">Online Now</span>
-      </div>
-      <div class="live-stat-pill">
-        <span class="lsp-val" id="stat-daily">—</span>
-        <span class="lsp-lbl">Today</span>
-      </div>
-      <div class="live-stat-pill">
-        <span class="lsp-val" id="stat-monthly">—</span>
-        <span class="lsp-lbl">This Month</span>
-      </div>
-    </div>
-
-    <button class="btn-play" onclick="launchGame()">⚔ RULE</button>
-
-    <div class="home-features">
-      <div class="feat-chip">🔥 5 Unique Units</div>
-      <div class="feat-chip">❄️ 3 Spells</div>
-      <div class="feat-chip">💀 Boss Waves</div>
-      <div class="feat-chip">⚡ Combo System</div>
-      <div class="feat-chip">🛡 Unit Traits</div>
-      <div class="feat-chip">📊 Analytics</div>
-    </div>
-
-    <div style="position:absolute;bottom:16px;font-size:.65rem;color:#333;letter-spacing:2px">DEVELOPED BY SOUMIL MITTAL
-      • V2.0</div>
+<!-- email modal -->
+<div class="emb-bg" id="emodal">
+  <div class="emb-m">
+    <span class="em-ic">📜</span>
+    <div class="em-ti">WELCOME SCROLL DISPATCHED</div>
+    <div class="em-to" id="em-to">To: —</div>
+    <div class="em-bd" id="em-bd"><div class="em-gen"><div class="espi"></div>Composing your scroll…</div></div>
+    <div class="em-nt">⚠ Simulated email preview — actual delivery requires a server backend. This content is generated live via the Anthropic API.</div>
+    <button class="em-cl" onclick="closeEmail()">✓ UNDERSTOOD — ENTER THE REALM</button>
   </div>
+</div>
 
-  <!-- ======== SETTINGS ======== -->
-  <div class="screen hide" id="settings-screen">
-    <div class="settings-wrap">
-      <div class="settings-header">
-        <div class="back-btn" onclick="closeSettings()">←</div>
-        <div class="settings-title">SETTINGS</div>
-      </div>
-
-      <div class="settings-section">
-        <div class="section-label">📊 Live Analytics</div>
-        <div class="analytics-grid">
-          <div class="anl-card">
-            <div class="anl-label">Online Now</div>
-            <div class="anl-value" id="anl-online">—</div>
-            <div class="anl-sub" id="anl-online-peak">— peak today</div>
-          </div>
-          <div class="anl-card">
-            <div class="anl-label">Today</div>
-            <div class="anl-value" id="anl-daily">—</div>
-            <div class="anl-sub" id="anl-daily-avg">— daily avg</div>
-          </div>
-          <div class="anl-card">
-            <div class="anl-label">This Month</div>
-            <div class="anl-value" id="anl-monthly">—</div>
-            <div class="anl-sub">↑ active players</div>
-          </div>
-          <div class="anl-card">
-            <div class="anl-label">All Time</div>
-            <div class="anl-value" id="anl-total">—</div>
-            <div class="anl-sub">total registrations</div>
-          </div>
-          <div class="anl-card big">
-            <div class="anl-label">Weekly Activity — Last 7 Days</div>
-            <div class="mini-chart" id="mini-chart"></div>
-            <div class="chart-days" id="chart-days"></div>
-          </div>
-          <div class="anl-card big">
-            <div class="anl-label">Top Units Used</div>
-            <div style="margin-top:10px" id="unit-usage-bars"></div>
-          </div>
-          <div class="anl-card">
-            <div class="anl-label">Your Best Wave</div>
-            <div class="anl-value" id="anl-best">—</div>
-            <div class="anl-sub">personal record</div>
-          </div>
-          <div class="anl-card">
-            <div class="anl-label">Your Games</div>
-            <div class="anl-value" id="anl-games">—</div>
-            <div class="anl-sub">total played</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="settings-section">
-        <div class="section-label">🎮 Game Settings</div>
-        <div class="toggle-row">
-          <div>
-            <div class="toggle-label">Screen Shake</div>
-            <div class="toggle-sub">Visual feedback on impacts</div>
-          </div>
-          <div class="toggle on" id="tog-shake" onclick="toggleSetting('shake',this)"></div>
-        </div>
-        <div class="toggle-row">
-          <div>
-            <div class="toggle-label">Floating Damage Text</div>
-            <div class="toggle-sub">Show damage numbers in battle</div>
-          </div>
-          <div class="toggle on" id="tog-floatdmg" onclick="toggleSetting('floatdmg',this)"></div>
-        </div>
-        <div class="toggle-row">
-          <div>
-            <div class="toggle-label">Particle Effects</div>
-            <div class="toggle-sub">Blood & death particles</div>
-          </div>
-          <div class="toggle on" id="tog-particles" onclick="toggleSetting('particles',this)"></div>
-        </div>
-        <div class="toggle-row">
-          <div>
-            <div class="toggle-label">Kill Feed</div>
-            <div class="toggle-sub">Show unit death messages</div>
-          </div>
-          <div class="toggle on" id="tog-killfeed" onclick="toggleSetting('killfeed',this)"></div>
-        </div>
-      </div>
-
-      <div class="settings-section">
-        <div class="section-label">👤 Profile</div>
-        <div class="anl-card" style="margin-bottom:10px">
-          <div class="anl-label">Overlord Name</div>
-          <div style="font-size:1.2rem;font-weight:700;margin-top:4px" id="profile-name-display">—</div>
-        </div>
-        <button class="pause-btn" onclick="doLogout()"
-          style="width:100%;margin-top:4px;background:rgba(200,0,0,.1);border-color:rgba(200,0,0,.3);color:#ff6666">⚠
-          Logout</button>
-      </div>
-
-      <div class="settings-section">
-        <div class="section-label">ℹ About</div>
-        <div class="credits-card">
-          <div class="credits-name">Soumil Mittal</div>
-          <div class="credits-role">GAME DEVELOPER & DESIGNER</div>
-          <div class="credits-v">DUNGEON OVERLORD V2.0 • 2025</div>
-        </div>
-      </div>
+<!-- ══════════════ HOME ══════════════ -->
+<div class="scr off" id="home">
+  <div class="hnav">
+    <div class="hlft" onclick="toast('👑 '+(CU?.name||'Overlord'))">
+      <div class="hav" id="nav-av">?</div>
+      <div class="hnm" id="nav-nm">Overlord</div>
+    </div>
+    <div class="hrgt">
+      <!-- Dark Coins balance -->
+      <div class="dc-pill"><span class="dc-ico">🪙</span><span id="nav-dc">0</span></div>
+      <div class="nico" onclick="openShop()">🛒</div>
+      <div class="nico" onclick="openSett()">⚙️</div>
+      <div class="nico" onclick="doLogout()">🚪</div>
     </div>
   </div>
 
-  <!-- ======== GAME ======== -->
-  <div id="game-wrap">
-    <canvas id="gc"></canvas>
-
-    <!-- TOP HUD -->
-    <div class="hud-top">
-      <div class="hud-resources">
-        <div class="res-pill">
-          <div class="res-icon icon-g"></div>
-          <div class="res-txt" id="g-gold">0</div>
-        </div>
-        <div class="res-pill">
-          <div class="res-icon icon-m"></div>
-          <div class="res-txt" id="g-mana">0/100</div>
-        </div>
-        <div class="res-pill">
-          <div class="res-icon icon-sh"></div>
-          <div class="res-txt" id="g-souls">0</div>
-        </div>
-      </div>
-      <div class="wave-badge">WAVE <span id="g-wave">1</span></div>
-      <div class="hud-spells">
-        <button class="spell-btn sb-meteor" id="sb-meteor" onclick="activateSpell('meteor')">☄️ METEOR</button>
-        <button class="spell-btn sb-freeze" id="sb-freeze" onclick="activateSpell('freeze')">❄️ FREEZE</button>
-        <button class="spell-btn sb-rage" id="sb-rage" onclick="activateSpell('rage')">🔥 RAGE</button>
-      </div>
-      <div class="icon-btn" onclick="togglePause()" style="pointer-events:auto">⏸</div>
+  <div class="hbdy">
+    <div class="hban">
+      <div class="hban-ey">You are the Darkness</div>
+      <h1 class="hban-t">DUNGEON<br>OVERLORD</h1>
+      <div class="hban-v">V 2 . 5 · SOUMIL MITTAL</div>
     </div>
 
-    <!-- KILL FEED -->
-    <div class="kill-feed" id="kill-feed"></div>
-
-    <!-- HERO ALERT -->
-    <div style="position:absolute;top:60px;left:50%;transform:translateX(-50%);z-index:10;pointer-events:none">
-      <div class="hero-alert" id="hero-alert">⚠ HERO INCOMING ⚠</div>
+    <!-- Wallet -->
+    <div class="wallet-card">
+      <div class="wc-left">
+        <div class="wc-lbl">Dark Coin Wallet</div>
+        <div class="wc-val"><span class="wc-ico">🪙</span><span id="wc-val">0</span></div>
+        <div class="wc-note">Earned after each match · Spend in the Shop</div>
+      </div>
+      <div style="font-size:2.5rem;opacity:.3">🏦</div>
     </div>
 
-    <!-- COMBO DISPLAY CONTAINER -->
-    <div id="combo-container" style="position:absolute;inset:0;pointer-events:none;z-index:15"></div>
+    <div class="hstats-row">
+      <div class="hsc"><span class="hscv" id="hs-reg">0</span><span class="hscl">Players</span></div>
+      <div class="hsc"><span class="hscv" id="hs-games">0</span><span class="hscl">Games</span></div>
+      <div class="hsc"><span class="hscv" id="hs-best">—</span><span class="hscl">Top Wave</span></div>
+    </div>
 
-    <!-- BOTTOM -->
-    <div class="hud-bottom">
-      <div class="card-row" id="card-row">
-        <!-- cards injected by JS -->
+    <div class="hplay">
+      <button class="btnp" onclick="launchGame()">⚔ RULE</button>
+    </div>
+
+    <div class="hfrow">
+      <div class="hfeat">😈 5 Units</div>
+      <div class="hfeat">☄️ 3 Spells</div>
+      <div class="hfeat">💀 Boss Waves</div>
+      <div class="hfeat">⚡ Combos</div>
+      <div class="hfeat">🪙 Economy</div>
+      <div class="hfeat">🛒 Shop</div>
+    </div>
+
+    <div class="hmyst">
+      <div class="shd">Your Record</div>
+      <div class="mystg">
+        <div class="msc"><div class="mscv" id="my-wave">0</div><div class="mscl">Best Wave</div></div>
+        <div class="msc"><div class="mscv" id="my-games">0</div><div class="mscl">Games</div></div>
+        <div class="msc"><div class="mscv" id="my-kills">0</div><div class="mscl">Kills</div></div>
+        <div class="msc"><div class="mscv" id="my-dc">0</div><div class="mscl">Dark Coins 🪙</div></div>
       </div>
     </div>
   </div>
+</div>
 
-  <!-- ======== PAUSE ======== -->
-  <div id="pause-overlay">
-    <div class="pause-title">PAUSED</div>
-    <div class="pause-btn" onclick="togglePause()">▶ RESUME</div>
-    <div class="pause-btn" onclick="openSettings()">⚙ Settings</div>
-    <div class="pause-btn" onclick="quitToHome()" style="color:#ff6666;border-color:rgba(200,0,0,.3)">🏠 Quit to Home
+<!-- ══════════════ SHOP ══════════════ -->
+<div class="scr off" id="shop">
+  <div class="shop-inner">
+    <div class="shop-hdr">
+      <div class="shop-hdr-left">
+        <div class="bck" onclick="closeShop()">←</div>
+        <div class="shop-title">🛒 SHOP</div>
+      </div>
+      <div class="shop-bal"><span>🪙</span><span id="shop-bal">0</span></div>
+    </div>
+
+    <div class="stabs">
+      <button class="stab on" id="stab-units" onclick="shopTab('units')">⚔ UNITS</button>
+      <button class="stab" id="stab-spells" onclick="shopTab('spells')">✨ SPELLS</button>
+      <button class="stab" id="stab-boosts" onclick="shopTab('boosts')">⚡ BOOSTS</button>
+    </div>
+
+    <!-- UNITS TAB -->
+    <div id="shop-units">
+      <div class="ssec-t">Upgrade Your Minions — Permanent Stat Boosts</div>
+      <div class="uup-grid" id="uup-grid"></div>
+    </div>
+
+    <!-- SPELLS TAB -->
+    <div id="shop-spells" style="display:none">
+      <div class="ssec-t">Spell Upgrades — Reduce Cooldown & Cost</div>
+      <div class="spl-grid" id="spl-grid"></div>
+    </div>
+
+    <!-- BOOSTS TAB -->
+    <div id="shop-boosts" style="display:none">
+      <div class="ssec-t">Passive Boosts — Applied Every Match</div>
+      <div class="boost-grid" id="boost-grid"></div>
     </div>
   </div>
+</div>
 
-  <!-- ======== GAME OVER ======== -->
-  <div class="screen hide" id="gameover-screen">
-    <h1 class="go-title">FALLEN</h1>
-    <p class="go-sub">The light has consumed your darkness. Your reign is remembered.</p>
-    <div class="go-stats">
-      <div class="go-stat">
-        <div class="go-stat-v" id="go-wave">0</div>
-        <div class="go-stat-l">Waves</div>
-      </div>
-      <div class="go-stat">
-        <div class="go-stat-v" id="go-kills">0</div>
-        <div class="go-stat-l">Kills</div>
-      </div>
-      <div class="go-stat">
-        <div class="go-stat-v" id="go-gold">0</div>
-        <div class="go-stat-l">Gold Earned</div>
+<!-- ══════════════ SETTINGS ══════════════ -->
+<div class="scr off" id="sett">
+  <div class="seti">
+    <div class="seth">
+      <div class="bck" onclick="closeSett()">←</div>
+      <div class="stit">SETTINGS</div>
+    </div>
+    <div class="ssec2">
+      <div class="slbl2">📊 Your Analytics</div>
+      <div class="real-note">ℹ️ Only <strong>real data</strong> from this device — no fabricated numbers.</div>
+      <div class="anlgr">
+        <div class="ac"><div class="alb">Best Wave</div><div class="avl" id="a-best">0</div><div class="asb">personal record</div></div>
+        <div class="ac"><div class="alb">Games Played</div><div class="avl" id="a-games">0</div><div class="asb">total sessions</div></div>
+        <div class="ac"><div class="alb">Total Kills</div><div class="avl" id="a-kills">0</div><div class="asb g">heroes slain</div></div>
+        <div class="ac"><div class="alb">Dark Coins</div><div class="avl" id="a-dc">0</div><div class="asb">🪙 wallet balance</div></div>
+        <div class="ac s2"><div class="alb">Registered Players (this device)</div><div class="avl" id="a-reg">0</div><div class="asb" id="a-reg-sub">accounts here</div></div>
+        <div class="ac s2"><div class="alb">Your Sessions — Last 7 Days</div><div class="mchr" id="mchr"></div><div style="display:flex;gap:3px;margin-top:3px" id="cdays"></div></div>
+        <div class="ac s2"><div class="alb">Unit Usage</div><div id="ubars" style="margin-top:9px"></div></div>
       </div>
     </div>
-    <button class="btn-restart" onclick="startGame()">⚔ RECLAIM POWER</button>
-    <button class="btn-home" onclick="quitToHome()">🏠 Return to Throne</button>
-    <div style="margin-top:20px;font-size:.65rem;color:#333;letter-spacing:2px">DUNGEON OVERLORD V2.0 • SOUMIL MITTAL
+    <div class="ssec2">
+      <div class="slbl2">🎮 Game Settings</div>
+      <div class="togrow"><div><div class="togl">Screen Shake</div><div class="togs">Off by default</div></div><div class="tgl" id="tog-shake" onclick="togSet('shake',this)"></div></div>
+      <div class="togrow"><div><div class="togl">Floating Damage</div><div class="togs">Show numbers in battle</div></div><div class="tgl on" id="tog-dmg" onclick="togSet('dmg',this)"></div></div>
+      <div class="togrow"><div><div class="togl">Particles</div><div class="togs">Death & spell effects</div></div><div class="tgl on" id="tog-ptcl" onclick="togSet('ptcl',this)"></div></div>
+      <div class="togrow"><div><div class="togl">Kill Feed</div><div class="togs">Live battle log</div></div><div class="tgl on" id="tog-kf" onclick="togSet('kf',this)"></div></div>
+    </div>
+    <div class="ssec2">
+      <div class="slbl2">👤 Account</div>
+      <div class="ac s2" style="margin-bottom:8px"><div class="alb">Signed in as</div><div style="font-size:1.05rem;font-weight:700;margin-top:3px" id="sett-nm">—</div><div style="font-size:.67rem;color:#333;margin-top:2px" id="sett-em">—</div></div>
+      <div class="togrow" style="cursor:pointer" onclick="doLogout()"><div><div class="togl" style="color:#ff6060">Sign Out</div><div class="togs">Return to login</div></div><span style="color:#ff6060;font-size:1.2rem">→</span></div>
+    </div>
+    <div class="ssec2">
+      <div class="slbl2">ℹ About</div>
+      <div class="crdcard"><div class="crn">Soumil Mittal</div><div class="crr">GAME DEVELOPER & DESIGNER</div><div class="crv">DUNGEON OVERLORD V2.5 · 2025</div></div>
     </div>
   </div>
+</div>
 
-  <script>
-    // ============================================================
-    // STORAGE HELPERS
-    // ============================================================
-    const S = {
-      get: k => { try { return JSON.parse(localStorage.getItem(k)) } catch { return null } },
-      set: (k, v) => localStorage.setItem(k, JSON.stringify(v)),
-      del: k => localStorage.removeItem(k)
-    };
+<!-- ══════════════ GAME ══════════════ -->
+<div id="gw">
+  <canvas id="gc"></canvas>
+  <div class="hudtop">
+    <div class="hres">
+      <div class="rp"><div class="rdo rdg"></div><span class="rtx" id="hg">0</span></div>
+      <div class="rp"><div class="rdo rdm"></div><span class="rtx" id="hm">0/100</span></div>
+      <div class="rp"><div class="rdo rds"></div><span class="rtx" id="hsk">0</span></div>
+    </div>
+    <div class="wbg">WAVE <span id="hw">1</span></div>
+    <div class="hspells">
+      <button class="spb spm" id="sb-meteor" onclick="actSpell('meteor')">☄️ METEOR</button>
+      <button class="spb spf" id="sb-freeze" onclick="actSpell('freeze')">❄️ FREEZE</button>
+      <button class="spb spr" id="sb-rage" onclick="actSpell('rage')">🔥 RAGE</button>
+    </div>
+    <div class="pico" onclick="togglePause()">⏸</div>
+  </div>
+  <div class="kfw" id="kfw"></div>
+  <div class="hwrn" id="hwrn"></div>
+  <div id="fxl" style="position:absolute;inset:0;pointer-events:none;z-index:15"></div>
+  <div class="hudbot"><div class="crow" id="crow"></div></div>
+</div>
 
-    // ============================================================
-    // ANALYTICS (Simulated but realistic)
-    // ============================================================
-    let analyticsData = S.get('dm_analytics') || {
-      totalRegistrations: 1247,
-      weeklyPlays: [312, 405, 380, 520, 610, 488, 543],
-      unitUsage: { imp: 4320, orc: 2810, golem: 1540, wraith: 1980, dragon: 890 }
-    };
-    function getOnlineNow() { return Math.floor(42 + Math.sin(Date.now() / 60000) * 18 + Math.random() * 5) }
-    function getDailyPlayers() { return analyticsData.weeklyPlays[6] + Math.floor(Math.random() * 15) }
-    function getMonthlyPlayers() { return analyticsData.weeklyPlays.reduce((a, b) => a + b, 0) * 4 + Math.floor(Math.random() * 200) }
+<!-- ══════════════ PAUSE ══════════════ -->
+<div id="pov">
+  <div class="povt">PAUSED</div>
+  <div class="povb" onclick="togglePause()">▶ RESUME</div>
+  <div class="povb" onclick="openShop()">🛒 Shop</div>
+  <div class="povb" onclick="openSett()">⚙ Settings</div>
+  <div class="povb" onclick="quitHome()" style="color:#ff6060;border-color:rgba(200,0,0,.18)">🏠 Quit</div>
+</div>
 
-    function refreshAnalytics() {
-      const online = getOnlineNow(), daily = getDailyPlayers(), monthly = getMonthlyPlayers();
-      const fmt = n => n >= 1000 ? (n / 1000).toFixed(1) + 'K' : n;
+<!-- ══════════════ POST-MATCH REWARD ══════════════ -->
+<div class="scr off" id="reward-screen">
+  <div class="rw-title">MATCH OVER</div>
+  <div class="rw-sub" id="rw-sub">Battle concluded</div>
 
-      // Home stats
-      const so = document.getElementById('stat-online');
-      const sd = document.getElementById('stat-daily');
-      const sm = document.getElementById('stat-monthly');
-      if (so) so.textContent = online;
-      if (sd) sd.textContent = fmt(daily);
-      if (sm) sm.textContent = fmt(monthly);
+  <!-- formula breakdown -->
+  <div class="rw-formula">
+    <div class="rw-frow">
+      <div>
+        <div style="font-size:.6rem;color:#444;letter-spacing:1px;margin-bottom:3px">ENEMIES</div>
+        <div class="rw-fval" id="rw-kills">0</div>
+      </div>
+      <div class="rw-fop">×</div>
+      <div>
+        <div style="font-size:.6rem;color:#444;letter-spacing:1px;margin-bottom:3px">WAVES</div>
+        <div class="rw-fval" id="rw-waves">0</div>
+      </div>
+      <div class="rw-fop">÷ 3</div>
+      <div class="rw-fop">=</div>
+      <div>
+        <div style="font-size:.6rem;color:rgba(255,215,0,.5);letter-spacing:1px;margin-bottom:3px">DARK COINS</div>
+        <div class="rw-feq" id="rw-formula-result">0 🪙</div>
+      </div>
+    </div>
+    <div style="font-size:.65rem;color:#333;text-align:center">(enemies defeated × waves survived) ÷ 3</div>
+  </div>
 
-      // Settings analytics
-      const ao = document.getElementById('anl-online');
-      const ad = document.getElementById('anl-daily');
-      const am = document.getElementById('anl-monthly');
-      const at = document.getElementById('anl-total');
-      if (ao) { ao.textContent = online; document.getElementById('anl-online-peak').textContent = Math.floor(online * 1.6) + ' peak today'; }
-      if (ad) { ad.textContent = fmt(daily); document.getElementById('anl-daily-avg').textContent = fmt(Math.floor(monthly / 30)) + ' daily avg'; }
-      if (am) am.textContent = fmt(monthly);
-      if (at) at.textContent = fmt(analyticsData.totalRegistrations);
+  <!-- animated reward -->
+  <div class="rw-earned">
+    <div class="rw-coin-wrap">
+      <div class="rw-coin-ico">🪙</div>
+      <div class="rw-coin-amt" id="rw-earned">0</div>
+    </div>
+    <div class="rw-coin-lbl">Dark Coins Earned</div>
+    <div style="font-size:.7rem;color:#444;margin-top:6px">Wallet total: <span style="color:var(--gold);font-family:var(--ft)" id="rw-total">0</span> 🪙</div>
+  </div>
 
-      // Mini chart
-      const mc = document.getElementById('mini-chart');
-      const cd = document.getElementById('chart-days');
-      if (mc) {
-        const maxV = Math.max(...analyticsData.weeklyPlays);
-        const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
-        mc.innerHTML = '';
-        cd.innerHTML = '';
-        analyticsData.weeklyPlays.forEach((v, i) => {
-          const pct = (v / maxV) * 100;
-          const b = document.createElement('div');
-          b.className = 'chart-bar';
-          b.style.height = pct + '%';
-          b.style.background = i === 6 ? 'var(--gold)' : 'rgba(189,0,255,0.5)';
-          mc.appendChild(b);
-          const d = document.createElement('div');
-          d.className = 'chart-day';
-          d.textContent = days[i];
-          cd.appendChild(d);
-        });
-      }
+  <div class="rw-stats">
+    <div class="rw-st"><div class="rw-stv" id="rw-w">0</div><div class="rw-stl">Waves</div></div>
+    <div class="rw-st"><div class="rw-stv" id="rw-k">0</div><div class="rw-stl">Kills</div></div>
+    <div class="rw-st"><div class="rw-stv" id="rw-g">0</div><div class="rw-stl">Gold</div></div>
+  </div>
 
-      // Unit usage bars
-      const ub = document.getElementById('unit-usage-bars');
-      if (ub) {
-        const units = ['imp', 'orc', 'golem', 'wraith', 'dragon'];
-        const maxU = Math.max(...units.map(u => analyticsData.unitUsage[u]));
-        const emojis = { imp: '😈', orc: '👹', golem: '🪨', wraith: '👻', dragon: '🐉' };
-        const colors = { imp: '#a8e6cf', orc: '#dcedc1', golem: '#a0897a', wraith: '#80deea', dragon: '#ff8a80' };
-        ub.innerHTML = units.map(u => {
-          const pct = (analyticsData.unitUsage[u] / maxU) * 100;
-          return `<div style="margin-bottom:8px">
-        <div style="display:flex;justify-content:space-between;font-size:.72rem;margin-bottom:3px">
-          <span>${emojis[u]} ${u.toUpperCase()}</span><span style="color:var(--muted)">${analyticsData.unitUsage[u].toLocaleString()}</span>
-        </div>
-        <div class="anl-bar-bg"><div class="anl-bar-fill" style="width:${pct}%;background:${colors[u]}"></div></div>
-      </div>`;
-        }).join('');
-      }
+  <div class="rw-btns">
+    <button class="rw-btn-shop" onclick="goToShopFromReward()">🛒 SPEND IN SHOP</button>
+    <button class="rw-btn-play" onclick="startGame()">⚔ PLAY AGAIN</button>
+    <button class="rw-btn-home" onclick="quitHome()">🏠 Home</button>
+  </div>
+  <div class="rw-dev">DUNGEON OVERLORD V2.5 · SOUMIL MITTAL</div>
+</div>
 
-      // Player personal stats
-      const user = currentUser;
-      if (user) {
-        const best = document.getElementById('anl-best');
-        const games = document.getElementById('anl-games');
-        const pnn = document.getElementById('profile-name-display');
-        if (best) best.textContent = user.bestWave || 0;
-        if (games) games.textContent = user.gamesPlayed || 0;
-        if (pnn) pnn.textContent = user.name || '—';
-      }
-    }
+<!-- ══════════════════════════════════
+     JAVASCRIPT
+══════════════════════════════════ -->
+<script>
+'use strict';
 
-    // ============================================================
-    // AUTH
-    // ============================================================
-    let currentUser = null;
+/* ── STORAGE ── */
+const LS={g:k=>{try{return JSON.parse(localStorage.getItem(k))}catch{return null}},s:(k,v)=>localStorage.setItem(k,JSON.stringify(v)),d:k=>localStorage.removeItem(k)};
 
-    function doSignup() {
-      const name = document.getElementById('inp-name').value.trim();
-      const email = document.getElementById('inp-email').value.trim();
-      const pass = document.getElementById('inp-pass').value;
-      let ok = true;
+/* ── SETTINGS (screen shake OFF by default) ── */
+let CF=LS.g('do_cf')||{shake:false,dmg:true,ptcl:true,kf:true};
+const saveCF=()=>LS.s('do_cf',CF);
+function togSet(k,el){CF[k]=!CF[k];el.classList.toggle('on',CF[k]);saveCF();}
+function applyCF(){['shake','dmg','ptcl','kf'].forEach(k=>{document.getElementById('tog-'+k)?.classList.toggle('on',CF[k]);});}
 
-      ['err-name', 'err-email', 'err-pass'].forEach(id => document.getElementById(id).style.display = 'none');
+/* ── AUTH ── */
+let CU=null,authMode='su';
+function switchTab(t){
+  authMode=t;
+  document.getElementById('tab-su').classList.toggle('on',t==='su');
+  document.getElementById('tab-li').classList.toggle('on',t==='li');
+  document.getElementById('sufields').style.display=t==='su'?'':'none';
+  document.getElementById('lifields').style.display=t==='li'?'':'none';
+}
 
-      if (name.length < 2) { document.getElementById('err-name').style.display = 'block'; ok = false; }
-      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { document.getElementById('err-email').style.display = 'block'; ok = false; }
-      if (pass.length < 6) { document.getElementById('err-pass').style.display = 'block'; ok = false; }
-      if (!ok) return;
+function doSignup(){
+  const name=document.getElementById('si-name').value.trim();
+  const email=document.getElementById('si-email').value.trim().toLowerCase();
+  const pass=document.getElementById('si-pass').value;
+  ['err-name','err-email','err-pass'].forEach(id=>document.getElementById(id).style.display='none');
+  let ok=true;
+  if(name.length<2){document.getElementById('err-name').style.display='block';ok=false;}
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){document.getElementById('err-email').style.display='block';ok=false;}
+  if(pass.length<6){document.getElementById('err-pass').style.display='block';ok=false;}
+  if(!ok)return;
+  const users=LS.g('do_users')||{};
+  if(users[email]){toast('⚠️ Email registered — sign in instead');switchTab('li');return;}
+  const user={name,email,pass,joinedAt:Date.now(),bestWave:0,gamesPlayed:0,totalKills:0,totalGold:0,darkCoins:0,unitUsage:{imp:0,orc:0,golem:0,wraith:0,dragon:0},sessionDays:[],shopUpgrades:{}};
+  users[email]=user; LS.s('do_users',users);
+  CU=user; LS.s('do_current',email);
+  const btn=document.getElementById('subtn');
+  btn.disabled=true;btn.style.opacity='.5';
+  document.getElementById('esnd').style.display='flex';
+  sendWelcomeEmail(name,email).finally(()=>{btn.disabled=false;btn.style.opacity='1';document.getElementById('esnd').style.display='none';});
+}
 
-      const users = S.get('dm_users') || {};
-      if (users[email]) {
-        showToast('⚠ Email already registered! Sign in instead.'); return;
-      }
+function doLogin(){
+  const email=document.getElementById('li-email').value.trim().toLowerCase();
+  const pass=document.getElementById('li-pass').value;
+  document.getElementById('err-li').style.display='none';
+  const users=LS.g('do_users')||{};
+  if(!users[email]||users[email].pass!==pass){document.getElementById('err-li').style.display='block';return;}
+  CU=users[email];
+  // Ensure darkCoins field exists for older accounts
+  if(!CU.darkCoins)CU.darkCoins=0;
+  if(!CU.shopUpgrades)CU.shopUpgrades={};
+  LS.s('do_current',email);
+  toast('⚔️ Welcome back, '+CU.name+'!');
+  show('auth',false);show('home',true);refreshHome();
+}
 
-      users[email] = { name, email, pass, bestWave: 0, gamesPlayed: 0, joinedAt: Date.now() };
-      S.set('dm_users', users);
-      analyticsData.totalRegistrations++;
-      S.set('dm_analytics', analyticsData);
+function doLogout(){
+  if(GA)quitHome();
+  CU=null;LS.d('do_current');
+  ['sett','home','shop'].forEach(id=>show(id,false));
+  show('auth',true);switchTab('su');
+  toast('👋 Logged out. See you soon!');
+}
 
-      currentUser = users[email];
-      S.set('dm_current', email);
-      showToast('👑 Welcome, ' + name + '!');
-      transitionTo('signup-screen', 'home-screen');
-      updateHomeUser();
-    }
+/* ── EMAIL ── */
+async function sendWelcomeEmail(name,email){
+  document.getElementById('em-to').textContent='To: '+email;
+  document.getElementById('em-bd').innerHTML='<div class="em-gen"><div class="espi"></div>Composing your scroll…</div>';
+  document.getElementById('emodal').classList.add('on');
+  try{
+    const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:600,messages:[{role:'user',content:`Write a welcome email for a new player named "${name}" registering for "Dungeon Overlord V2.5", a mobile dungeon defense game by Soumil Mittal. Tone: dark, dramatic, as if the Dungeon itself is speaking. Include a Subject: line. Mention all 5 units (Imp-fast/cheap, Orc-regenerates HP, Golem-Thorns/reflects 30% damage, Wraith-40% Evasion, Dragon-AoE Burn). Mention 3 spells (Meteor, Freeze, Rage). Mention the new economy: earn Dark Coins after each match (enemies defeated × waves survived ÷ 3) and spend them in the Shop to upgrade troops. Mission: defend the dungeon gate. Sign off: "— The Dungeon, eternal and dark". Mention Developed by Soumil Mittal · V2.5. Under 220 words. Plain text only.`}]})});
+    const d=await r.json();
+    document.getElementById('em-bd').textContent=d?.content?.[0]?.text||fallbackEmail(name);
+  }catch{document.getElementById('em-bd').textContent=fallbackEmail(name);}
+}
+function fallbackEmail(n){return `Subject: Your Throne Awaits, ${n}\n\nOverlord ${n},\n\nThe dungeon stirs. Five servants answer your call:\n\nImp — lightning-fast, cheapest to summon\nOrc — powerful, slowly regenerates HP\nGolem — reflects 30% damage back (Thorns)\nWraith — dodges 40% of attacks (Evasion)\nDragon — scorches all nearby with AoE Burn\n\nThree spells are yours: ☄️ Meteor · ❄️ Freeze · 🔥 Rage\n\nNew in V2.5: Earn Dark Coins 🪙 after every match.\nFormula: Enemies Defeated × Waves Survived ÷ 3\nSpend them in the Shop to permanently upgrade your soldiers.\n\nDefend the gate. Let no hero pass.\n\n— The Dungeon, eternal and dark\n\nDungeon Overlord V2.5 · Developed by Soumil Mittal · 2025`;}
+function closeEmail(){document.getElementById('emodal').classList.remove('on');toast('👑 Welcome, '+CU.name+'! Check your rewards after each match.');show('auth',false);show('home',true);refreshHome();}
 
-    function doLogin() {
-      const email = document.getElementById('inp-email').value.trim();
-      const pass = document.getElementById('inp-pass').value;
-      const users = S.get('dm_users') || {};
+/* ── NAVIGATION ── */
+function show(id,v){document.getElementById(id)?.classList.toggle('off',!v);}
+function openShop(){buildShop();show('shop',true);}
+function closeShop(){show('shop',false);}
+function openSett(){if(GA&&!paused)togglePause();fillSett();show('sett',true);}
+function closeSett(){show('sett',false);}
+function goToShopFromReward(){show('reward-screen',false);openShop();}
 
-      if (email && pass && users[email] && users[email].pass === pass) {
-        currentUser = users[email];
-        S.set('dm_current', email);
-        showToast('⚔ Welcome back, ' + currentUser.name + '!');
-        transitionTo('signup-screen', 'home-screen');
-        updateHomeUser();
-      } else if (!email) {
-        showToast('🔑 Enter your email to sign in');
-      } else if (!users[email]) {
-        showToast('❌ No account found. Sign up first.');
+/* ── DARK COIN ECONOMY ── */
+// Formula: (enemies defeated × wave reached) / 3, rounded, minimum 1
+function calcDarkCoins(kills,wave){
+  return Math.max(1, Math.round((kills * wave) / 3));
+}
+
+function awardDarkCoins(kills,wave){
+  const earned=calcDarkCoins(kills,wave);
+  if(CU){
+    CU.darkCoins=(CU.darkCoins||0)+earned;
+    saveUser();
+  }
+  return earned;
+}
+
+/* ── SHOP DATA ── */
+const SHOP_UNIT_UPGRADES={
+  imp:  [{stat:'hp', label:'HP +20%', cost:40, max:5},{stat:'dmg', label:'DMG +20%', cost:50, max:5},{stat:'spd', label:'SPD +10%', cost:35, max:3}],
+  orc:  [{stat:'hp', label:'HP +20%', cost:60, max:5},{stat:'dmg', label:'DMG +20%', cost:70, max:5},{stat:'spd', label:'SPD +10%', cost:50, max:3}],
+  golem:[{stat:'hp', label:'HP +20%', cost:80, max:5},{stat:'dmg', label:'DMG +20%', cost:90, max:5},{stat:'spd', label:'SPD +5%',  cost:65, max:3}],
+  wraith:[{stat:'hp',label:'HP +20%', cost:70, max:5},{stat:'dmg', label:'DMG +20%', cost:80, max:5},{stat:'spd', label:'SPD +10%', cost:60, max:3}],
+  dragon:[{stat:'hp',label:'HP +20%', cost:100,max:5},{stat:'dmg', label:'DMG +20%', cost:120,max:5},{stat:'spd', label:'SPD +5%', cost:80, max:3}]
+};
+const SHOP_SPELLS=[
+  {id:'meteor_cd',name:'Meteor Mastery',emoji:'☄️',desc:'Reduce Meteor cooldown by 500ms',stat:'Cooldown: ',baseVal:3500,unit:'ms',reduce:500,cost:80,max:4},
+  {id:'freeze_cd', name:'Glacial Mastery',emoji:'❄️',desc:'Reduce Freeze cooldown by 600ms',stat:'Cooldown: ',baseVal:5000,unit:'ms',reduce:600,cost:80,max:4},
+  {id:'rage_cd',   name:'Rage Mastery',  emoji:'🔥',desc:'Reduce Rage cooldown by 700ms', stat:'Cooldown: ',baseVal:6000,unit:'ms',reduce:700,cost:80,max:4},
+];
+const SHOP_BOOSTS=[
+  {id:'income',  emoji:'💰',name:'Dark Treasury',  desc:'Earn +1 extra gold per passive tick',cost:60, max:3},
+  {id:'startgold',emoji:'🏦',name:'War Chest',     desc:'Start each match with +30 gold',    cost:80, max:3},
+  {id:'manaspd', emoji:'⚡',name:'Mana Flow',      desc:'Mana regenerates 15% faster',       cost:70, max:3},
+  {id:'combobonus',emoji:'🔥',name:'Combo King',  desc:'Combo bonus gold ×1.5',              cost:90, max:2},
+];
+
+function getUpgradeLevel(key){return (CU?.shopUpgrades||{})[key]||0;}
+function setUpgradeLevel(key,lvl){if(!CU)return;CU.shopUpgrades=CU.shopUpgrades||{};CU.shopUpgrades[key]=lvl;saveUser();}
+
+function spendDC(amount){
+  if(!CU||CU.darkCoins<amount)return false;
+  CU.darkCoins-=amount;
+  saveUser();
+  updateDCDisplays();
+  return true;
+}
+
+function updateDCDisplays(){
+  const dc=CU?.darkCoins||0;
+  const els=['nav-dc','wc-val','shop-bal','my-dc','a-dc'];
+  els.forEach(id=>{const el=document.getElementById(id);if(el)el.textContent=dc;});
+}
+
+/* ── SHOP BUILD ── */
+let curShopTab='units';
+function shopTab(t){
+  curShopTab=t;
+  ['units','spells','boosts'].forEach(s=>{
+    document.getElementById('stab-'+s).classList.toggle('on',s===t);
+    document.getElementById('shop-'+s).style.display=s===t?'':'none';
+  });
+}
+
+function buildShop(){
+  updateDCDisplays();
+  buildUnitUpgrades();
+  buildSpellUpgrades();
+  buildBoosts();
+}
+
+function buildUnitUpgrades(){
+  const grid=document.getElementById('uup-grid');
+  const emojis={imp:'😈',orc:'👹',golem:'🪨',wraith:'👻',dragon:'🐉'};
+  const cols={imp:'#a8e6cf',orc:'#dcedc1',golem:'#a0897a',wraith:'#80deea',dragon:'#ff8a80'};
+  grid.innerHTML='';
+  Object.entries(SHOP_UNIT_UPGRADES).forEach(([unit,upgrades])=>{
+    const card=document.createElement('div');
+    card.className='uup-card';
+
+    // Get current shop levels
+    const hpLvl=getUpgradeLevel(unit+'_hp');
+    const dmgLvl=getUpgradeLevel(unit+'_dmg');
+    const spdLvl=getUpgradeLevel(unit+'_spd');
+    const base=UNITS[unit];
+
+    // Compute effective stats from shop
+    const effHp=Math.floor(base.hp*(1+hpLvl*.2));
+    const effDmg=Math.floor(base.dmg*(1+dmgLvl*.2));
+    const effSpd=(base.spd*(1+spdLvl*.1)).toFixed(1);
+
+    card.innerHTML=`
+      <div class="uup-emoji">${emojis[unit]}</div>
+      <div class="uup-name" style="color:${cols[unit]}">${unit.toUpperCase()}</div>
+      <div class="uup-lvl">HP Lv.${hpLvl} · DMG Lv.${dmgLvl} · SPD Lv.${spdLvl}</div>
+      <div class="uup-stats">
+        ❤️ HP: <span>${effHp}</span><br>
+        ⚔️ DMG: <span>${effDmg}</span><br>
+        💨 SPD: <span>${effSpd}</span>
+      </div>
+      <div class="uup-upgrow" id="upgrow-${unit}"></div>`;
+    grid.appendChild(card);
+
+    // Upgrade buttons
+    const row=document.getElementById('upgrow-'+unit);
+    upgrades.forEach(upg=>{
+      const key=unit+'_'+upg.stat;
+      const lvl=getUpgradeLevel(key);
+      const maxed=lvl>=upg.max;
+      const canAfford=(CU?.darkCoins||0)>=upg.cost;
+      if(maxed){
+        const b=document.createElement('div');
+        b.className='uup-maxbadge';b.textContent='✓ '+upg.label.split(' ')[0]+' MAXED';
+        row.appendChild(b);
       } else {
-        showToast('❌ Incorrect passphrase.');
+        const cls=upg.stat==='hp'?'uup-btn-hp':upg.stat==='dmg'?'uup-btn-dmg':'uup-btn-spd';
+        const b=document.createElement('button');
+        b.className='uup-upbtn '+cls+(canAfford?'':' uup-btn-dis');
+        b.innerHTML=`${upg.label} <span style="opacity:.6;font-size:.62rem">${upg.cost}🪙 (${lvl}/${upg.max})</span>`;
+        b.onclick=()=>{
+          if(!spendDC(upg.cost)){toast('❌ Not enough Dark Coins!');return;}
+          setUpgradeLevel(key,lvl+1);
+          toast(`✅ ${unit.toUpperCase()} ${upg.label} upgraded!`);
+          vib(30);
+          buildUnitUpgrades(); // re-render
+        };
+        row.appendChild(b);
       }
-    }
-
-    function doLogout() {
-      S.del('dm_current');
-      currentUser = null;
-      if (gameActive) quitToHome();
-      transitionTo('settings-screen', 'signup-screen');
-      transitionTo('home-screen', 'signup-screen');
-      showToast('👋 Logged out. See you soon!');
-    }
-
-    function updateHomeUser() {
-      if (!currentUser) return;
-      const av = document.getElementById('nav-avatar');
-      const un = document.getElementById('nav-username');
-      if (av) av.textContent = currentUser.name[0].toUpperCase();
-      if (un) un.textContent = currentUser.name;
-      refreshAnalytics();
-    }
-
-    // ============================================================
-    // SCREEN TRANSITIONS
-    // ============================================================
-    function transitionTo(from, to) {
-      const f = document.getElementById(from);
-      const t = document.getElementById(to);
-      if (f) f.classList.add('hide');
-      if (t) t.classList.remove('hide');
-    }
-
-    function openSettings() {
-      const fromGame = gameActive && !paused;
-      if (fromGame) togglePause();
-      document.getElementById('settings-screen').classList.remove('hide');
-      refreshAnalytics();
-      setTimeout(() => {
-        const bars = document.querySelectorAll('.anl-bar-fill,.chart-bar');
-        bars.forEach(b => { const w = b.style.width; b.style.width = '0'; setTimeout(() => b.style.width = w, 50); });
-      }, 50);
-    }
-
-    function closeSettings() {
-      document.getElementById('settings-screen').classList.add('hide');
-    }
-
-    function showLeaderboard() {
-      const users = S.get('dm_users') || {};
-      const sorted = Object.values(users).sort((a, b) => b.bestWave - a.bestWave).slice(0, 5);
-      if (sorted.length === 0) { showToast('No scores yet — be the first!'); return; }
-      const lines = sorted.map((u, i) => `${['🥇', '🥈', '🥉', '4️⃣', '5️⃣'][i]} ${u.name} — Wave ${u.bestWave}`).join('\n');
-      alert('🏆 LEADERBOARD\n\n' + lines + '\n\n(Developed by Soumil Mittal)');
-    }
-
-    // ============================================================
-    // SETTINGS STATE
-    // ============================================================
-    let settings = S.get('dm_settings') || { shake: true, floatdmg: true, particles: true, killfeed: true };
-
-    function toggleSetting(key, el) {
-      settings[key] = !settings[key];
-      el.classList.toggle('on', settings[key]);
-      S.set('dm_settings', settings);
-    }
-
-    // ============================================================
-    // TOAST
-    // ============================================================
-    function showToast(msg) {
-      const t = document.createElement('div');
-      t.className = 'toast';
-      t.textContent = msg;
-      document.body.appendChild(t);
-      setTimeout(() => t.remove(), 3000);
-    }
-
-    // ============================================================
-    // LOADING SEQUENCE
-    // ============================================================
-    const TIPS = [
-      '🗡 Tip: Golems reflect 30% damage back to heroes',
-      '❄ Tip: Freeze spell stops ALL heroes for 3 seconds',
-      '🔥 Tip: Rage spell doubles your minion damage for 5 secs',
-      '👻 Tip: Wraiths have 40% chance to evade attacks',
-      '🐉 Tip: Dragon deals AoE burn damage each second',
-      '💰 Tip: Passive income increases every 5 waves',
-      '😈 Tip: Imps move 3x faster than any other unit',
-      '🪨 Tip: Golems also regenerate HP over time'
-    ];
-
-    window.addEventListener('load', () => {
-      // Check returning user
-      const savedEmail = S.get('dm_current');
-      const users = S.get('dm_users') || {};
-      if (savedEmail && users[savedEmail]) {
-        currentUser = users[savedEmail];
-      }
-
-      let pct = 0;
-      const bar = document.getElementById('load-bar');
-      const tip = document.getElementById('load-tip');
-      const status = document.getElementById('load-status');
-      const stages = ['Awakening the dungeon...', 'Summoning minions...', 'Forging spells...', 'Opening the gates...'];
-      let si = 0;
-      tip.textContent = TIPS[Math.floor(Math.random() * TIPS.length)];
-
-      const interval = setInterval(() => {
-        pct += Math.random() * 18 + 5;
-        if (pct > 100) pct = 100;
-        bar.style.width = pct + '%';
-        si = Math.floor(pct / 25);
-        status.textContent = stages[Math.min(si, 3)];
-        if (pct >= 100) {
-          clearInterval(interval);
-          setTimeout(() => {
-            transitionTo('loading-screen', currentUser ? 'home-screen' : 'signup-screen');
-            if (currentUser) { updateHomeUser(); startAnalyticsRefresh(); }
-          }, 400);
-        }
-      }, 120);
-
-      buildCardDeck();
-      initCanvas();
     });
+  });
+}
 
-    function startAnalyticsRefresh() {
-      refreshAnalytics();
-      setInterval(refreshAnalytics, 15000);
-    }
-
-    // ============================================================
-    // GAME ENGINE
-    // ============================================================
-    const gc = document.getElementById('gc');
-    const ctx = gc.getContext('2d');
-    let W, H, pathY, pathH;
-
-    function resizeCanvas() {
-      W = gc.width = window.innerWidth;
-      H = gc.height = window.innerHeight;
-      pathY = H * 0.5;
-      pathH = Math.min(160, H * 0.22);
-    }
-    window.addEventListener('resize', resizeCanvas);
-    function initCanvas() { resizeCanvas(); }
-
-    // ---- UNIT DEFINITIONS ----
-    const UNITS = {
-      imp: { emoji: '😈', cost: 15, hp: 40, dmg: 3, speed: 1.8, radius: 14, color: '#a8e6cf', trait: 'Frenzied', traitDesc: 'Fast & relentless' },
-      orc: { emoji: '👹', cost: 30, hp: 120, dmg: 6, speed: 0.9, radius: 20, color: '#dcedc1', trait: 'Regenerate', traitDesc: 'Heals 1hp/s' },
-      golem: { emoji: '🪨', cost: 60, hp: 300, dmg: 8, speed: 0.5, radius: 28, color: '#a0897a', trait: 'Thorns', traitDesc: 'Reflects 30% dmg' },
-      wraith: { emoji: '👻', cost: 80, hp: 60, dmg: 15, speed: 2.5, radius: 18, color: '#80deea', trait: 'Evasion', traitDesc: '40% dodge chance' },
-      dragon: { emoji: '🐉', cost: 150, hp: 500, dmg: 40, speed: 1.0, radius: 35, color: '#ff8a80', trait: 'Burn', traitDesc: 'AoE fire damage' }
-    };
-    const HERO_BASE = { hp: 150, dmg: 8, speed: 0.55, radius: 24 };
-
-    // ---- PROGRESSION ----
-    const prog = { imp: { lvl: 1, xp: 0, maxXp: 100 }, orc: { lvl: 1, xp: 0, maxXp: 100 }, golem: { lvl: 1, xp: 0, maxXp: 100 }, wraith: { lvl: 1, xp: 0, maxXp: 100 }, dragon: { lvl: 1, xp: 0, maxXp: 100 } };
-
-    // ---- STATE ----
-    let gameActive = false, paused = false;
-    let gold, mana, souls, wave, combo, comboTimer, totalKills, totalGoldEarned;
-    let minions, heroes, particles, meteors, frozenUntil, rageUntil;
-    let selectedUnit = 'imp', activeSpell = null;
-    let goldTimer, manaTimer, soulTimer, heroSpawnTimer, heroSpawnReady;
-    let lastTs = 0;
-
-    // ---- SPELL SYSTEM ----
-    const SPELLS = {
-      meteor: { mana: 30, cd: 3000, coolUntil: 0 },
-      freeze: { mana: 20, cd: 5000, coolUntil: 0 },
-      rage: { mana: 25, cd: 6000, coolUntil: 0 }
-    };
-
-    // ============================================================
-    // LAUNCH & RESTART
-    // ============================================================
-    function launchGame() {
-      transitionTo('home-screen', '');
-      document.getElementById('home-screen').classList.add('hide');
-      document.getElementById('game-wrap').classList.add('active');
-      startGame();
-    }
-
-    function startGame() {
-      document.getElementById('gameover-screen').classList.add('hide');
-      gold = 80; mana = 50; souls = 0; wave = 1; combo = 0; comboTimer = 0; totalKills = 0; totalGoldEarned = 80;
-      minions = []; heroes = []; particles = []; meteors = [];
-      frozenUntil = 0; rageUntil = 0; heroSpawnReady = false;
-      goldTimer = 0; manaTimer = 0; soulTimer = 0; heroSpawnTimer = 0;
-      activeSpell = null;
-      Object.values(SPELLS).forEach(s => s.coolUntil = 0);
-
-      document.querySelectorAll('.spell-btn').forEach(b => { b.classList.remove('active', 'cd'); b.style.opacity = '1'; });
-      selectUnit('imp');
-      updateHUD();
-      gameActive = true; paused = false;
-      lastTs = performance.now();
-      requestAnimationFrame(gameLoop);
-    }
-
-    function quitToHome() {
-      gameActive = false; paused = false;
-      document.getElementById('pause-overlay').classList.remove('show');
-      document.getElementById('game-wrap').classList.remove('active');
-      document.getElementById('gameover-screen').classList.add('hide');
-      document.getElementById('home-screen').classList.remove('hide');
-      updateHomeUser(); startAnalyticsRefresh();
-    }
-
-    function gameOver() {
-      gameActive = false;
-      // Save stats
-      if (currentUser) {
-        const users = S.get('dm_users') || {};
-        currentUser.bestWave = Math.max(currentUser.bestWave || 0, wave);
-        currentUser.gamesPlayed = (currentUser.gamesPlayed || 0) + 1;
-        users[currentUser.email] = currentUser;
-        S.set('dm_users', users);
-        // Update unit usage
-        analyticsData.weeklyPlays[6]++;
-        S.set('dm_analytics', analyticsData);
-      }
-      document.getElementById('go-wave').textContent = wave;
-      document.getElementById('go-kills').textContent = totalKills;
-      document.getElementById('go-gold').textContent = Math.floor(totalGoldEarned);
-      document.getElementById('gameover-screen').classList.remove('hide');
-    }
-
-    // ============================================================
-    // INPUT
-    // ============================================================
-    let dragging = false;
-    function handlePointer(e) {
-      if (!gameActive || paused) return;
-      e.preventDefault();
-      let cx, cy;
-      if (e.changedTouches) { cx = e.changedTouches[0].clientX; cy = e.changedTouches[0].clientY; }
-      else { cx = e.clientX; cy = e.clientY; }
-      if (activeSpell === 'meteor') { castMeteor(cx, cy); return; }
-      if (cy > pathY - pathH * 0.6 && cy < pathY + pathH * 0.6) { spawnMinion(cx, pathY); }
-    }
-    gc.addEventListener('mousedown', e => { dragging = true; handlePointer(e); });
-    gc.addEventListener('mousemove', e => { if (dragging) handlePointer(e); });
-    gc.addEventListener('mouseup', () => dragging = false);
-    gc.addEventListener('touchstart', e => { dragging = true; handlePointer(e); }, { passive: false });
-    gc.addEventListener('touchmove', e => { if (dragging) handlePointer(e); }, { passive: false });
-    gc.addEventListener('touchend', () => dragging = false);
-
-    function togglePause() {
-      if (!gameActive) return;
-      paused = !paused;
-      document.getElementById('pause-overlay').classList.toggle('show', paused);
-      if (!paused) { lastTs = performance.now(); requestAnimationFrame(gameLoop); }
-    }
-    document.addEventListener('keydown', e => { if (e.key === 'Escape' || e.key === ' ') togglePause(); });
-
-    // ============================================================
-    // SPELL ACTIVATION
-    // ============================================================
-    function activateSpell(type) {
-      if (!gameActive || paused) return;
-      const sp = SPELLS[type];
-      if (mana < sp.mana || Date.now() < sp.coolUntil) return;
-
-      if (type === 'freeze') {
-        mana -= sp.mana;
-        frozenUntil = Date.now() + 3000;
-        sp.coolUntil = Date.now() + sp.cd;
-        heroes.forEach(h => { h.frozen = true; h.frozenUntil = frozenUntil; });
-        showToast('❄️ All heroes frozen for 3 seconds!');
-        setSpellCooldown('freeze', sp.cd);
-        createAreaEffect(W / 2, pathY, 'rgba(0,180,255,0.15)', 200);
-      } else if (type === 'rage') {
-        mana -= sp.mana;
-        rageUntil = Date.now() + 5000;
-        sp.coolUntil = Date.now() + sp.cd;
-        showToast('🔥 RAGE! Minion damage doubled for 5 seconds!');
-        setSpellCooldown('rage', sp.cd);
-        minions.forEach(m => m.enraged = true);
-      } else if (type === 'meteor') {
-        if (activeSpell === 'meteor') { activeSpell = null; gc.style.cursor = 'default'; return; }
-        mana -= sp.mana;
-        activeSpell = 'meteor';
-        gc.style.cursor = 'crosshair';
-        document.getElementById('sb-meteor').classList.add('active');
-      }
-      updateHUD();
-    }
-
-    function castMeteor(x, y) {
-      const sp = SPELLS.meteor;
-      activeSpell = null;
-      gc.style.cursor = 'default';
-      document.getElementById('sb-meteor').classList.remove('active');
-      sp.coolUntil = Date.now() + sp.cd;
-      setSpellCooldown('meteor', sp.cd);
-      meteors.push({ x, y, r: 0, maxR: 85, life: 25 });
-      if (settings.shake) shakeBody();
-    }
-
-    function setSpellCooldown(type, ms) {
-      const btn = document.getElementById('sb-' + type);
-      btn.classList.add('cd');
-      setTimeout(() => { btn.classList.remove('cd'); btn.style.opacity = '1'; }, ms);
-    }
-
-    function createAreaEffect(x, y, color, r) {
-      for (let i = 0; i < 30; i++) particles.push({ x, y, vx: (Math.random() - .5) * 10, vy: (Math.random() - .5) * 10, life: 1, size: Math.random() * 6 + 2, color });
-    }
-
-    // ============================================================
-    // UNIT SELECTION & SPAWN
-    // ============================================================
-    function selectUnit(type) {
-      selectedUnit = type;
-      document.querySelectorAll('.u-card').forEach(c => c.classList.remove('sel'));
-      const c = document.getElementById('uc-' + type);
-      if (c) c.classList.add('sel');
-    }
-
-    function getStats(type) {
-      const base = UNITS[type], lvl = prog[type].lvl;
-      const m = 1 + (lvl - 1) * 0.15;
-      return { ...base, hp: Math.floor(base.hp * m), dmg: Math.floor(base.dmg * m) };
-    }
-
-    function spawnMinion(x, y) {
-      const st = getStats(selectedUnit);
-      if (gold < st.cost) { showToast('💰 Need ' + st.cost + ' gold!'); return; }
-      gold -= st.cost;
-      const oy = (Math.random() - .5) * 40;
-      const rageOn = Date.now() < rageUntil;
-      minions.push({
-        x, y: y + oy, type: selectedUnit, ...st, maxHp: st.hp,
-        flash: 0, enraged: rageOn, frozenUntil: 0
-      });
-      if (settings.particles) spawnBurst(x, y + oy, 6, st.color);
-      updateHUD();
-    }
-
-    // ============================================================
-    // HERO SPAWN
-    // ============================================================
-    function spawnHero() {
-      const isBoss = wave % 5 === 0;
-      const lm = 1 + (wave * 0.38), bm = isBoss ? 2.8 : 1;
-      const h = HERO_BASE;
-      const hero = {
-        x: -70, y: pathY + (Math.random() - .5) * 40,
-        hp: Math.floor(h.hp * lm * bm), maxHp: Math.floor(h.hp * lm * bm),
-        dmg: Math.floor(h.dmg * lm * (isBoss ? 1.6 : 1)),
-        speed: h.speed + (wave * 0.025),
-        radius: isBoss ? 45 : h.radius,
-        color: isBoss ? '#cc0000' : '#ff4b4b',
-        isBoss, frozen: false, frozenUntil: 0
-      };
-      // Boss spawns 2 waves apart
-      if (isBoss) {
-        setTimeout(() => { heroes.push(hero); }, 200);
-        for (let i = 0; i < 2; i++) setTimeout(() => spawnMini(), i * 600 + 400);
-      } else {
-        heroes.push(hero);
-      }
-      const al = document.getElementById('hero-alert');
-      al.textContent = isBoss ? '🔥 BOSS INCOMING 🔥' : '⚠ HERO APPROACHING ⚠';
-      al.style.opacity = 1;
-      setTimeout(() => al.style.opacity = 0, 2800);
-    }
-
-    function spawnMini() {
-      heroes.push({ x: -70, y: pathY + (Math.random() - .5) * 60, hp: 60, maxHp: 60, dmg: 4, speed: 0.8, radius: 18, color: '#aa0000', isBoss: false, frozen: false });
-    }
-
-    // ============================================================
-    // MAIN LOOP
-    // ============================================================
-    function gameLoop(ts) {
-      if (!gameActive || paused) return;
-      const dt = Math.min(ts - lastTs, 50);
-      lastTs = ts;
-      update(dt);
-      render();
-      requestAnimationFrame(gameLoop);
-    }
-
-    function update(dt) {
-      // ---- PASSIVE INCOME ----
-      goldTimer += dt;
-      if (goldTimer > 900) {
-        const inc = 2 + Math.floor(wave / 5);
-        gold += inc; totalGoldEarned += inc; goldTimer = 0;
-        if (Math.random() < .1) { gold += 5; showFloatTxt('+5G', W * 0.5, pathY - 80, '#ffd700', 18); }
-      }
-      manaTimer += dt;
-      if (manaTimer > 130) { mana = Math.min(100, mana + 1); manaTimer = 0; }
-      soulTimer += dt;
-      if (soulTimer > 3000) { souls++; soulTimer = 0; }
-
-      // Combo decay
-      if (combo > 0) { comboTimer -= dt; if (comboTimer <= 0) combo = 0; }
-
-      // ---- HERO SPAWN ----
-      if (heroes.length === 0 && gameActive) {
-        heroSpawnTimer += dt;
-        if (heroSpawnTimer > 2800) { spawnHero(); heroSpawnTimer = 0; }
-      }
-
-      // ---- METEORS ----
-      meteors.forEach(m => {
-        m.life -= 1;
-        m.r += (m.maxR - m.r) * 0.18;
-        heroes.forEach(h => {
-          const dx = h.x - m.x, dy = h.y - m.y;
-          if (Math.sqrt(dx * dx + dy * dy) < m.r + h.radius) {
-            h.hp -= 4;
-            if (settings.particles) spawnBurst(h.x, h.y, 1, '#ffaa00');
-          }
-        });
-      });
-      meteors = meteors.filter(m => m.life > 0);
-
-      // ---- HEROES UPDATE ----
-      heroes.forEach(hero => {
-        const now = Date.now();
-        if (hero.frozenUntil && now < hero.frozenUntil) hero.frozen = true;
-        else hero.frozen = false;
-        if (hero.frozen) return;
-
-        let engaged = false;
-        minions.forEach(minion => {
-          if (minion.dead) return;
-          const dx = hero.x - minion.x, dy = hero.y - minion.y;
-          const dist = Math.sqrt(dx * dx + dy * dy);
-          if (dist < hero.radius + minion.radius + 5) {
-            engaged = true;
-            const rageMult = (Date.now() < rageUntil) ? 2 : 1;
-
-            // Hero hits minion
-            if (Math.random() < 0.055) {
-              let dmg = hero.dmg;
-              if (minion.type === 'golem' && Math.random() < 0.3) {
-                hero.hp -= Math.floor(dmg * 0.3);
-                if (settings.floatdmg) showFloatTxt('REFLECT', hero.x, hero.y - 45, '#a0897a', 14);
-              }
-              minion.hp -= dmg; minion.flash = 6;
-              if (settings.particles) spawnBurst(minion.x, minion.y, 2, '#fff');
-              if (settings.floatdmg) showFloatTxt(dmg, minion.x, minion.y - 22, '#fff', 14);
-            }
-
-            // Minion hits hero
-            if (Math.random() < 0.055) {
-              if (minion.type === 'wraith' && Math.random() < 0.4) {
-                if (settings.floatdmg) showFloatTxt('DODGE!', minion.x, minion.y - 30, '#80deea', 13);
-              } else {
-                const dmg = Math.floor(minion.dmg * rageMult);
-                hero.hp -= dmg;
-                if (settings.particles) spawnBurst(hero.x, hero.y, 2, hero.color);
-                if (settings.floatdmg) showFloatTxt(dmg, hero.x, hero.y - 44, '#ff4b4b', 14);
-                if (settings.shake) shakeBody();
-              }
-            }
-
-            // Dragon burn
-            if (minion.type === 'dragon' && Math.random() < 0.04) {
-              hero.hp -= Math.floor(3 * rageMult);
-              if (settings.particles) spawnBurst(hero.x, hero.y, 1, '#ff8a80');
-            }
-          }
-        });
-        if (!engaged) hero.x += hero.speed;
-
-        if (hero.hp <= 0) {
-          hero.dead = true;
-          if (settings.particles) spawnBurst(hero.x, hero.y, hero.isBoss ? 60 : 30, hero.color);
-          const reward = (hero.isBoss ? 120 : 30) + (wave * 3);
-          gold += reward; totalGoldEarned += reward; totalKills++;
-          wave++;
-          combo++; comboTimer = 2500;
-          if (combo >= 3) showCombo(combo);
-          if (settings.shake) shakeBody();
-          if (settings.killfeed) addKillFeed(hero.isBoss ? '🔥 BOSS SLAIN!' : '💀 Hero defeated');
-          updateHUD();
-        } else if (hero.x > W + 80) {
-          gameOver();
-        }
-      });
-      heroes = heroes.filter(h => !h.dead);
-
-      // ---- MINIONS UPDATE ----
-      minions.forEach(minion => {
-        if (minion.hp <= 0) {
-          minion.dead = true;
-          if (settings.particles) spawnBurst(minion.x, minion.y, 12, minion.color);
-          addXp(minion.type, 20);
-          gold += 3; totalGoldEarned += 3;
-          if (settings.killfeed) addKillFeed(`😵 ${minion.type} fell`);
-          updateHUD();
-        }
-        if (minion.flash > 0) minion.flash--;
-        if (minion.type === 'orc' && Math.random() < 0.018 && minion.hp < minion.maxHp) minion.hp++;
-        if (Date.now() < rageUntil) minion.enraged = true; else minion.enraged = false;
-      });
-      minions = minions.filter(m => !m.dead);
-
-      // ---- PARTICLES ----
-      particles.forEach(p => { p.x += p.vx; p.y += p.vy; p.vy += 0.08; p.life -= 0.035; });
-      particles = particles.filter(p => p.life > 0);
-
-      updateHUD();
-    }
-
-    // ============================================================
-    // RENDER
-    // ============================================================
-    function render() {
-      ctx.clearRect(0, 0, W, H);
-
-      // BG gradient
-      const bg = ctx.createLinearGradient(0, 0, 0, H);
-      bg.addColorStop(0, '#0a0010'); bg.addColorStop(1, '#03030a');
-      ctx.fillStyle = bg; ctx.fillRect(0, 0, W, H);
-
-      // PATH
-      const pg = ctx.createLinearGradient(0, pathY - pathH / 2, 0, pathY + pathH / 2);
-      pg.addColorStop(0, 'rgba(0,0,0,0)');
-      pg.addColorStop(0.5, 'rgba(20,10,10,0.6)');
-      pg.addColorStop(1, 'rgba(0,0,0,0)');
-      ctx.fillStyle = pg; ctx.fillRect(0, pathY - pathH / 2, W, pathH);
-
-      // Path edge lines
-      ctx.save();
-      ctx.strokeStyle = 'rgba(255,100,50,0.12)'; ctx.lineWidth = 1; ctx.setLineDash([8, 12]);
-      ctx.beginPath(); ctx.moveTo(0, pathY - pathH / 2 + 5); ctx.lineTo(W, pathY - pathH / 2 + 5); ctx.stroke();
-      ctx.beginPath(); ctx.moveTo(0, pathY + pathH / 2 - 5); ctx.lineTo(W, pathY + pathH / 2 - 5); ctx.stroke();
-      ctx.setLineDash([]); ctx.restore();
-
-      // GATE (right side — dungeon entrance)
-      ctx.save();
-      const gx = W - 55, gy = pathY - 85, gw = 55, gh = 170;
-      ctx.fillStyle = '#0a0a12'; ctx.fillRect(gx, gy, gw, gh);
-      ctx.shadowColor = '#00d2ff'; ctx.shadowBlur = 25;
-      ctx.strokeStyle = '#00d2ff'; ctx.lineWidth = 3;
-      ctx.strokeRect(gx + 2, gy + 2, gw - 4, gh - 4);
-      // Arch
-      ctx.beginPath(); ctx.arc(gx + gw / 2, gy + 10, gw / 2 - 4, Math.PI, 0); ctx.strokeStyle = 'rgba(0,200,255,0.4)'; ctx.lineWidth = 2; ctx.stroke();
-      // Inner glow
-      ctx.fillStyle = 'rgba(0,80,180,0.15)'; ctx.fillRect(gx + 3, gy + 3, gw - 6, gh - 6);
-      ctx.shadowBlur = 0; ctx.restore();
-
-      // LEFT SPAWN AREA (hint)
-      ctx.save();
-      ctx.strokeStyle = 'rgba(255,215,0,0.08)'; ctx.lineWidth = 2; ctx.setLineDash([4, 8]);
-      ctx.beginPath(); ctx.arc(80, pathY, 60, 0, Math.PI * 2); ctx.stroke();
-      ctx.setLineDash([]); ctx.restore();
-
-      // PARTICLES
-      if (settings.particles) {
-        particles.forEach(p => {
-          ctx.globalAlpha = Math.max(0, p.life);
-          ctx.fillStyle = p.color;
-          ctx.beginPath(); ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2); ctx.fill();
-        });
-        ctx.globalAlpha = 1;
-      }
-
-      // METEORS
-      meteors.forEach(m => {
-        ctx.save();
-        const mg = ctx.createRadialGradient(m.x, m.y, 0, m.x, m.y, m.r);
-        mg.addColorStop(0, 'rgba(255,255,180,0.9)');
-        mg.addColorStop(0.3, 'rgba(255,120,0,0.6)');
-        mg.addColorStop(1, 'rgba(255,50,0,0)');
-        ctx.beginPath(); ctx.arc(m.x, m.y, m.r, 0, Math.PI * 2);
-        ctx.fillStyle = mg; ctx.fill();
-        ctx.strokeStyle = 'rgba(255,180,0,0.5)'; ctx.lineWidth = 2; ctx.stroke();
-        ctx.restore();
-      });
-
-      // HEROES
-      heroes.forEach(hero => {
-        ctx.save();
-        if (hero.frozen) { ctx.globalAlpha = 0.7; }
-        drawEntity(hero.x, hero.y, hero.radius, '⚔', hero.isBoss ? '#cc0000' : '#ee4444', hero.frozen);
-        drawHealthBar(hero.x, hero.y - hero.radius - 16, hero.radius * 2.8, hero.hp, hero.maxHp, hero.isBoss ? '#ff0000' : '#ff4b4b');
-        if (hero.isBoss) {
-          ctx.fillStyle = '#ff2222'; ctx.font = 'bold 13px Cinzel';
-          ctx.textAlign = 'center'; ctx.fillText('BOSS', hero.x, hero.y - hero.radius - 30);
-        }
-        if (hero.frozen) {
-          ctx.strokeStyle = 'rgba(100,200,255,0.8)'; ctx.lineWidth = 3;
-          ctx.beginPath(); ctx.arc(hero.x, hero.y, hero.radius + 4, 0, Math.PI * 2); ctx.stroke();
-        }
-        ctx.restore();
-      });
-
-      // MINIONS
-      minions.forEach(m => {
-        const u = UNITS[m.type];
-        ctx.save();
-        if (m.frozen) ctx.globalAlpha = 0.7;
-        drawEntity(m.x, m.y, m.radius, u.emoji, u.color, false, m.flash > 0, m.enraged);
-        if (m.hp < m.maxHp) drawHealthBar(m.x, m.y - m.radius - 10, m.radius * 2.2, m.hp, m.maxHp, '#00ff88');
-        ctx.restore();
-      });
-    }
-
-    function drawEntity(x, y, r, emoji, color, frozen = false, flash = false, enraged = false) {
-      ctx.save();
-
-      // Glow
-      ctx.shadowColor = enraged ? '#ff6600' : (frozen ? '#00aaff' : color);
-      ctx.shadowBlur = enraged ? 20 : 10;
-
-      // Circle
-      ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI * 2);
-      if (flash) { ctx.fillStyle = 'rgba(255,255,255,0.9)'; }
-      else {
-        const eg = ctx.createRadialGradient(x - r * .3, y - r * .3, 0, x, y, r);
-        eg.addColorStop(0, lighten(color, 40));
-        eg.addColorStop(1, darken(color, 40));
-        ctx.fillStyle = eg;
-      }
-      ctx.fill();
-      ctx.strokeStyle = enraged ? '#ff4400' : (frozen ? '#00d2ff' : 'rgba(255,255,255,0.25)');
-      ctx.lineWidth = enraged ? 3 : 2;
-      ctx.stroke();
-      ctx.shadowBlur = 0;
-
-      // Emoji
-      ctx.font = `${Math.floor(r * 1.1)}px serif`;
-      ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-      ctx.fillText(emoji, x, y + 1);
-
-      // Enraged ring
-      if (enraged) {
-        ctx.strokeStyle = 'rgba(255,80,0,0.4)'; ctx.lineWidth = 6;
-        ctx.beginPath(); ctx.arc(x, y, r + 6, 0, Math.PI * 2); ctx.stroke();
-      }
-      ctx.restore();
-    }
-
-    function lighten(hex, amt) {
-      try { const c = hex.replace('#', ''); const r = parseInt(c.slice(0, 2), 16), g = parseInt(c.slice(2, 4), 16), b = parseInt(c.slice(4, 6), 16); return `rgb(${Math.min(255, r + amt)},${Math.min(255, g + amt)},${Math.min(255, b + amt)})`; } catch { return hex; }
-    }
-    function darken(hex, amt) {
-      try { const c = hex.replace('#', ''); const r = parseInt(c.slice(0, 2), 16), g = parseInt(c.slice(2, 4), 16), b = parseInt(c.slice(4, 6), 16); return `rgb(${Math.max(0, r - amt)},${Math.max(0, g - amt)},${Math.max(0, b - amt)})`; } catch { return hex; }
-    }
-
-    function drawHealthBar(x, y, w, hp, max, color) {
-      const pct = Math.max(0, hp / max);
-      const h = 7;
-      ctx.fillStyle = 'rgba(0,0,0,0.8)'; ctx.fillRect(x - w / 2, y, w, h);
-      ctx.fillStyle = color; ctx.fillRect(x - w / 2 + 1, y + 1, (w - 2) * pct, h - 2);
-      // Shimmer
-      if (pct > 0.6) { ctx.fillStyle = 'rgba(255,255,255,0.12)'; ctx.fillRect(x - w / 2 + 1, y + 1, (w - 2) * pct * .4, 3); }
-    }
-
-    // ============================================================
-    // PROGRESSION
-    // ============================================================
-    function addXp(type, amt) {
-      const p = prog[type];
-      p.xp += amt;
-      if (p.xp >= p.maxXp) {
-        p.xp = 0; p.lvl++; p.maxXp = Math.floor(p.maxXp * 1.5);
-        showLvlUp(type);
-        showToast(`⬆ ${UNITS[type].emoji} ${type.toUpperCase()} leveled up to Lv.${p.lvl}!`);
-        analyticsData.unitUsage[type] = (analyticsData.unitUsage[type] || 0) + 1;
-      }
-      updateCardXP(type);
-    }
-
-    function showLvlUp(type) {
-      const card = document.getElementById('uc-' + type);
-      if (!card) return;
-      const el = document.createElement('div');
-      el.className = 'lvl-up';
-      el.textContent = 'LEVEL UP!';
-      el.style.left = (card.offsetLeft + card.offsetWidth / 2 - 50) + 'px';
-      el.style.top = (card.offsetTop - 55) + 'px';
-      document.body.appendChild(el);
-      setTimeout(() => el.remove(), 1000);
-    }
-
-    function updateCardXP(type) {
-      const p = prog[type];
-      const el = document.getElementById('xp-' + type);
-      if (el) el.style.width = ((p.xp / p.maxXp) * 100) + '%';
-      const bl = document.getElementById('lvl-' + type);
-      if (bl) bl.textContent = p.lvl;
-    }
-
-    // ============================================================
-    // UI
-    // ============================================================
-    function updateHUD() {
-      document.getElementById('g-gold').textContent = Math.floor(gold);
-      document.getElementById('g-mana').textContent = Math.floor(mana) + '/100';
-      document.getElementById('g-souls').textContent = souls;
-      document.getElementById('g-wave').textContent = wave;
-
-      Object.keys(UNITS).forEach(key => {
-        const card = document.getElementById('uc-' + key);
-        if (!card) return;
-        if (gold < UNITS[key].cost) card.classList.add('dis');
-        else card.classList.remove('dis');
-      });
-
-      // Spell button opacity
-      Object.entries(SPELLS).forEach(([type, sp]) => {
-        const btn = document.getElementById('sb-' + type);
-        if (!btn || btn.classList.contains('cd')) return;
-        btn.style.opacity = mana >= sp.mana ? '1' : '0.4';
-      });
-
-      // Rage indicator on minions (handled in render)
-      // Freeze active indicator
-      if (Date.now() < frozenUntil) {
-        document.getElementById('sb-freeze').style.opacity = '0.5';
-      }
-    }
-
-    function buildCardDeck() {
-      const row = document.getElementById('card-row');
-      if (!row) return;
-      row.innerHTML = '';
-      Object.entries(UNITS).forEach(([type, u]) => {
-        const el = document.createElement('div');
-        el.className = 'u-card';
-        el.id = 'uc-' + type;
-        el.onclick = () => selectUnit(type);
-        el.innerHTML = `
-      <div class="u-avatar" style="background:${u.color}22;border-color:${u.color}44">
-        <span style="font-size:1.4rem">${u.emoji}</span>
-        <div class="lvl-badge" id="lvl-${type}">1</div>
+function buildSpellUpgrades(){
+  const grid=document.getElementById('spl-grid');
+  grid.innerHTML='';
+  SHOP_SPELLS.forEach(sp=>{
+    const lvl=getUpgradeLevel(sp.id);
+    const maxed=lvl>=sp.max;
+    const currVal=sp.baseVal-(lvl*sp.reduce);
+    const nextVal=sp.baseVal-((lvl+1)*sp.reduce);
+    const canAfford=(CU?.darkCoins||0)>=sp.cost;
+    const card=document.createElement('div');
+    card.className='spl-card';
+    card.innerHTML=`
+      <div class="spl-ico">${sp.emoji}</div>
+      <div class="spl-info">
+        <div class="spl-name">${sp.name} ${maxed?'<span style="color:#00e676;font-size:.65rem">(MAXED)</span>':''}</div>
+        <div class="spl-desc">${sp.desc}</div>
+        <div class="spl-stat">${sp.stat}<span>${(currVal/1000).toFixed(1)}s</span>${!maxed?` → ${(nextVal/1000).toFixed(1)}s`:''} &nbsp; Lv.${lvl}/${sp.max}</div>
       </div>
-      <div class="u-name">${type}</div>
-      <div class="u-cost"><div class="cost-dot"></div>${u.cost}</div>
-      <div class="u-trait">${u.trait}</div>
-      <div class="xp-bg"><div class="xp-fill" id="xp-${type}"></div></div>
-    `;
-        row.appendChild(el);
-      });
-    }
+      <button class="spl-buy${maxed?' owned':''}" ${maxed||!canAfford?'disabled':''} onclick="buySpell('${sp.id}',${sp.cost},${sp.max})">
+        ${maxed?'✓ MAX':(canAfford?sp.cost+'🪙':'Need coins')}
+      </button>`;
+    grid.appendChild(card);
+  });
+}
 
-    function showCombo(n) {
-      const container = document.getElementById('combo-container');
-      const el = document.createElement('div');
-      el.className = 'combo-display';
-      el.innerHTML = `${n}x COMBO<br><span style="font-size:1rem;color:#fff">+${n * 15} BONUS GOLD</span>`;
-      container.appendChild(el);
-      gold += n * 15; totalGoldEarned += n * 15;
-      setTimeout(() => el.remove(), 700);
-    }
+function buySpell(id,cost,max){
+  const lvl=getUpgradeLevel(id);
+  if(lvl>=max){toast('Already maxed!');return;}
+  if(!spendDC(cost)){toast('❌ Not enough Dark Coins!');return;}
+  setUpgradeLevel(id,lvl+1);
+  toast('✅ Spell upgraded!');vib(30);
+  buildSpellUpgrades();
+}
 
-    function addKillFeed(msg) {
-      if (!settings.killfeed) return;
-      const feed = document.getElementById('kill-feed');
-      const el = document.createElement('div');
-      el.className = 'kill-entry';
-      el.textContent = msg;
-      feed.appendChild(el);
-      setTimeout(() => el.remove(), 3100);
-      while (feed.children.length > 5) feed.removeChild(feed.firstChild);
-    }
+function buildBoosts(){
+  const grid=document.getElementById('boost-grid');
+  grid.innerHTML='';
+  SHOP_BOOSTS.forEach(b=>{
+    const lvl=getUpgradeLevel(b.id);
+    const maxed=lvl>=b.max;
+    const canAfford=(CU?.darkCoins||0)>=b.cost;
+    const card=document.createElement('div');
+    card.className='bst-card';
+    card.innerHTML=`
+      <div class="bst-ico">${b.emoji}</div>
+      <div class="bst-name">${b.name}</div>
+      <div class="bst-desc">${b.desc}</div>
+      <div style="font-size:.62rem;color:#444;margin-bottom:4px">Lv. ${lvl}/${b.max}</div>
+      <button class="bst-buy${maxed?' owned':''}" ${maxed||!canAfford?'disabled':''} onclick="buyBoost('${b.id}',${b.cost},${b.max})">
+        ${maxed?'✓ MAX':(canAfford?b.cost+'🪙 BUY':'Need coins')}
+      </button>`;
+    grid.appendChild(card);
+  });
+}
 
-    // ---- FX ----
-    function spawnBurst(x, y, n, color) {
-      for (let i = 0; i < n; i++) {
-        particles.push({ x, y, vx: (Math.random() - .5) * 9, vy: (Math.random() - .5) * 9 - 1, life: 1, size: Math.random() * 5 + 2, color });
+function buyBoost(id,cost,max){
+  const lvl=getUpgradeLevel(id);
+  if(lvl>=max){toast('Already maxed!');return;}
+  if(!spendDC(cost)){toast('❌ Not enough Dark Coins!');return;}
+  setUpgradeLevel(id,lvl+1);
+  toast('✅ Boost upgraded! Active next match.');vib(30);
+  buildBoosts();
+}
+
+/* ── HOME / SETTINGS UI ── */
+function refreshHome(){
+  if(!CU)return;
+  document.getElementById('nav-av').textContent=CU.name[0].toUpperCase();
+  document.getElementById('nav-nm').textContent=CU.name;
+  const users=LS.g('do_users')||{};
+  const reg=Object.keys(users).length;
+  const tg=Object.values(users).reduce((s,u)=>s+(u.gamesPlayed||0),0);
+  const ab=Object.values(users).reduce((m,u)=>Math.max(m,u.bestWave||0),0);
+  document.getElementById('hs-reg').textContent=reg;
+  document.getElementById('hs-games').textContent=tg;
+  document.getElementById('hs-best').textContent=ab||'—';
+  document.getElementById('my-wave').textContent=CU.bestWave||0;
+  document.getElementById('my-games').textContent=CU.gamesPlayed||0;
+  document.getElementById('my-kills').textContent=CU.totalKills||0;
+  updateDCDisplays();
+}
+
+function fillSett(){
+  if(!CU)return;
+  document.getElementById('a-best').textContent=CU.bestWave||0;
+  document.getElementById('a-games').textContent=CU.gamesPlayed||0;
+  document.getElementById('a-kills').textContent=CU.totalKills||0;
+  document.getElementById('a-dc').textContent=CU.darkCoins||0;
+  document.getElementById('sett-nm').textContent=CU.name;
+  document.getElementById('sett-em').textContent=CU.email;
+  const users=LS.g('do_users')||{};
+  const reg=Object.keys(users).length;
+  document.getElementById('a-reg').textContent=reg;
+  document.getElementById('a-reg-sub').textContent=reg+' account'+(reg===1?'':'s')+' on this device';
+  // chart
+  const days=CU.sessionDays||[];
+  const mc=document.getElementById('mchr'),cd=document.getElementById('cdays');
+  mc.innerHTML='';cd.innerHTML='';
+  const SLOTS=7;
+  for(let i=0;i<SLOTS;i++){
+    const tgt=new Date(Date.now()-((SLOTS-1-i)*86400000));
+    const cnt=days.filter(ts=>new Date(ts).toDateString()===tgt.toDateString()).length;
+    const b=document.createElement('div');b.className='cbar';
+    b.style.cssText=`height:${Math.max((cnt/Math.max(...Array.from({length:SLOTS},(_, j)=>days.filter(ts=>new Date(ts).toDateString()===new Date(Date.now()-((SLOTS-1-j)*86400000)).toDateString()).length),1))*100,5)}%;background:${i===SLOTS-1?'var(--gold)':'rgba(170,0,255,.45)'}`;
+    mc.appendChild(b);
+    const dl=document.createElement('div');dl.className='cday';dl.textContent=tgt.toLocaleDateString('en',{weekday:'short'}).slice(0,2);cd.appendChild(dl);
+  }
+  // unit usage
+  const ub=document.getElementById('ubars');
+  const units=['imp','orc','golem','wraith','dragon'];
+  const emojis={imp:'😈',orc:'👹',golem:'🪨',wraith:'👻',dragon:'🐉'};
+  const colors={imp:'#a8e6cf',orc:'#dcedc1',golem:'#a0897a',wraith:'#80deea',dragon:'#ff8a80'};
+  const usage=CU.unitUsage||{};
+  const maxU=Math.max(...units.map(n=>usage[n]||0),1);
+  ub.innerHTML=units.map(n=>`<div class="ubrow"><div class="ubtop"><span>${emojis[n]} ${n.toUpperCase()}</span><span style="color:#333">${usage[n]||0}</span></div><div class="ubbg"><div class="ubfi" style="width:${((usage[n]||0)/maxU)*100}%;background:${colors[n]}"></div></div></div>`).join('');
+}
+
+/* ── TOAST ── */
+function toast(msg){const t=document.createElement('div');t.className='toast';t.textContent=msg;document.body.appendChild(t);setTimeout(()=>t.remove(),3100);}
+
+/* ── PRELOADER ── */
+const TIPS=['💡 Golems reflect 30% of damage back to heroes','💡 Wraiths dodge 40% of attacks','💡 Freeze stops ALL heroes for 3 seconds','💡 Rage doubles minion damage for 5 seconds','💡 Dragon deals AoE burn every second','💡 Orcs regenerate HP — they outlast anything','💡 Dark Coins = enemies × waves ÷ 3','💡 Spend Dark Coins in the Shop to upgrade troops','💡 Shop upgrades are permanent across sessions','💡 Combo kills earn bonus gold — chain them!'];
+const MSGS=['Awakening the dungeon…','Summoning the horde…','Sharpening dark blades…','Charging spell crystals…','Stocking the shop…','Opening the dark gate…','The throne awaits…','Darkness rises…'];
+
+function spawnEmbers(){
+  const w=document.getElementById('embers');
+  for(let i=0;i<22;i++){
+    const e=document.createElement('div');e.className='emb';
+    const d=(Math.random()-.5)*130;
+    e.style.cssText=`left:${Math.random()*100}%;bottom:0;--d:${d}px;width:${Math.random()*3+1}px;height:${Math.random()*3+1}px;background:hsl(${20+Math.random()*20},100%,${50+Math.random()*20}%);animation-duration:${3+Math.random()*5}s;animation-delay:${Math.random()*5}s;opacity:${Math.random()*.7+.2}`;
+    w.appendChild(e);
+  }
+}
+
+window.addEventListener('load',()=>{
+  spawnEmbers();applyCF();buildDeck();
+  const saved=LS.g('do_current'),users=LS.g('do_users')||{};
+  if(saved&&users[saved]){CU=users[saved];if(!CU.darkCoins)CU.darkCoins=0;if(!CU.shopUpgrades)CU.shopUpgrades={};}
+  const START=Date.now(),MIN=4000;
+  let pct=0,mi=0;
+  const fill=document.getElementById('pfill'),ppct=document.getElementById('ppct'),pmsg=document.getElementById('pmsg');
+  document.getElementById('ptip').textContent=TIPS[Math.floor(Math.random()*TIPS.length)];
+  const iv=setInterval(()=>{
+    const elapsed=Date.now()-START,tr=Math.min(elapsed/MIN,1);
+    const target=tr<.85?92*tr/.85:92+(tr-.85)/.15*8;
+    pct=Math.min(pct+Math.random()*6+2,target);
+    fill.style.width=Math.min(pct,100)+'%';ppct.textContent=Math.floor(Math.min(pct,100))+'%';
+    const ni=Math.floor((pct/100)*MSGS.length);
+    if(ni!==mi&&ni<MSGS.length){mi=ni;pmsg.textContent=MSGS[mi];}
+    if(pct>=92&&elapsed>=MIN){clearInterval(iv);fill.style.width='100%';ppct.textContent='100%';pmsg.textContent='The dungeon is ready.';setTimeout(finishLoad,350);}
+  },170);
+});
+
+function finishLoad(){
+  show('pre',false);
+  if(CU){show('home',true);refreshHome();}
+  else show('auth',true);
+}
+
+/* ══════════════════════════════════════
+   GAME ENGINE
+══════════════════════════════════════ */
+const gc=document.getElementById('gc'),ctx=gc.getContext('2d');
+let W,H,pathY,pathH;
+function resizeCanvas(){W=gc.width=window.innerWidth;H=gc.height=window.innerHeight;pathY=H*.5;pathH=Math.min(175,H*.25);}
+window.addEventListener('resize',resizeCanvas);resizeCanvas();
+
+/* BASE UNIT DEFS */
+const UNITS={
+  imp:   {emoji:'😈',cost:15, hp:40, dmg:3, spd:1.8,rad:14,col:'#a8e6cf',trait:'Frenzied'},
+  orc:   {emoji:'👹',cost:30, hp:120,dmg:6, spd:0.9,rad:20,col:'#dcedc1',trait:'Regenerate'},
+  golem: {emoji:'🪨',cost:60, hp:300,dmg:8, spd:0.5,rad:28,col:'#a0897a',trait:'Thorns'},
+  wraith:{emoji:'👻',cost:80, hp:60, dmg:15,spd:2.5,rad:18,col:'#80deea',trait:'Evasion'},
+  dragon:{emoji:'🐉',cost:150,hp:500,dmg:40,spd:1.0,rad:35,col:'#ff8a80',trait:'Burn'}
+};
+const HERO={hp:150,dmg:8,spd:.55,rad:24};
+
+/* get effective unit stats including shop upgrades */
+function getEffectiveBase(type){
+  const b={...UNITS[type]};
+  const hpLvl=getUpgradeLevel(type+'_hp');
+  const dmgLvl=getUpgradeLevel(type+'_dmg');
+  const spdLvl=getUpgradeLevel(type+'_spd');
+  b.hp=Math.floor(b.hp*(1+hpLvl*.2));
+  b.dmg=Math.floor(b.dmg*(1+dmgLvl*.2));
+  b.spd=parseFloat((b.spd*(1+spdLvl*.1)).toFixed(2));
+  return b;
+}
+
+const SPELLS_DEF={
+  meteor:{mana:30,baseCd:3500},
+  freeze:{mana:20,baseCd:5000},
+  rage:  {mana:25,baseCd:6000}
+};
+let SPELLS={meteor:{mana:30,cd:3500,until:0},freeze:{mana:20,cd:5000,until:0},rage:{mana:25,cd:6000,until:0}};
+
+function refreshSpellCDs(){
+  Object.entries(SPELLS_DEF).forEach(([key,def])=>{
+    const idMap={meteor:'meteor_cd',freeze:'freeze_cd',rage:'rage_cd'};
+    const lvl=getUpgradeLevel(idMap[key]);
+    const reduce=SHOP_SPELLS.find(s=>s.id===idMap[key])?.reduce||0;
+    SPELLS[key].cd=def.baseCd-(lvl*reduce);
+    SPELLS[key].mana=def.mana;
+  });
+}
+
+/* PER-SESSION PROGRESSION */
+const PROG={imp:{lvl:1,xp:0,max:100},orc:{lvl:1,xp:0,max:100},golem:{lvl:1,xp:0,max:100},wraith:{lvl:1,xp:0,max:100},dragon:{lvl:1,xp:0,max:100}};
+
+/* STATE */
+let GA=false,paused=false;
+let gold,mana,souls,wave,combo,comboT,kills,goldE;
+let minions,heroes,particles,meteors;
+let freezeT=0,rageT=0,selU='imp',actSpl=null;
+let gT=0,mT=0,sT=0,hT=0,lastTs=0;
+let goldIncomeBonus=0,startGoldBonus=0,manaSpeedBonus=0,comboMult=1;
+
+function loadBoostsForMatch(){
+  goldIncomeBonus=getUpgradeLevel('income');
+  startGoldBonus=getUpgradeLevel('startgold')*30;
+  manaSpeedBonus=getUpgradeLevel('manaspd')*.15;
+  comboMult=getUpgradeLevel('combobonus')>0?1.5:1;
+}
+
+/* INPUT */
+let drag=false;
+const ptXY=e=>e.changedTouches?[e.changedTouches[0].clientX,e.changedTouches[0].clientY]:[e.clientX,e.clientY];
+function onDown(e){e.preventDefault();drag=true;handlePt(e);}
+function onMove(e){e.preventDefault();if(drag)handlePt(e);}
+function onUp(){drag=false;}
+function handlePt(e){
+  if(!GA||paused)return;
+  const[cx,cy]=ptXY(e);
+  if(actSpl==='meteor'){castMeteor(cx,cy);return;}
+  if(cy>pathY-pathH*.7&&cy<pathY+pathH*.7){spawnMinion(cx,pathY);vib(20);}
+}
+gc.addEventListener('mousedown',onDown);gc.addEventListener('mousemove',onMove);gc.addEventListener('mouseup',onUp);
+gc.addEventListener('touchstart',onDown,{passive:false});gc.addEventListener('touchmove',onMove,{passive:false});gc.addEventListener('touchend',onUp,{passive:false});
+const vib=ms=>{try{if(navigator.vibrate)navigator.vibrate(ms);}catch{}};
+function togglePause(){if(!GA)return;paused=!paused;document.getElementById('pov').classList.toggle('on',paused);if(!paused){lastTs=performance.now();requestAnimationFrame(loop);}}
+document.addEventListener('keydown',e=>{if(e.key==='Escape'||e.key===' ')togglePause();});
+
+/* SPELLS */
+function actSpell(t){
+  if(!GA||paused)return;
+  const sp=SPELLS[t];
+  if(mana<sp.mana||Date.now()<sp.until)return;
+  if(t==='freeze'){mana-=sp.mana;sp.until=Date.now()+sp.cd;freezeT=Date.now()+3000;heroes.forEach(h=>h.freezeT=freezeT);toast('❄️ Frozen for 3s!');setCD('freeze',sp.cd);burstp(W/2,pathY,30,'rgba(0,170,255,0.7)');vib([30,20,30]);}
+  else if(t==='rage'){mana-=sp.mana;sp.until=Date.now()+sp.cd;rageT=Date.now()+5000;toast('🔥 RAGE! DMG ×2 for 5s!');setCD('rage',sp.cd);burstp(W/2,pathY,30,'rgba(255,90,0,0.7)');vib([30,20,30,20,30]);}
+  else if(t==='meteor'){if(actSpl==='meteor'){actSpl=null;gc.style.cursor='default';document.getElementById('sb-meteor').classList.remove('asp');return;}mana-=sp.mana;sp.until=Date.now()+sp.cd;actSpl='meteor';gc.style.cursor='crosshair';document.getElementById('sb-meteor').classList.add('asp');toast('☄️ Tap the battlefield!');}
+  updateHUD();
+}
+function castMeteor(x,y){actSpl=null;gc.style.cursor='default';document.getElementById('sb-meteor').classList.remove('asp');setCD('meteor',SPELLS.meteor.cd);meteors.push({x,y,r:0,maxR:90,life:28});if(CF.shake)doShake();vib([50,30,80]);}
+function setCD(t,ms){const btn=document.getElementById('sb-'+t);btn.classList.add('cd');let r=Math.ceil(ms/1000);const iv=setInterval(()=>{r--;if(r<=0){clearInterval(iv);btn.classList.remove('cd');btn.style.opacity='1';}},1000);}
+
+/* UNIT SELECT */
+function selUnit(t){selU=t;document.querySelectorAll('.uc').forEach(c=>c.classList.remove('sel'));document.getElementById('uc-'+t)?.classList.add('sel');}
+
+function getStats(t){
+  const b=getEffectiveBase(t),p=PROG[t],m=1+(p.lvl-1)*.15;
+  return{...b,hp:Math.floor(b.hp*m),dmg:Math.floor(b.dmg*m)};
+}
+
+function spawnMinion(x,y){
+  const st=getStats(selU);
+  if(gold<st.cost){toast('💰 Need '+st.cost+' gold!');return;}
+  gold-=st.cost;
+  const oy=(Math.random()-.5)*35;
+  minions.push({x,y:y+oy,type:selU,...st,maxHp:st.hp,flash:0,enraged:Date.now()<rageT,freezeT:0});
+  if(CF.ptcl)burstp(x,y+oy,6,UNITS[selU].col);
+  if(CU){CU.unitUsage=CU.unitUsage||{};CU.unitUsage[selU]=(CU.unitUsage[selU]||0)+1;saveUser();}
+  updateHUD();
+}
+
+/* HERO SPAWN */
+function spawnHero(){
+  const isBoss=wave%5===0,lm=1+(wave*.36),bm=isBoss?2.8:1;
+  const hp=Math.floor(HERO.hp*lm*bm);
+  heroes.push({x:-80,y:pathY+(Math.random()-.5)*35,hp,maxHp:hp,dmg:Math.floor(HERO.dmg*lm*(isBoss?1.6:1)),spd:HERO.spd+(wave*.022),rad:isBoss?44:HERO.rad,col:isBoss?'#bb0000':'#ee3333',isBoss,freezeT:0});
+  if(isBoss)for(let i=0;i<2;i++)setTimeout(()=>spawnMini(),i*500+300);
+  const hw=document.getElementById('hwrn');
+  hw.textContent=isBoss?'🔥 BOSS INCOMING 🔥':'⚠️ HERO APPROACHING ⚠️';
+  hw.style.opacity='1';setTimeout(()=>hw.style.opacity='0',2800);
+  if(isBoss)vib([100,50,100,50,200]);
+}
+function spawnMini(){const hp=60;heroes.push({x:-80,y:pathY+(Math.random()-.5)*55,hp,maxHp:hp,dmg:4,spd:.8,rad:16,col:'#990000',isBoss:false,freezeT:0});}
+
+function showWaveAnn(w){
+  const el=document.createElement('div');el.className='wann';
+  el.innerHTML=`<div style="font-size:clamp(.72rem,2.5vw,.95rem);color:#666;letter-spacing:4px">INCOMING</div><div style="font-size:clamp(2rem,7vw,3.6rem);color:#fff;text-shadow:0 0 28px #ff2200">WAVE ${w}</div>`;
+  document.getElementById('fxl').appendChild(el);setTimeout(()=>el.remove(),2300);
+}
+
+/* MAIN LOOP */
+function loop(ts){if(!GA||paused)return;const dt=Math.min(ts-lastTs,50);lastTs=ts;update(dt);render();requestAnimationFrame(loop);}
+
+function update(dt){
+  const now=Date.now();
+  // Income — affected by shop boost
+  gT+=dt;
+  if(gT>850){const base=2+Math.floor(wave/4);gold+=base+goldIncomeBonus;goldE+=base+goldIncomeBonus;gT=0;}
+  // Mana — affected by boost
+  mT+=dt;
+  const manaInterval=130/(1+manaSpeedBonus);
+  if(mT>manaInterval){mana=Math.min(100,mana+1);mT=0;}
+  sT+=dt;if(sT>2600){souls++;sT=0;}
+  combo>0&&(comboT-=dt,comboT<=0&&(combo=0));
+  if(heroes.length===0&&GA){hT+=dt;if(hT>2700){hT=0;spawnHero();showWaveAnn(wave);}}else hT=0;
+
+  // Meteors
+  meteors.forEach(m=>{m.life--;m.r+=(m.maxR-m.r)*.18;heroes.forEach(h=>{const dx=h.x-m.x,dy=h.y-m.y;if(Math.sqrt(dx*dx+dy*dy)<m.r+h.rad){h.hp-=4;if(CF.ptcl)burstp(h.x,h.y,1,'#ffaa00');}});});
+  meteors=meteors.filter(m=>m.life>0);
+
+  // Heroes
+  heroes.forEach(h=>{
+    if(now<h.freezeT)return;
+    let busy=false;
+    minions.forEach(m=>{
+      if(m.dead)return;
+      const dx=h.x-m.x,dy=h.y-m.y,d=Math.sqrt(dx*dx+dy*dy);
+      if(d<h.rad+m.rad+4){
+        busy=true;
+        const rm=now<rageT?2:1;
+        if(Math.random()<.055){
+          const dmg=h.dmg;
+          if(m.type==='golem'&&Math.random()<.3){h.hp-=Math.floor(dmg*.3);if(CF.dmg)flt('REFLECT',h.x,h.y-44,'#a0897a',12);}
+          m.hp-=dmg;m.flash=7;if(CF.ptcl)burstp(m.x,m.y,2,'#fff');if(CF.dmg)flt(dmg,m.x,m.y-22,'#fff',12);
+        }
+        if(Math.random()<.055){
+          if(m.type==='wraith'&&Math.random()<.4){if(CF.dmg)flt('DODGE!',m.x,m.y-28,'#80deea',11);}
+          else{const dmg=Math.floor(m.dmg*rm);h.hp-=dmg;if(CF.ptcl)burstp(h.x,h.y,2,h.col);if(CF.dmg)flt(dmg,h.x,h.y-44,'#ff5555',12);if(CF.shake)doShake();}
+        }
+        if(m.type==='dragon'&&Math.random()<.04){h.hp-=Math.floor(3*(now<rageT?2:1));if(CF.ptcl)burstp(h.x,h.y,1,'#ff8a80');}
       }
-    }
-
-    function showFloatTxt(text, x, y, color, size = 16) {
-      const el = document.createElement('div');
-      el.className = 'float-txt';
-      el.textContent = text;
-      el.style.cssText = `left:${x}px;top:${y}px;color:${color};font-size:${size}px`;
-      document.body.appendChild(el);
-      setTimeout(() => el.remove(), 850);
-    }
-
-    function shakeBody() {
-      document.getElementById('game-wrap').classList.remove('shake');
-      void document.getElementById('game-wrap').offsetWidth;
-      document.getElementById('game-wrap').classList.add('shake');
-    }
-
-    // ============================================================
-    // INIT RUN
-    // ============================================================
-    // Apply saved toggle states
-    window.addEventListener('DOMContentLoaded', () => {
-      Object.entries(settings).forEach(([k, v]) => {
-        const el = document.getElementById('tog-' + k);
-        if (el) el.classList.toggle('on', v);
-      });
     });
-  </script>
+    if(!busy)h.x+=h.spd;
+    if(h.hp<=0){
+      h.dead=true;if(CF.ptcl)burstp(h.x,h.y,h.isBoss?60:28,h.col);
+      const rew=(h.isBoss?120:30)+(wave*3);gold+=rew;goldE+=rew;kills++;
+      combo++;comboT=2400;
+      if(combo>=3)showCombo(combo);
+      wave++;if(CF.shake)doShake();
+      if(CF.kf)addKF(h.isBoss?'🔥 BOSS SLAIN! +'+rew+'g':'💀 Hero slain +'+rew+'g');
+      vib(h.isBoss?[80,40,80,40,120]:40);updateHUD();
+    }else if(h.x>W+90){gameOver();return;}
+  });
+  heroes=heroes.filter(h=>!h.dead);
+
+  minions.forEach(m=>{
+    if(m.hp<=0){m.dead=true;if(CF.ptcl)burstp(m.x,m.y,10,m.col);addXP(m.type,18);gold+=3;goldE+=3;if(CF.kf)addKF('😵 '+m.type+' fell');updateHUD();}
+    if(m.flash>0)m.flash--;
+    if(m.type==='orc'&&Math.random()<.015&&m.hp<m.maxHp)m.hp++;
+    m.enraged=Date.now()<rageT;
+  });
+  minions=minions.filter(m=>!m.dead);
+  particles.forEach(p=>{p.x+=p.vx;p.y+=p.vy;p.vy+=.06;p.life-=.032;});
+  particles=particles.filter(p=>p.life>0);
+  updateHUD();
+}
+
+/* RENDER */
+function render(){
+  ctx.clearRect(0,0,W,H);
+  const bg=ctx.createLinearGradient(0,0,0,H);bg.addColorStop(0,'#080012');bg.addColorStop(1,'#040008');ctx.fillStyle=bg;ctx.fillRect(0,0,W,H);
+  ctx.save();ctx.strokeStyle='rgba(255,40,40,.018)';ctx.lineWidth=1;for(let i=0;i<H;i+=24){ctx.beginPath();ctx.moveTo(0,i);ctx.lineTo(W,i);ctx.stroke();}ctx.restore();
+  const pg=ctx.createLinearGradient(0,pathY-pathH/2,0,pathY+pathH/2);pg.addColorStop(0,'rgba(0,0,0,0)');pg.addColorStop(.5,'rgba(30,8,8,.52)');pg.addColorStop(1,'rgba(0,0,0,0)');ctx.fillStyle=pg;ctx.fillRect(0,pathY-pathH/2,W,pathH);
+  ctx.save();ctx.strokeStyle='rgba(255,70,40,.07)';ctx.lineWidth=1;ctx.setLineDash([6,15]);[[pathY-pathH/2+4],[pathY+pathH/2-4]].forEach(([y])=>{ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke();});ctx.setLineDash([]);ctx.restore();
+  // Spawn hint
+  ctx.save();const sg=ctx.createRadialGradient(68,pathY,0,68,pathY,62);sg.addColorStop(0,'rgba(255,215,0,.035)');sg.addColorStop(1,'transparent');ctx.fillStyle=sg;ctx.beginPath();ctx.arc(68,pathY,62,0,Math.PI*2);ctx.fill();ctx.strokeStyle='rgba(255,215,0,.07)';ctx.lineWidth=1;ctx.setLineDash([3,9]);ctx.beginPath();ctx.arc(68,pathY,52,0,Math.PI*2);ctx.stroke();ctx.setLineDash([]);ctx.restore();
+  // Gate
+  const gx=W-56,gy=pathY-92,gw=56,gh=184;ctx.save();ctx.fillStyle='#07000f';ctx.fillRect(gx,gy,gw,gh);const gg=ctx.createLinearGradient(gx,gy,gx+gw,gy+gh);gg.addColorStop(0,'rgba(0,140,255,.1)');gg.addColorStop(1,'rgba(0,40,120,.05)');ctx.fillStyle=gg;ctx.fillRect(gx+2,gy+2,gw-4,gh-4);ctx.shadowColor='#00c8ff';ctx.shadowBlur=20;ctx.strokeStyle='rgba(0,200,255,.45)';ctx.lineWidth=2;ctx.strokeRect(gx+2,gy+2,gw-4,gh-4);ctx.shadowBlur=0;ctx.fillStyle='rgba(0,200,255,.2)';ctx.font=`bold ${Math.floor(gw*.16)}px Cinzel`;ctx.textAlign='center';ctx.fillText('GATE',gx+gw/2,pathY+4);ctx.restore();
+  // Auras
+  if(Date.now()<rageT){const ra=ctx.createLinearGradient(0,pathY-pathH/2,0,pathY+pathH/2);ra.addColorStop(0,'rgba(255,80,0,0)');ra.addColorStop(.5,'rgba(255,50,0,.055)');ra.addColorStop(1,'rgba(255,80,0,0)');ctx.fillStyle=ra;ctx.fillRect(0,pathY-pathH/2,W,pathH);}
+  if(Date.now()<freezeT){const fa=ctx.createLinearGradient(0,pathY-pathH/2,0,pathY+pathH/2);fa.addColorStop(0,'rgba(0,140,255,0)');fa.addColorStop(.5,'rgba(0,100,255,.055)');fa.addColorStop(1,'rgba(0,140,255,0)');ctx.fillStyle=fa;ctx.fillRect(0,pathY-pathH/2,W,pathH);}
+  // Particles
+  if(CF.ptcl){particles.forEach(p=>{ctx.globalAlpha=Math.max(0,p.life);ctx.fillStyle=p.col;ctx.beginPath();ctx.arc(p.x,p.y,p.size,0,Math.PI*2);ctx.fill();});ctx.globalAlpha=1;}
+  // Meteors
+  meteors.forEach(m=>{ctx.save();const mg=ctx.createRadialGradient(m.x,m.y,0,m.x,m.y,m.r);mg.addColorStop(0,'rgba(255,255,200,.88)');mg.addColorStop(.3,'rgba(255,120,0,.55)');mg.addColorStop(1,'rgba(255,30,0,0)');ctx.beginPath();ctx.arc(m.x,m.y,m.r,0,Math.PI*2);ctx.fillStyle=mg;ctx.fill();ctx.restore();});
+  // Heroes
+  heroes.forEach(h=>{const frozen=Date.now()<h.freezeT;ctx.save();if(frozen)ctx.globalAlpha=.62;drawEnt(h.x,h.y,h.rad,'⚔️',h.col,false,frozen);drawHPbar(h.x,h.y-h.rad-16,h.rad*2.8,h.hp,h.maxHp,h.isBoss?'#ff1111':'#ff5555');if(h.isBoss){ctx.fillStyle='#ff2222';ctx.font=`bold ${Math.max(11,Math.floor(W*.028))}px Cinzel`;ctx.textAlign='center';ctx.fillText('BOSS',h.x,h.y-h.rad-32);}if(frozen){ctx.strokeStyle='rgba(120,220,255,.65)';ctx.lineWidth=3;ctx.beginPath();ctx.arc(h.x,h.y,h.rad+5,0,Math.PI*2);ctx.stroke();}ctx.restore();});
+  // Minions
+  minions.forEach(m=>{const u=UNITS[m.type];ctx.save();drawEnt(m.x,m.y,m.rad,u.emoji,u.col,m.flash>0,false,m.enraged);if(m.hp<m.maxHp)drawHPbar(m.x,m.y-m.rad-10,m.rad*2.2,m.hp,m.maxHp,'#00e676');ctx.restore();});
+}
+
+function drawEnt(x,y,r,emoji,col,flash,frozen,enraged){
+  ctx.save();ctx.shadowColor=enraged?'#ff6600':frozen?'#00aaff':col;ctx.shadowBlur=enraged?18:8;
+  ctx.beginPath();ctx.arc(x,y,r,0,Math.PI*2);
+  if(flash){ctx.fillStyle='rgba(255,255,255,.9)';}
+  else{const eg=ctx.createRadialGradient(x-r*.3,y-r*.3,0,x,y,r);eg.addColorStop(0,lighten(col,44));eg.addColorStop(1,darken(col,48));ctx.fillStyle=eg;}
+  ctx.fill();ctx.strokeStyle=enraged?'#ff4400':frozen?'#00d2ff':'rgba(255,255,255,.18)';ctx.lineWidth=enraged?3:1.5;ctx.stroke();ctx.shadowBlur=0;
+  ctx.font=`${Math.floor(r*1.05)}px serif`;ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(emoji,x,y+1);
+  if(enraged){ctx.strokeStyle='rgba(255,80,0,.3)';ctx.lineWidth=5;ctx.beginPath();ctx.arc(x,y,r+7,0,Math.PI*2);ctx.stroke();}
+  ctx.restore();
+}
+function drawHPbar(x,y,w,hp,max,col){const pct=Math.max(0,hp/max);ctx.fillStyle='rgba(0,0,0,.72)';ctx.fillRect(x-w/2,y,w,7);ctx.fillStyle=col;ctx.fillRect(x-w/2+1,y+1,(w-2)*pct,5);}
+const lighten=(h,a)=>{try{const c=h.replace('#',''),r=parseInt(c.slice(0,2),16),g=parseInt(c.slice(2,4),16),b=parseInt(c.slice(4,6),16);return `rgb(${Math.min(255,r+a)},${Math.min(255,g+a)},${Math.min(255,b+a)})`}catch{return h}};
+const darken=(h,a)=>{try{const c=h.replace('#',''),r=parseInt(c.slice(0,2),16),g=parseInt(c.slice(2,4),16),b=parseInt(c.slice(4,6),16);return `rgb(${Math.max(0,r-a)},${Math.max(0,g-a)},${Math.max(0,b-a)})`}catch{return h}};
+
+/* FX */
+function burstp(x,y,n,col){for(let i=0;i<n;i++)particles.push({x,y,vx:(Math.random()-.5)*9,vy:(Math.random()-.5)*9-1,life:1,size:Math.random()*5+2,col});}
+function flt(txt,x,y,col,sz=13){const el=document.createElement('div');el.className='ftx';el.style.cssText=`left:${x}px;top:${y}px;color:${col};font-size:${sz}px`;el.textContent=txt;document.body.appendChild(el);setTimeout(()=>el.remove(),860);}
+function doShake(){const gw=document.getElementById('gw');gw.classList.remove('shake');void gw.offsetWidth;gw.classList.add('shake');}
+function showCombo(n){
+  const el=document.createElement('div');el.className='cpop';
+  const bonus=Math.round(n*12*comboMult);
+  el.style.cssText=`position:absolute;top:36%;left:50%;transform:translate(-50%,-50%);pointer-events:none;z-index:18;font-family:var(--ft);font-size:clamp(1.8rem,7vw,3rem);font-weight:900;color:var(--gold);text-shadow:0 0 28px rgba(255,215,0,.6);text-align:center;animation:cpA .55s cubic-bezier(.17,.67,.35,1.3) forwards`;
+  el.innerHTML=`${n}x COMBO<br><span style="font-size:.55em;color:#fff">+${bonus}g</span>`;
+  document.getElementById('gw').appendChild(el);gold+=bonus;goldE+=bonus;setTimeout(()=>el.remove(),700);
+}
+function addKF(msg){if(!CF.kf)return;const w=document.getElementById('kfw');const el=document.createElement('div');el.className='kfe';el.textContent=msg;w.appendChild(el);setTimeout(()=>el.remove(),3100);while(w.children.length>5)w.removeChild(w.firstChild);}
+
+/* XP */
+function addXP(t,amt){const p=PROG[t];p.xp+=amt;if(p.xp>=p.max){p.xp=0;p.lvl++;p.max=Math.floor(p.max*1.5);showLvlPop(t);toast(`⬆️ ${UNITS[t].emoji} ${t} → Lv.${p.lvl}`);}const x=document.getElementById('xpf-'+t);if(x)x.style.width=((p.xp/p.max)*100)+'%';const l=document.getElementById('ul-'+t);if(l)l.textContent=p.lvl;}
+function showLvlPop(t){const card=document.getElementById('uc-'+t);if(!card)return;const el=document.createElement('div');el.className='lvlp';el.textContent='LEVEL UP!';el.style.left=(card.offsetLeft+card.offsetWidth/2-45)+'px';el.style.top=(card.offsetTop-55)+'px';document.body.appendChild(el);setTimeout(()=>el.remove(),1000);}
+
+/* HUD */
+function updateHUD(){
+  document.getElementById('hg').textContent=Math.floor(gold);
+  document.getElementById('hm').textContent=Math.floor(mana)+'/100';
+  document.getElementById('hsk').textContent=souls+'💀';
+  document.getElementById('hw').textContent=wave;
+  Object.keys(UNITS).forEach(k=>{document.getElementById('uc-'+k)?.classList.toggle('dis',gold<UNITS[k].cost);});
+  Object.entries(SPELLS).forEach(([t,sp])=>{const b=document.getElementById('sb-'+t);if(!b||b.classList.contains('cd'))return;b.style.opacity=mana>=sp.mana?'1':'.35';});
+}
+
+function buildDeck(){
+  const row=document.getElementById('crow');if(!row)return;row.innerHTML='';
+  Object.entries(UNITS).forEach(([t,u])=>{
+    const el=document.createElement('div');el.className='uc';el.id='uc-'+t;
+    el.setAttribute('role','button');el.setAttribute('aria-label',`Spawn ${t}`);
+    el.onclick=()=>{selUnit(t);vib(12);};
+    // Check if unit has shop upgrades
+    const anyUpgrade=getUpgradeLevel(t+'_hp')+getUpgradeLevel(t+'_dmg')+getUpgradeLevel(t+'_spd')>0;
+    el.innerHTML=`
+      ${anyUpgrade?'<div class="uc-boost">🛒</div>':''}
+      <div class="ucav" style="background:${u.col}15;border-color:${u.col}30"><span>${u.emoji}</span><div class="ulvl" id="ul-${t}">1</div></div>
+      <div class="ucn">${t}</div>
+      <div class="ucc"><div class="ucd"></div>${u.cost}</div>
+      <div class="uct">${u.trait}</div>
+      <div class="xpbg"><div class="xpf" id="xpf-${t}"></div></div>`;
+    row.appendChild(el);
+  });
+}
+
+/* LAUNCH / RESTART / QUIT */
+function launchGame(){show('home',false);document.getElementById('gw').classList.add('on');startGame();}
+
+function startGame(){
+  show('reward-screen',false);show('shop',false);
+  refreshSpellCDs();loadBoostsForMatch();
+  const startGold=80+startGoldBonus;
+  gold=startGold;mana=50;souls=0;wave=1;combo=0;comboT=0;kills=0;goldE=startGold;
+  minions=[];heroes=[];particles=[];meteors=[];
+  freezeT=0;rageT=0;actSpl=null;gT=0;mT=0;sT=0;hT=0;
+  Object.values(SPELLS).forEach(s=>s.until=0);
+  document.querySelectorAll('.spb').forEach(b=>{b.classList.remove('asp','cd');b.style.opacity='1';});
+  Object.keys(PROG).forEach(k=>{PROG[k].lvl=1;PROG[k].xp=0;PROG[k].max=100;});
+  Object.keys(UNITS).forEach(k=>{const x=document.getElementById('xpf-'+k);if(x)x.style.width='0%';const l=document.getElementById('ul-'+k);if(l)l.textContent='1';});
+  buildDeck();selUnit('imp');updateHUD();
+  GA=true;paused=false;
+  document.getElementById('pov').classList.remove('on');
+  document.getElementById('gw').classList.add('on');
+  lastTs=performance.now();requestAnimationFrame(loop);
+  if(CU){
+    CU.gamesPlayed=(CU.gamesPlayed||0)+1;
+    CU.sessionDays=CU.sessionDays||[];CU.sessionDays.push(Date.now());
+    if(CU.sessionDays.length>60)CU.sessionDays=CU.sessionDays.slice(-60);
+    saveUser();
+  }
+}
+
+function gameOver(){
+  GA=false;
+  // Calculate and award dark coins
+  const earned=awardDarkCoins(kills,wave);
+  // Save best wave, kills, gold
+  if(CU){
+    CU.bestWave=Math.max(CU.bestWave||0,wave);
+    CU.totalKills=(CU.totalKills||0)+kills;
+    CU.totalGold=(CU.totalGold||0)+Math.floor(goldE);
+    saveUser();
+  }
+  // Show reward screen
+  document.getElementById('gw').classList.remove('on');
+  showRewardScreen(kills,wave,earned,Math.floor(goldE));
+  vib([100,60,150]);
+}
+
+function showRewardScreen(k,w,earned,gameGold){
+  document.getElementById('rw-sub').textContent=w>1?'You reached Wave '+w+'!':'The heroes overwhelmed you quickly…';
+  document.getElementById('rw-kills').textContent=k;
+  document.getElementById('rw-waves').textContent=w;
+  document.getElementById('rw-formula-result').textContent=earned+' 🪙';
+  document.getElementById('rw-earned').textContent=earned;
+  document.getElementById('rw-total').textContent=CU?.darkCoins||0;
+  document.getElementById('rw-w').textContent=w;
+  document.getElementById('rw-k').textContent=k;
+  document.getElementById('rw-g').textContent=gameGold;
+  updateDCDisplays();
+  show('reward-screen',true);
+}
+
+function quitHome(){
+  GA=false;paused=false;
+  document.getElementById('pov').classList.remove('on');
+  document.getElementById('gw').classList.remove('on');
+  ['reward-screen','shop','sett'].forEach(id=>show(id,false));
+  show('home',true);refreshHome();
+}
+
+function saveUser(){if(!CU)return;const users=LS.g('do_users')||{};users[CU.email]=CU;LS.s('do_users',users);}
+</script>
 </body>
-
 </html>
