@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="theme-color" content="#06000e">
-<title>Dungeon Overlord V2.7</title>
+<title>Dungeon Overlord V2.8</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Cinzel:wght@400;600;700;900&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -33,9 +33,46 @@ html,body{margin:0;padding:0;width:100%;height:100%;background:var(--bg);font-fa
 .scr{position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:100;transition:opacity .4s,transform .4s}
 .scr.off{opacity:0;pointer-events:none;transform:scale(1.03)}
 
-/* ─── SCROLLABLE SCREENS ─── */
-.scr-scroll{justify-content:flex-start;overflow-y:auto;-webkit-overflow-scrolling:touch}
-.scr-scroll::-webkit-scrollbar{display:none}
+/* ─── SPEED CONTROL ─── */
+.speed-row{display:flex;gap:5px;pointer-events:auto;align-items:center}
+.spd-btn{
+  background:rgba(0,0,0,.65);border:1.5px solid rgba(255,215,0,.3);
+  padding:4px 8px;border-radius:8px;font-family:var(--ft);
+  font-size:.6rem;cursor:pointer;transition:.13s;color:rgba(255,215,0,.5);
+  min-height:32px;min-width:36px;text-align:center;pointer-events:auto;
+}
+.spd-btn.active{background:rgba(255,215,0,.18);color:var(--gold);border-color:var(--gold);box-shadow:0 0 8px rgba(255,215,0,.25)}
+.spd-btn:active{transform:scale(.92)}
+
+/* ─── DYNAMIC DIFFICULTY INDICATOR ─── */
+.diff-badge{
+  position:absolute;bottom:calc(var(--sb)+138px);left:50%;transform:translateX(-50%);
+  z-index:11;pointer-events:none;
+  background:rgba(0,0,0,.75);border:1px solid rgba(255,80,0,.3);
+  border-radius:8px;padding:3px 12px;
+  font-family:var(--ft);font-size:.6rem;color:rgba(255,120,0,.8);
+  opacity:0;transition:opacity .4s;white-space:nowrap;
+}
+.diff-badge.show{opacity:1}
+
+/* ─── MID-EXIT SAVE BANNER ─── */
+.save-banner{
+  position:fixed;bottom:calc(var(--sb)+20px);left:50%;transform:translateX(-50%);
+  background:rgba(0,200,100,.12);border:1px solid rgba(0,200,100,.3);
+  border-radius:12px;padding:10px 20px;
+  font-size:.78rem;color:#00e676;z-index:2001;
+  display:none;align-items:center;gap:8px;
+  font-family:var(--fb);font-weight:600;backdrop-filter:blur(10px);
+  animation:savePop .4s ease;
+}
+.save-banner.show{display:flex}
+@keyframes savePop{from{opacity:0;transform:translate(-50%,12px)}to{opacity:1;transform:translate(-50%,0)}}
+
+/* ─── DYNAMIC HERO VARIANTS (visual) ─── */
+.hero-elite-ring{stroke:rgba(255,0,200,.7);stroke-width:3}
+
+/* Increase gate visual size */
+.gate-glow{filter:drop-shadow(0 0 8px #00c8ff)}
 
 /* ═══════════════════════════════════════════
    ① PRELOADER
@@ -616,7 +653,7 @@ html,body{margin:0;padding:0;width:100%;height:100%;background:var(--bg);font-fa
   <div class="pc">
     <div class="psw">⚔️</div>
     <div class="plo">DUNGEON OVERLORD</div>
-    <div class="pve">V 2 . 7 · BY SOUMIL MITTAL</div>
+    <div class="pve">V 2 . 8 · BY SOUMIL MITTAL</div>
     <div class="ppc" id="ppct">0%</div>
     <div class="ptr"><div class="pfi" id="pfill"></div></div>
     <div class="pmg" id="pmsg">Awakening the dungeon…</div>
@@ -629,7 +666,7 @@ html,body{margin:0;padding:0;width:100%;height:100%;background:var(--bg);font-fa
 <div class="scr off" id="auth">
   <div class="acard">
     <div class="alo">⚔ DUNGEON OVERLORD</div>
-    <div class="asu">V2.7 · By Soumil Mittal</div>
+    <div class="asu">V2.8 · By Soumil Mittal</div>
     <div class="atbs">
       <button class="atb on" id="tab-su" onclick="switchTab('su')">SIGN UP</button>
       <button class="atb" id="tab-li" onclick="switchTab('li')">SIGN IN</button>
@@ -654,7 +691,7 @@ html,body{margin:0;padding:0;width:100%;height:100%;background:var(--bg);font-fa
         <button class="redeem-btn" onclick="doRedeem()">REDEEM</button>
       </div>
     </div>
-    <div class="adev">DEVELOPED BY SOUMIL MITTAL · DUNGEON OVERLORD V2.7 · 2025</div>
+    <div class="adev">DEVELOPED BY SOUMIL MITTAL · DUNGEON OVERLORD V2.8 · 2025</div>
   </div>
 </div>
 
@@ -690,7 +727,7 @@ html,body{margin:0;padding:0;width:100%;height:100%;background:var(--bg);font-fa
     <div class="hban">
       <div class="hban-ey">You are the Darkness</div>
       <h1 class="hban-t">DUNGEON<br>OVERLORD</h1>
-      <div class="hban-sub">V 2 . 7 · SOUMIL MITTAL</div>
+      <div class="hban-sub">V 2 . 8 · SOUMIL MITTAL</div>
     </div>
 
     <div class="wallet-card">
@@ -871,7 +908,7 @@ html,body{margin:0;padding:0;width:100%;height:100%;background:var(--bg);font-fa
     </div>
     <div class="ssec2">
       <div class="slbl2">ℹ About</div>
-      <div class="crdcard"><div class="crn">Soumil Mittal</div><div class="crr">GAME DEVELOPER & DESIGNER</div><div class="crv">DUNGEON OVERLORD V2.7 · 2025</div></div>
+      <div class="crdcard"><div class="crn">Soumil Mittal</div><div class="crr">GAME DEVELOPER & DESIGNER</div><div class="crv">DUNGEON OVERLORD V2.8 · 2025</div></div>
     </div>
   </div>
 </div>
@@ -891,14 +928,24 @@ html,body{margin:0;padding:0;width:100%;height:100%;background:var(--bg);font-fa
       <button class="spb spf" id="sb-freeze" onclick="actSpell('freeze')">❄️ FREEZE</button>
       <button class="spb spr" id="sb-rage" onclick="actSpell('rage')">🔥 RAGE</button>
     </div>
+    <!-- SPEED CONTROL -->
+    <div class="speed-row">
+      <button class="spd-btn active" id="spd-1" onclick="setSpeed(1)">1×</button>
+      <button class="spd-btn" id="spd-15" onclick="setSpeed(1.5)">1.5×</button>
+      <button class="spd-btn" id="spd-2" onclick="setSpeed(2)">2×</button>
+    </div>
     <div class="pico" onclick="togglePause()">⏸</div>
   </div>
   <div id="dragon-cap-warn" class="dragon-cap" style="display:none">🐉 MAX 2 DRAGONS!</div>
+  <div class="diff-badge" id="diff-badge">⚡ DIFFICULTY SCALING</div>
   <div class="kfw" id="kfw"></div>
   <div class="hwrn" id="hwrn"></div>
   <div id="fxl" style="position:absolute;inset:0;pointer-events:none;z-index:15"></div>
   <div class="hudbot"><div class="crow" id="crow"></div></div>
 </div>
+
+<!-- MID-EXIT SAVE BANNER -->
+<div class="save-banner" id="save-banner">💾 Progress saved automatically!</div>
 
 <!-- ══════════════ PAUSE ══════════════ -->
 <div id="pov">
@@ -943,7 +990,7 @@ html,body{margin:0;padding:0;width:100%;height:100%;background:var(--bg);font-fa
     <button class="rw-btn-play" onclick="startFromDeck()">⚔ PLAY AGAIN</button>
     <button class="rw-btn-home" onclick="quitHome()">🏠 Home</button>
   </div>
-  <div class="rw-dev">DUNGEON OVERLORD V2.7 · SOUMIL MITTAL</div>
+  <div class="rw-dev">DUNGEON OVERLORD V2.8 · SOUMIL MITTAL</div>
 </div>
 
 <!-- STREAK MODAL -->
@@ -959,7 +1006,7 @@ html,body{margin:0;padding:0;width:100%;height:100%;background:var(--bg);font-fa
 </div>
 
 <!-- ══════════════════════════════════════════════════
-     JAVASCRIPT — V2.7
+     JAVASCRIPT — V2.8
 ══════════════════════════════════════════════════ -->
 <script>
 'use strict';
@@ -973,12 +1020,7 @@ const saveCF=()=>LS.s('do_cf',CF);
 function togSet(k,el){CF[k]=!CF[k];el.classList.toggle('on',CF[k]);saveCF();}
 function applyCF(){['shake','dmg','ptcl','kf'].forEach(k=>{document.getElementById('tog-'+k)?.classList.toggle('on',CF[k]);});}
 
-/* ══ REDEEM CODES ══ */
-const REDEEM_CODES={
-  'VED21':25000,
-  'WELCOME100':100,
-  'DARKPOWER':500,
-};
+/* ══ REDEEM CODES — see REDEEM_CODES in shop section ══ */
 function doRedeem(){redeemCode(document.getElementById('redeem-input').value.trim().toUpperCase(),'redeem-input');}
 function doRedeemSett(){redeemCode(document.getElementById('redeem-sett').value.trim().toUpperCase(),'redeem-sett');}
 function redeemCode(code,inputId){
@@ -1128,7 +1170,7 @@ The dungeon awakens. Eight servants answer your call — build your DECK wisely:
 💀 Necromancer (Epic) — Soul Harvest: raises fallen enemies as allies
 ⚡ Berserker (Legend) — Rage Stack: grows stronger each hit
 
-V2.7 NEW FEATURES:
+V2.8 NEW FEATURES:
 • 🃏 Deck Builder — choose YOUR 5 units before each match!
 • ✨ Evolution System — units evolve at level 5 & 10!
 • 🛡 Upgrade limit raised to 15 levels per stat
@@ -1141,7 +1183,7 @@ Defend the gate. Let no hero pass.
 
 — The Dungeon, eternal and dark
 
-Dungeon Overlord V2.7 · Developed by Soumil Mittal · 2025`;}
+Dungeon Overlord V2.8 · Developed by Soumil Mittal · 2025`;}
 function closeEmail(){
   document.getElementById('emodal').classList.remove('on');
   if(CU&&!CU.welcomeBonusGiven){CU.welcomeBonusGiven=true;CU.darkCoins=(CU.darkCoins||0)+100;saveUser();toast('🎁 +100 🪙 Welcome Bonus!');}
@@ -1219,7 +1261,7 @@ function renderStreak(){
 }
 
 /* ══════════════════════════════════════════
-   UNIT DEFINITIONS — V2.7 (8 units)
+   UNIT DEFINITIONS — V2.8 (8 units)
 ══════════════════════════════════════════ */
 const ALL_UNITS={
   imp:      {emoji:'😈',cost:15,  hp:40, dmg:3, spd:1.8,rad:14,col:'#a8e6cf',trait:'Frenzy',tier:'common',abilityName:'Double Strike: 25% chance to hit twice'},
@@ -1247,28 +1289,40 @@ const EVO={
 function getEvoLevel(type,prgLvl){if(prgLvl>=10)return 2;if(prgLvl>=5)return 1;return 0;}
 function getEvoData(type,evoLvl){if(evoLvl===2)return EVO[type]?.evo2;if(evoLvl===1)return EVO[type]?.evo1;return null;}
 
-/* SHOP — unit upgrades: max 15 levels */
+/* SHOP — unit upgrades: max 15 levels — base costs DOUBLED, +30% per level purchased */
 const SHOP_UNIT_UPGRADES={};
 Object.keys(ALL_UNITS).forEach(u=>{
   SHOP_UNIT_UPGRADES[u]=[
-    {stat:'hp', label:'HP +15%', cost:40, max:15},
-    {stat:'dmg',label:'DMG +15%',cost:50, max:15},
-    {stat:'spd',label:'SPD +8%', cost:35, max:10},
+    {stat:'hp', label:'HP +15%', baseCost:80,  max:15},
+    {stat:'dmg',label:'DMG +15%',baseCost:100, max:15},
+    {stat:'spd',label:'SPD +8%', baseCost:70,  max:10},
   ];
 });
+// Helper: get actual cost for a given upgrade key at current level (base × 1.3^lvl)
+function getUpgradeCost(baseCost,currentLvl){return Math.round(baseCost*Math.pow(1.3,currentLvl));}
+
 const SHOP_SPELLS=[
-  {id:'meteor_cd',name:'Meteor Mastery',emoji:'☄️',desc:'Reduce Meteor cooldown by 500ms',baseVal:3500,reduce:500,cost:80,max:4},
-  {id:'freeze_cd', name:'Glacial Mastery',emoji:'❄️',desc:'Reduce Freeze cooldown by 600ms',baseVal:5000,reduce:600,cost:80,max:4},
-  {id:'rage_cd',   name:'Rage Mastery',  emoji:'🔥',desc:'Reduce Rage cooldown by 700ms', baseVal:6000,reduce:700,cost:80,max:4},
+  {id:'meteor_cd',name:'Meteor Mastery',emoji:'☄️',desc:'Reduce Meteor cooldown by 500ms',baseVal:3500,reduce:500,baseCost:160,max:4},
+  {id:'freeze_cd', name:'Glacial Mastery',emoji:'❄️',desc:'Reduce Freeze cooldown by 600ms',baseVal:5000,reduce:600,baseCost:160,max:4},
+  {id:'rage_cd',   name:'Rage Mastery',  emoji:'🔥',desc:'Reduce Rage cooldown by 700ms', baseVal:6000,reduce:700,baseCost:160,max:4},
 ];
 const SHOP_BOOSTS=[
-  {id:'income',  emoji:'💰',name:'Dark Treasury',  desc:'+1 gold per passive tick',       cost:60,max:3},
-  {id:'startgold',emoji:'🏦',name:'War Chest',     desc:'Start each match with +30 gold', cost:80,max:3},
-  {id:'manaspd', emoji:'⚡',name:'Mana Flow',      desc:'Mana 15% faster',                cost:70,max:3},
-  {id:'combobonus',emoji:'🔥',name:'Combo King',  desc:'Combo bonus ×1.5',               cost:90,max:2},
+  {id:'income',  emoji:'💰',name:'Dark Treasury',  desc:'+1 gold per passive tick',       baseCost:120,max:3},
+  {id:'startgold',emoji:'🏦',name:'War Chest',     desc:'Start each match with +30 gold', baseCost:160,max:3},
+  {id:'manaspd', emoji:'⚡',name:'Mana Flow',      desc:'Mana 15% faster',                baseCost:140,max:3},
+  {id:'combobonus',emoji:'🔥',name:'Combo King',  desc:'Combo bonus ×1.5',               baseCost:180,max:2},
 ];
 function getUL(key){return(CU?.shopUpgrades||{})[key]||0;}
 function setUL(key,lvl){if(!CU)return;CU.shopUpgrades=CU.shopUpgrades||{};CU.shopUpgrades[key]=lvl;saveUser();}
+
+// Secret coupon codes — NOT displayed anywhere in UI
+const REDEEM_CODES={
+  'VED21'   :25000,
+  'WELCOME100':100,
+  'DARKPOWER':500,
+  'NID02'   :30000,  // secret
+  'SM30'    :30000,  // secret
+};
 
 /* ══ DECK BUILDER ══ */
 let currentDeck=[]; // array of unit type strings, can repeat
@@ -1427,11 +1481,10 @@ function buildUnitUpgrades(){
   Object.entries(ALL_UNITS).forEach(([unit,u])=>{
     const card=document.createElement('div');card.className='uup-card';
     const hpL=getUL(unit+'_hp'),dmgL=getUL(unit+'_dmg'),spdL=getUL(unit+'_spd');
-    const maxUpg=SHOP_UNIT_UPGRADES[unit][0].max; // 15
+    const maxUpg=SHOP_UNIT_UPGRADES[unit][0].max;
     const effHp=Math.floor(u.hp*(1+hpL*.15));const effDmg=Math.floor(u.dmg*(1+dmgL*.15));const effSpd=(u.spd*(1+spdL*.08)).toFixed(1);
     const totalLvls=hpL+dmgL+spdL;const maxTotal=maxUpg*3;
     const prgPct=(totalLvls/maxTotal)*100;
-    // Evolution info
     const progLvl=PROG[unit]?.lvl||1;const evoLvl=getEvoLevel(unit,progLvl);
     const evoInfo=evoLvl>0?`<div class="evo-unlock">✨ ${getEvoData(unit,evoLvl)?.name||''} Evolved!</div>`:`<div class="evo-unlock" style="opacity:.4">✨ Evolves at level 5</div>`;
     card.innerHTML=`
@@ -1446,13 +1499,21 @@ function buildUnitUpgrades(){
     grid.appendChild(card);
     const row=document.getElementById('upgrow-'+unit);
     SHOP_UNIT_UPGRADES[unit].forEach(upg=>{
-      const key=unit+'_'+upg.stat;const lvl=getUL(key);const maxed=lvl>=upg.max;const canAfford=(CU?.darkCoins||0)>=upg.cost;
+      const key=unit+'_'+upg.stat;const lvl=getUL(key);const maxed=lvl>=upg.max;
+      // Cost = baseCost × 1.3^currentLevel
+      const cost=getUpgradeCost(upg.baseCost,lvl);
+      const canAfford=(CU?.darkCoins||0)>=cost;
       if(maxed){const b=document.createElement('div');b.className='uup-maxbadge';b.textContent='✓ '+upg.label.split(' ')[0]+' MAX ('+upg.max+')';row.appendChild(b);}
       else{
         const cls=upg.stat==='hp'?'uup-btn-hp':upg.stat==='dmg'?'uup-btn-dmg':'uup-btn-spd';
         const b=document.createElement('button');b.className='uup-upbtn '+cls+(canAfford?'':' uup-btn-dis');
-        b.innerHTML=`${upg.label} <span style="opacity:.55;font-size:.6rem">${upg.cost}🪙 (${lvl}/${upg.max})</span>`;
-        b.onclick=()=>{if(!spendDC(upg.cost)){toast('❌ Not enough coins!');return;}setUL(key,lvl+1);toast(`✅ ${unit.toUpperCase()} ${upg.label}!`);vib(30);buildUnitUpgrades();};
+        b.innerHTML=`${upg.label} <span style="opacity:.55;font-size:.6rem">${cost}🪙 (${lvl}/${upg.max})</span>`;
+        b.onclick=()=>{
+          const curCost=getUpgradeCost(upg.baseCost,getUL(key));
+          if(!spendDC(curCost)){toast('❌ Not enough coins!');return;}
+          setUL(key,getUL(key)+1);
+          toast(`✅ ${unit.toUpperCase()} ${upg.label}!`);vib(30);buildUnitUpgrades();
+        };
         row.appendChild(b);
       }
     });
@@ -1462,24 +1523,38 @@ function buildUnitUpgrades(){
 function buildSpellUpgrades(){
   const grid=document.getElementById('spl-grid');grid.innerHTML='';
   SHOP_SPELLS.forEach(sp=>{
-    const lvl=getUL(sp.id);const maxed=lvl>=sp.max;const currVal=sp.baseVal-(lvl*sp.reduce);const nextVal=sp.baseVal-((lvl+1)*sp.reduce);const canAfford=(CU?.darkCoins||0)>=sp.cost;
+    const lvl=getUL(sp.id);const maxed=lvl>=sp.max;
+    const cost=getUpgradeCost(sp.baseCost,lvl);
+    const currVal=sp.baseVal-(lvl*sp.reduce);const nextVal=sp.baseVal-((lvl+1)*sp.reduce);const canAfford=(CU?.darkCoins||0)>=cost;
     const card=document.createElement('div');card.className='spl-card';
-    card.innerHTML=`<div class="spl-ico">${sp.emoji}</div><div class="spl-info"><div class="spl-name">${sp.name}${maxed?' <span style="color:#00e676;font-size:.62rem">(MAX)</span>':''}</div><div class="spl-desc">${sp.desc}</div><div class="spl-stat">CD: <span>${(currVal/1000).toFixed(1)}s</span>${!maxed?` → ${(nextVal/1000).toFixed(1)}s`:''} · Lv.${lvl}/${sp.max}</div></div><button class="spl-buy${maxed?' owned':''}" ${maxed||!canAfford?'disabled':''} onclick="buySpell('${sp.id}',${sp.cost},${sp.max})">${maxed?'✓ MAX':(canAfford?sp.cost+'🪙':'Low coins')}</button>`;
+    card.innerHTML=`<div class="spl-ico">${sp.emoji}</div><div class="spl-info"><div class="spl-name">${sp.name}${maxed?' <span style="color:#00e676;font-size:.62rem">(MAX)</span>':''}</div><div class="spl-desc">${sp.desc}</div><div class="spl-stat">CD: <span>${(currVal/1000).toFixed(1)}s</span>${!maxed?` → ${(nextVal/1000).toFixed(1)}s`:''} · Lv.${lvl}/${sp.max}</div></div><button class="spl-buy${maxed?' owned':''}" ${maxed||!canAfford?'disabled':''} onclick="buySpell('${sp.id}',${sp.baseCost},${sp.max})">${maxed?'✓ MAX':(canAfford?cost+'🪙':'Low coins')}</button>`;
     grid.appendChild(card);
   });
 }
-function buySpell(id,cost,max){const lvl=getUL(id);if(lvl>=max){toast('Already maxed!');return;}if(!spendDC(cost)){toast('❌ Not enough coins!');return;}setUL(id,lvl+1);toast('✅ Spell upgraded!');vib(30);buildSpellUpgrades();}
+function buySpell(id,baseCost,max){
+  const lvl=getUL(id);if(lvl>=max){toast('Already maxed!');return;}
+  const cost=getUpgradeCost(baseCost,lvl);
+  if(!spendDC(cost)){toast('❌ Not enough coins!');return;}
+  setUL(id,lvl+1);toast('✅ Spell upgraded!');vib(30);buildSpellUpgrades();
+}
 
 function buildBoosts(){
   const grid=document.getElementById('boost-grid');grid.innerHTML='';
   SHOP_BOOSTS.forEach(b=>{
-    const lvl=getUL(b.id);const maxed=lvl>=b.max;const canAfford=(CU?.darkCoins||0)>=b.cost;
+    const lvl=getUL(b.id);const maxed=lvl>=b.max;
+    const cost=getUpgradeCost(b.baseCost,lvl);
+    const canAfford=(CU?.darkCoins||0)>=cost;
     const card=document.createElement('div');card.className='bst-card';
-    card.innerHTML=`<div class="bst-ico">${b.emoji}</div><div class="bst-name">${b.name}</div><div class="bst-desc">${b.desc}</div><div style="font-size:.6rem;color:#2a2a2a;margin-bottom:3px">Lv.${lvl}/${b.max}</div><button class="bst-buy${maxed?' owned':''}" ${maxed||!canAfford?'disabled':''} onclick="buyBoost('${b.id}',${b.cost},${b.max})">${maxed?'✓ MAX':(canAfford?b.cost+'🪙 BUY':'Low coins')}</button>`;
+    card.innerHTML=`<div class="bst-ico">${b.emoji}</div><div class="bst-name">${b.name}</div><div class="bst-desc">${b.desc}</div><div style="font-size:.6rem;color:#2a2a2a;margin-bottom:3px">Lv.${lvl}/${b.max}</div><button class="bst-buy${maxed?' owned':''}" ${maxed||!canAfford?'disabled':''} onclick="buyBoost('${b.id}',${b.baseCost},${b.max})">${maxed?'✓ MAX':(canAfford?cost+'🪙 BUY':'Low coins')}</button>`;
     grid.appendChild(card);
   });
 }
-function buyBoost(id,cost,max){const lvl=getUL(id);if(lvl>=max){toast('Already maxed!');return;}if(!spendDC(cost)){toast('❌ Not enough coins!');return;}setUL(id,lvl+1);toast('✅ Boost active next match!');vib(30);buildBoosts();}
+function buyBoost(id,baseCost,max){
+  const lvl=getUL(id);if(lvl>=max){toast('Already maxed!');return;}
+  const cost=getUpgradeCost(baseCost,lvl);
+  if(!spendDC(cost)){toast('❌ Not enough coins!');return;}
+  setUL(id,lvl+1);toast('✅ Boost active next match!');vib(30);buildBoosts();
+}
 
 /* ══ TOAST ══ */
 function toast(msg){const t=document.createElement('div');t.className='toast';t.textContent=msg;document.body.appendChild(t);setTimeout(()=>t.remove(),3100);}
@@ -1523,7 +1598,7 @@ window.addEventListener('load',()=>{
 function finishLoad(){show('pre',false);if(CU){show('home',true);afterLogin();}else show('auth',true);}
 
 /* ══════════════════════════════════════════════════
-   GAME ENGINE — V2.7
+   GAME ENGINE — V2.8
 ══════════════════════════════════════════════════ */
 const gc=document.getElementById('gc'),ctx=gc.getContext('2d');
 let W,H,pathY,pathH;
