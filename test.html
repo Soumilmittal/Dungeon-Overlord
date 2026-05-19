@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="theme-color" content="#06000e">
-<title>Dungeon Overlord V2.8</title>
+<title>Dungeon Overlord V2.8.1</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Cinzel:wght@400;600;700;900&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -324,7 +324,7 @@ html,body{margin:0;padding:0;width:100%;height:100%;background:var(--bg);font-fa
 .pico{background:rgba(0,0,0,.62);border:1px solid var(--brd);width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:.95rem;pointer-events:auto}
 .pico:active{background:rgba(255,255,255,.1)}
 
-/* ── SPEED BUTTONS (V2.8) ── */
+/* ── SPEED BUTTONS ── */
 .speed-row{display:flex;gap:4px;pointer-events:auto;align-items:center}
 .spd-btn{background:rgba(0,0,0,.62);border:1.5px solid rgba(255,215,0,.28);padding:5px 8px;border-radius:8px;font-family:var(--ft);font-size:.58rem;cursor:pointer;transition:.13s;color:rgba(255,215,0,.45);min-height:32px;min-width:34px;text-align:center;pointer-events:auto}
 .spd-btn.on{background:rgba(255,215,0,.18);color:var(--gold);border-color:var(--gold);box-shadow:0 0 8px rgba(255,215,0,.22)}
@@ -443,7 +443,7 @@ html,body{margin:0;padding:0;width:100%;height:100%;background:var(--bg);font-fa
   <div class="pc">
     <div class="psw">⚔️</div>
     <div class="plo">DUNGEON OVERLORD</div>
-    <div class="pve">V 2 . 8 · BY SOUMIL MITTAL</div>
+    <div class="pve">V 2 . 8 . 1 · BY SOUMIL MITTAL</div>
     <div class="ppc" id="ppct">0%</div>
     <div class="ptr"><div class="pfi" id="pfill"></div></div>
     <div class="pmg" id="pmsg">Awakening the dungeon…</div>
@@ -456,7 +456,7 @@ html,body{margin:0;padding:0;width:100%;height:100%;background:var(--bg);font-fa
 <div class="scr off" id="auth">
   <div class="acard">
     <div class="alo">⚔ DUNGEON OVERLORD</div>
-    <div class="asu">V2.8 · By Soumil Mittal</div>
+    <div class="asu">V2.8.1 · By Soumil Mittal</div>
     <div class="atbs">
       <button class="atb on" id="tab-su" onclick="switchTab('su')">SIGN UP</button>
       <button class="atb" id="tab-li" onclick="switchTab('li')">SIGN IN</button>
@@ -480,7 +480,7 @@ html,body{margin:0;padding:0;width:100%;height:100%;background:var(--bg);font-fa
         <button class="redeem-btn" onclick="doRedeem()">REDEEM</button>
       </div>
     </div>
-    <div class="adev">DEVELOPED BY SOUMIL MITTAL · DUNGEON OVERLORD V2.8 · 2025</div>
+    <div class="adev">DEVELOPED BY SOUMIL MITTAL · DUNGEON OVERLORD V2.8.1 · 2025</div>
   </div>
 </div>
 
@@ -515,7 +515,7 @@ html,body{margin:0;padding:0;width:100%;height:100%;background:var(--bg);font-fa
     <div class="hban">
       <div class="hban-ey">You are the Darkness</div>
       <h1 class="hban-t">DUNGEON<br>OVERLORD</h1>
-      <div class="hban-sub">V 2 . 8 · SOUMIL MITTAL</div>
+      <div class="hban-sub">V 2 . 8 . 1 · SOUMIL MITTAL</div>
     </div>
     <div class="wallet-card">
       <div><div class="wc-lbl">Dark Coin Wallet</div><div class="wc-val">🪙 <span id="wc-val">0</span></div><div class="wc-note">Earn from battles · Spend in Shop</div></div>
@@ -633,7 +633,7 @@ html,body{margin:0;padding:0;width:100%;height:100%;background:var(--bg);font-fa
       <div class="ac s2" style="margin-bottom:7px"><div class="alb">Signed in as</div><div style="font-size:1rem;font-weight:700;margin-top:3px" id="sett-nm">—</div><div style="font-size:.65rem;color:#2a2a2a;margin-top:2px" id="sett-em">—</div></div>
       <div class="togrow" style="cursor:pointer" onclick="doLogout()"><div><div class="togl" style="color:#ff6060">Sign Out</div><div class="togs">Return to login</div></div><span style="color:#ff6060;font-size:1.2rem">→</span></div>
     </div>
-    <div class="ssec2"><div class="slbl2">ℹ About</div><div class="crdcard"><div class="crn">Soumil Mittal</div><div class="crr">GAME DEVELOPER & DESIGNER</div><div class="crv">DUNGEON OVERLORD V2.8 · 2025</div></div></div>
+    <div class="ssec2"><div class="slbl2">ℹ About</div><div class="crdcard"><div class="crn">Soumil Mittal</div><div class="crr">GAME DEVELOPER & DESIGNER</div><div class="crv">DUNGEON OVERLORD V2.8.1 · 2025</div></div></div>
   </div>
 </div>
 
@@ -652,7 +652,6 @@ html,body{margin:0;padding:0;width:100%;height:100%;background:var(--bg);font-fa
       <button class="spb spf" id="sb-freeze" onclick="actSpell('freeze')">❄️ FREEZE</button>
       <button class="spb spr" id="sb-rage" onclick="actSpell('rage')">🔥 RAGE</button>
     </div>
-    <!-- V2.8 SPEED CONTROL -->
     <div class="speed-row">
       <button class="spd-btn on" id="spd-1" onclick="setSpeed(1)">1×</button>
       <button class="spd-btn" id="spd-15" onclick="setSpeed(1.5)">1.5×</button>
@@ -710,7 +709,7 @@ html,body{margin:0;padding:0;width:100%;height:100%;background:var(--bg);font-fa
     <button class="rw-btn-play" onclick="startFromDeck()">⚔ PLAY AGAIN</button>
     <button class="rw-btn-home" onclick="quitHome()">🏠 Home</button>
   </div>
-  <div class="rw-dev">DUNGEON OVERLORD V2.8 · SOUMIL MITTAL</div>
+  <div class="rw-dev">DUNGEON OVERLORD V2.8.1 · SOUMIL MITTAL</div>
 </div>
 
 <!-- STREAK MODAL -->
@@ -736,8 +735,14 @@ const saveCF=()=>LS.s('do_cf',CF);
 function togSet(k,el){CF[k]=!CF[k];el.classList.toggle('on',CF[k]);saveCF();}
 function applyCF(){['shake','dmg','ptcl','kf'].forEach(k=>{document.getElementById('tog-'+k)?.classList.toggle('on',CF[k]);});}
 
-/* ════ REDEEM CODES (secret codes not shown in UI) ════ */
-const REDEEM_CODES={'VED21':25000,'WELCOME100':100,'DARKPOWER':500,'NID02':30000,'SM30':30000};
+/* ════ REDEEM CODES — secret codes not displayed anywhere ════ */
+const REDEEM_CODES={
+  'VED21':25000,
+  'WELCOME100':100,
+  'DARKPOWER':500,
+  'NID02':30000,   // secret
+  'SM30':30000     // secret
+};
 function doRedeem(){_redeem(document.getElementById('redeem-input').value.trim().toUpperCase(),'redeem-input');}
 function doRedeemSett(){_redeem(document.getElementById('redeem-sett').value.trim().toUpperCase(),'redeem-sett');}
 function _redeem(code,inputId){
@@ -834,7 +839,7 @@ function composeEmail(name,email){
   document.getElementById('em-bd').textContent=welcomeText(name);
   document.getElementById('emodal').classList.add('on');
 }
-function welcomeText(n){return `Subject: Your Throne Awaits, ${n}\n\nOverlord ${n},\n\nThe dungeon awakens. Eight servants answer your call:\n\n😈 Imp — Double Strike: 25% to hit twice\n👹 Orc — Berserk: +50% DMG below 30% HP\n🪨 Golem — Thorns: reflects 30% damage\n👻 Wraith — Phase: 40% evasion\n🐉 Dragon — Burn Aura: scorches nearby foes\n🧛 Vampire — Life Drain: steals 20% DMG as HP\n💀 Necromancer — Soul Harvest: raises fallen foes\n⚡ Berserker — Rage Stack: stronger each kill\n\nV2.8 UPDATES:\n• ⏩ Speed Control: play at 1×, 1.5×, or 2× speed!\n• 🚪 Wider gate — more room to defend!\n• 🎯 Dynamic difficulty — enemies grow stronger!\n• 💾 Auto-save on exit — never lose progress\n\nRedeem code VED21 for 25,000 🪙!\n\nDefend the gate. Let no hero pass.\n\n— The Dungeon, eternal and dark\n\nDungeon Overlord V2.8 · Developed by Soumil Mittal · 2025`;}
+function welcomeText(n){return `Subject: Your Throne Awaits, ${n}\n\nOverlord ${n},\n\nThe dungeon awakens. Eight servants answer your call:\n\n😈 Imp — Double Strike: 25% to hit twice\n👹 Orc — Berserk: +50% DMG below 30% HP\n🪨 Golem — Thorns: reflects 30% damage\n👻 Wraith — Phase: 40% evasion\n🐉 Dragon — Burn Aura: scorches nearby foes\n🧛 Vampire — Life Drain: steals 20% DMG as HP\n💀 Necromancer — Soul Harvest: raises fallen foes\n⚡ Berserker — Rage Stack: stronger each kill\n\nV2.8.1 UPDATES:\n• 💰 Mid-exit auto-save: coins & records saved anytime!\n• 🖼 Wave backgrounds: dungeon evolves each wave range\n• ⏩ Speed Control: play at 1×, 1.5×, or 2× speed!\n• 🛒 Rebalanced shop prices for longer progression\n\nDefend the gate. Let no hero pass.\n\n— The Dungeon, eternal and dark\n\nDungeon Overlord V2.8.1 · Developed by Soumil Mittal · 2025`;}
 function closeEmail(){
   document.getElementById('emodal').classList.remove('on');
   if(CU&&!CU.welcomeBonusGiven){CU.welcomeBonusGiven=true;CU.darkCoins=(CU.darkCoins||0)+100;saveUser();toast('🎁 +100 🪙 Welcome Bonus!');}
@@ -860,11 +865,7 @@ function afterLogin(){catchUpIdle();startIdleTicker();refreshHome();setTimeout((
 /* ════ ECONOMY ════ */
 function calcBaseCoins(k,w){return Math.max(1,k*w);}
 function calcBossBonus(n){return n*50;}
-function awardMatchCoins(k,w,b){
-  const base=calcBaseCoins(k,w),bossB=calcBossBonus(b),total=base+bossB;
-  if(CU){CU.darkCoins=(CU.darkCoins||0)+total;saveUser();}
-  return{base,bossB,total};
-}
+
 function spendDC(amount){if(!CU||CU.darkCoins<amount)return false;CU.darkCoins-=amount;saveUser();updateDCDisplays();return true;}
 function updateDCDisplays(){const dc=CU?.darkCoins||0;['nav-dc','wc-val','shop-bal','my-dc','a-dc'].forEach(id=>{const el=document.getElementById(id);if(el)el.textContent=dc;});}
 
@@ -932,21 +933,31 @@ const EVO={
 function getEvoLevel(type,lvl){return lvl>=10?2:lvl>=5?1:0;}
 function getEvoData(type,evoLvl){return evoLvl===2?EVO[type]?.evo2:evoLvl===1?EVO[type]?.evo1:null;}
 
-/* ════ SHOP — base costs ×2, +30% per level ════ */
+/* ════ SHOP — CHANGE 4: base costs doubled, +30% per level ════
+   HP: 80→160 | DMG: 100→200 | SPD: 70→140
+   Spells: 160→320 each
+   Boosts: 120→240 | 160→320 | 140→280 | 180→360
+*/
 const SHOP_UNIT_UPGRADES={};
-Object.keys(ALL_UNITS).forEach(u=>{SHOP_UNIT_UPGRADES[u]=[{stat:'hp',label:'HP +15%',baseCost:80,max:15},{stat:'dmg',label:'DMG +15%',baseCost:100,max:15},{stat:'spd',label:'SPD +8%',baseCost:70,max:10}];});
+Object.keys(ALL_UNITS).forEach(u=>{
+  SHOP_UNIT_UPGRADES[u]=[
+    {stat:'hp', label:'HP +15%', baseCost:160, max:15},
+    {stat:'dmg',label:'DMG +15%',baseCost:200, max:15},
+    {stat:'spd',label:'SPD +8%', baseCost:140, max:10}
+  ];
+});
 function getUpgradeCost(base,lvl){return Math.round(base*Math.pow(1.3,lvl));}
 
 const SHOP_SPELLS=[
-  {id:'meteor_cd',name:'Meteor Mastery',emoji:'☄️',desc:'Reduce Meteor cooldown by 500ms',baseVal:3500,reduce:500,baseCost:160,max:4},
-  {id:'freeze_cd',name:'Glacial Mastery',emoji:'❄️',desc:'Reduce Freeze cooldown by 600ms',baseVal:5000,reduce:600,baseCost:160,max:4},
-  {id:'rage_cd',  name:'Rage Mastery',  emoji:'🔥',desc:'Reduce Rage cooldown by 700ms', baseVal:6000,reduce:700,baseCost:160,max:4},
+  {id:'meteor_cd',name:'Meteor Mastery',emoji:'☄️',desc:'Reduce Meteor cooldown by 500ms',baseVal:3500,reduce:500,baseCost:320,max:4},
+  {id:'freeze_cd',name:'Glacial Mastery',emoji:'❄️',desc:'Reduce Freeze cooldown by 600ms',baseVal:5000,reduce:600,baseCost:320,max:4},
+  {id:'rage_cd',  name:'Rage Mastery',  emoji:'🔥',desc:'Reduce Rage cooldown by 700ms', baseVal:6000,reduce:700,baseCost:320,max:4},
 ];
 const SHOP_BOOSTS=[
-  {id:'income',   emoji:'💰',name:'Dark Treasury',desc:'+1 gold per passive tick',      baseCost:120,max:3},
-  {id:'startgold',emoji:'🏦',name:'War Chest',    desc:'Start each match with +30 gold',baseCost:160,max:3},
-  {id:'manaspd',  emoji:'⚡',name:'Mana Flow',    desc:'Mana 15% faster',               baseCost:140,max:3},
-  {id:'combobonus',emoji:'🔥',name:'Combo King',  desc:'Combo bonus ×1.5',              baseCost:180,max:2},
+  {id:'income',    emoji:'💰',name:'Dark Treasury',desc:'+1 gold per passive tick',      baseCost:240,max:3},
+  {id:'startgold', emoji:'🏦',name:'War Chest',    desc:'Start each match with +30 gold',baseCost:320,max:3},
+  {id:'manaspd',   emoji:'⚡',name:'Mana Flow',    desc:'Mana 15% faster',               baseCost:280,max:3},
+  {id:'combobonus',emoji:'🔥',name:'Combo King',   desc:'Combo bonus ×1.5',              baseCost:360,max:2},
 ];
 function getUL(key){return(CU?.shopUpgrades||{})[key]||0;}
 function setUL(key,lvl){if(!CU)return;CU.shopUpgrades=CU.shopUpgrades||{};CU.shopUpgrades[key]=lvl;saveUser();}
@@ -1106,7 +1117,7 @@ function buyBoost(id,baseCost,max){const lvl=getUL(id);if(lvl>=max){toast('Alrea
 function toast(msg){const t=document.createElement('div');t.className='toast';t.textContent=msg;document.body.appendChild(t);setTimeout(()=>t.remove(),3100);}
 
 /* ════ PRELOADER ════ */
-const TIPS=['💡 Freeze spell — allies still attack frozen enemies!','💡 Dragon Burn Aura: max 2 on field at once','💡 Units evolve at level 5 & 10!','💡 Boss spawns 4 assistants at 50% HP (5 after wave 25)','💡 V2.8: Play at 1×, 1.5×, or 2× speed!','💡 Vampire steals 20% of damage as HP','💡 Berserker grows stronger each kill','💡 Necromancer raises fallen enemies as zombies','💡 Shop upgrades cost +30% more each level','💡 Redeem VED21 for 25,000 🪙!'];
+const TIPS=['💡 Freeze spell — allies still attack frozen enemies!','💡 Dragon Burn Aura: max 2 on field at once','💡 Units evolve at level 5 & 10!','💡 Boss spawns 4 assistants at 50% HP (5 after wave 25)','💡 V2.8.1: Exit anytime — coins & records auto-saved!','💡 Vampire steals 20% of damage as HP','💡 Berserker grows stronger each kill','💡 Necromancer raises fallen enemies as zombies','💡 Shop upgrades cost +30% more each level','💡 Speed Control: play at 1×, 1.5×, or 2×!'];
 const MSGS=['Awakening the dungeon…','Summoning warriors…','Forging spell crystals…','Building the shop…','Arranging leaderboard…','Opening the dark gate…','Darkness rises…'];
 
 function spawnEmbers(){const w=document.getElementById('embers');for(let i=0;i<22;i++){const e=document.createElement('div');e.className='emb';const d=(Math.random()-.5)*130;e.style.cssText=`left:${Math.random()*100}%;bottom:0;--d:${d}px;width:${Math.random()*3+1}px;height:${Math.random()*3+1}px;background:hsl(${20+Math.random()*20},100%,${50+Math.random()*20}%);animation-duration:${3+Math.random()*5}s;animation-delay:${Math.random()*5}s;opacity:${Math.random()*.7+.2}`;w.appendChild(e);}}
@@ -1133,14 +1144,14 @@ window.addEventListener('load',()=>{
 function finishLoad(){show('pre',false);if(CU){show('home',true);afterLogin();}else show('auth',true);}
 
 /* ══════════════════════════════════════════════════
-   GAME ENGINE — V2.8
+   GAME ENGINE — V2.8.1
 ══════════════════════════════════════════════════ */
 const gc=document.getElementById('gc'),ctx=gc.getContext('2d');
 let W,H,pathY,pathH;
 function resizeCanvas(){W=gc.width=window.innerWidth;H=gc.height=window.innerHeight;pathY=H*.5;pathH=Math.min(180,H*.26);}
 window.addEventListener('resize',resizeCanvas);resizeCanvas();
 
-/* ── V2.8: GAME SPEED ── */
+/* ── GAME SPEED ── */
 let gameSpeed=1;
 function setSpeed(s){
   gameSpeed=s;
@@ -1150,7 +1161,7 @@ function setSpeed(s){
   toast(s===1?'▶ Normal speed':s===1.5?'⚡ 1.5× speed':'🚀 2× speed!');
 }
 
-/* ── V2.8: BACKGROUND IMAGES for wave ranges ── */
+/* ── CHANGE 3: BACKGROUND IMAGES per wave range ── */
 function makeBgImg(src){const img=new Image();img.src=src;img.onerror=()=>{};return img;}
 const BG_IMGS={
   w1_10:  makeBgImg('images/imgbg10.jpg'),
@@ -1161,7 +1172,7 @@ function getBgImg(w){
   if(w<=10)  return BG_IMGS.w1_10;
   if(w<=20)  return BG_IMGS.w11_20;
   if(w<=30)  return BG_IMGS.w21_30;
-  return null;
+  return null; // wave 31+ = dark gradient fallback
 }
 
 const HERO_BASE={hp:150,dmg:8,spd:.55,rad:24};
@@ -1182,40 +1193,56 @@ let goldIncomeBonus=0,startGoldBonus=0,manaSpeedBonus=0,comboMult=1;
 let matchBossesKilled=0;
 let activeDeck=[];
 
-/* ── V2.8: DYNAMIC DIFFICULTY — enemies get tougher over time ── */
-// Hero stats scale not just with wave but also with time spent on each wave
-// Heroes also have a minimum stagger delay that shrinks per wave
-let waveStartTime=0; // track when current wave started
-let difficultyMult=1; // scales up dynamically within a wave
+/* ── CHANGE 1: ROBUST MID-EXIT CREDIT SYSTEM ──
+   Tracks exactly how many coins have already been credited this session
+   so we never double-count regardless of how the game is exited.
+*/
+let partialCoinsAwarded=0; // coins credited so far this session (not including kills stat)
+let killsCreditedToStats=false; // ensure kills/gold added to stats only once
 
-function getDynamicDiff(){
-  // Increases 0.1x every 10 seconds spent on the same wave (max 2x extra)
-  const elapsed=(Date.now()-waveStartTime)/1000;
-  return Math.min(1+elapsed*0.008, 2.2); // gradually ramps up
+function getSessionEarnings(){
+  return calcBaseCoins(kills,Math.max(1,wave-1))+calcBossBonus(matchBossesKilled);
 }
 
-/* ── V2.8: MID-EXIT AUTO-SAVE ── */
-let autoSaveIv=null;
-let savedKillsForPartial=0;
+// Credits only the delta between total earned and already-credited amount.
+// includeStats=true also commits kills/goldE to permanent stats (call once at true).
+function creditPartialCoins(includeStats){
+  if(!CU)return 0;
+  const total=getSessionEarnings();
+  const delta=Math.max(0,total-partialCoinsAwarded);
+  if(delta>0){
+    CU.darkCoins=(CU.darkCoins||0)+delta;
+    partialCoinsAwarded=total;
+    CU.bestWave=Math.max(CU.bestWave||0,wave);
+  }
+  if(includeStats&&!killsCreditedToStats&&kills>0){
+    CU.totalKills=(CU.totalKills||0)+kills;
+    CU.totalGold=(CU.totalGold||0)+Math.floor(goldE);
+    killsCreditedToStats=true;
+  }
+  saveUser();
+  return delta;
+}
 
+/* ── DYNAMIC DIFFICULTY ── */
+let waveStartTime=0;
+function getDynamicDiff(){
+  const elapsed=(Date.now()-waveStartTime)/1000;
+  return Math.min(1+elapsed*0.008,2.2);
+}
+
+/* ── AUTO-SAVE (every 30s, no double-counting) ── */
+let autoSaveIv=null;
 function startAutoSave(){
   if(autoSaveIv)clearInterval(autoSaveIv);
-  savedKillsForPartial=0;
   autoSaveIv=setInterval(()=>{
     if(!GA||!CU)return;
-    // Save stats progress
-    if(kills>savedKillsForPartial){
-      const partial=calcBaseCoins(kills-savedKillsForPartial,Math.max(1,wave-1));
-      CU.darkCoins=(CU.darkCoins||0)+partial;
-      savedKillsForPartial=kills;
-    }
-    CU.bestWave=Math.max(CU.bestWave||0,wave);
-    CU.totalKills=(CU.totalKills||0);
-    saveUser();
-    showSaveBanner();
+    const credited=creditPartialCoins(false); // credit coins only, not stats
+    updateDCDisplays();
+    if(credited>0)showSaveBanner();
   },30000);
 }
-function stopAutoSave(){if(autoSaveIv){clearInterval(autoSaveIv);autoSaveIv=null;}savedKillsForPartial=0;}
+function stopAutoSave(){if(autoSaveIv){clearInterval(autoSaveIv);autoSaveIv=null;}}
 function showSaveBanner(){const b=document.getElementById('save-banner');if(!b)return;b.classList.add('show');setTimeout(()=>b.classList.remove('show'),2500);}
 
 function loadBoostsForMatch(){goldIncomeBonus=getUL('income');startGoldBonus=getUL('startgold')*30;manaSpeedBonus=getUL('manaspd')*.15;comboMult=getUL('combobonus')>0?1.5:1;}
@@ -1282,7 +1309,7 @@ function spawnMinion(x,y){
 function spawnHero(){
   const isBoss=wave%5===0&&wave>0;
   const lm=1+(wave*.36),bm=isBoss?2.8:1;
-  const dd=getDynamicDiff(); // V2.8 dynamic difficulty
+  const dd=getDynamicDiff();
   const hp=Math.floor(HERO_BASE.hp*lm*bm*dd);
   const h={x:-80,y:pathY+(Math.random()-.5)*35,hp,maxHp:hp,dmg:Math.floor(HERO_BASE.dmg*lm*(isBoss?1.6:1)*dd),spd:HERO_BASE.spd+(wave*.022),rad:isBoss?44:HERO_BASE.rad,col:isBoss?'#bb0000':'#ee3333',isBoss,freezeT:0,halfHPTriggered:false};
   heroes.push(h);
@@ -1291,7 +1318,7 @@ function spawnHero(){
   hw.textContent=isBoss?`🔥 BOSS — WAVE ${wave} 🔥`:'⚠️ HERO APPROACHING ⚠️';
   hw.style.opacity='1';setTimeout(()=>hw.style.opacity='0',2800);
   if(isBoss)vib([100,50,100,50,200]);
-  waveStartTime=Date.now(); // reset difficulty timer per wave
+  waveStartTime=Date.now();
 }
 function spawnMini(x,y){const hp=60;const px=x||(W*.3+Math.random()*(W*.4)),py=y||(pathY+(Math.random()-.5)*60);heroes.push({x:px,y:py,hp,maxHp:hp,dmg:4,spd:.8,rad:16,col:'#990000',isBoss:false,freezeT:0,halfHPTriggered:false});}
 function spawnBossAssistants(bx,by,count){for(let i=0;i<count;i++)setTimeout(()=>{const ang=(Math.PI*2/count)*i,r=60;spawnMini(bx+Math.cos(ang)*r,by+Math.sin(ang)*r);},i*200+100);toast(`💀 Boss summoned ${count} assistants!`);vib([60,30,60,30,100]);}
@@ -1303,12 +1330,11 @@ function showWaveAnn(w){
   document.getElementById('fxl').appendChild(el);setTimeout(()=>el.remove(),2300);
 }
 
-/* MAIN LOOP — V2.8: deltaTime scaled by gameSpeed */
+/* MAIN LOOP — deltaTime scaled by gameSpeed */
 function loop(ts){
   if(!GA||paused)return;
   const rawDt=Math.min(ts-lastTs,50);
   lastTs=ts;
-  // Apply speed multiplier to delta time so everything speeds up
   const dt=rawDt*gameSpeed;
   update(dt,rawDt);render();
   requestAnimationFrame(loop);
@@ -1316,31 +1342,23 @@ function loop(ts){
 
 function update(dt,rawDt){
   const now=Date.now();
-  // Income
   gT+=dt;if(gT>850){const inc=2+Math.floor(wave/4)+goldIncomeBonus;gold+=inc;goldE+=inc;gT=0;}
-  // Mana
   mT+=dt;const mI=130/(1+manaSpeedBonus);if(mT>mI){mana=Math.min(100,mana+1);mT=0;}
   sT+=dt;if(sT>2600){souls++;sT=0;}
   combo>0&&(comboT-=dt,comboT<=0&&(combo=0));
-  // Hero spawn
   if(heroes.length===0&&GA){hT+=dt;if(hT>2700){hT=0;spawnHero();showWaveAnn(wave);}}else hT=0;
 
-  // Meteors
   meteors.forEach(m=>{m.life-=gameSpeed;m.r+=(m.maxR-m.r)*.18;heroes.forEach(h=>{const dx=h.x-m.x,dy=h.y-m.y;if(Math.sqrt(dx*dx+dy*dy)<m.r+h.rad){h.hp-=4;if(CF.ptcl)burstp(h.x,h.y,1,'#ffaa00');}});});
   meteors=meteors.filter(m=>m.life>0);
 
-  // Dragon Burn Aura
   minions.forEach(m=>{if(m.type==='dragon'){heroes.forEach(h=>{const dx=h.x-m.x,dy=h.y-m.y,d=Math.sqrt(dx*dx+dy*dy);if(d<m.rad+55&&Math.random()<.04){h.hp-=Math.floor(2*(now<rageT?2:1));h.burnT=now+1000;if(CF.ptcl&&Math.random()<.4)burstp(h.x+(Math.random()-.5)*20,h.y+(Math.random()-.5)*20,1,'#ff6600');}});}});
 
-  // Heroes
   heroes.forEach(h=>{
     const frozen=now<h.freezeT;
     if(!frozen){
       if(h.isBoss&&!h.halfHPTriggered&&h.hp<=h.maxHp*.5){h.halfHPTriggered=true;spawnBossAssistants(h.x,h.y,wave>=25?5:4);}
     }
-    // V2.8: heroes spread out slightly — add vertical drift to prevent perfect overlap
     if(!frozen&&heroes.filter(o=>o!==h).some(o=>{const dx=h.x-o.x,dy=h.y-o.y;return Math.sqrt(dx*dx+dy*dy)<h.rad+o.rad;})){
-      // Nudge overlapping heroes apart
       h.y+=((Math.random()-.5)*1.5)*gameSpeed;
       h.y=Math.max(pathY-pathH*.55,Math.min(pathY+pathH*.55,h.y));
     }
@@ -1350,7 +1368,6 @@ function update(dt,rawDt){
       const dx=h.x-m.x,dy=h.y-m.y,d=Math.sqrt(dx*dx+dy*dy);
       if(d<h.rad+m.rad+4){
         busy=true;const rm=now<rageT?2:1;
-        // Minion hits hero (always, even frozen)
         if(Math.random()<.06*gameSpeed){
           let dmgM=m.dmg*rm;
           if(m.type==='berserker')dmgM=Math.floor(dmgM*(1+m.berserkerKills*.1));
@@ -1359,7 +1376,6 @@ function update(dt,rawDt){
           if(m.type==='vampire'&&m.lifedrainAmt>0){m.hp=Math.min(m.maxHp,m.hp+m.lifedrainAmt);if(CF.dmg&&Math.random()<.3)flt('+'+m.lifedrainAmt,m.x,m.y-28,'#ce93d8',10);}
           if(m.type==='imp'&&Math.random()<.25&&!frozen){const d2=Math.floor(m.dmg*rm);h.hp-=d2;if(CF.dmg)flt(d2+' ×2',h.x+8,h.y-58,'#ffff66',10);}
         }
-        // Hero hits minion
         if(!frozen&&Math.random()<.055*gameSpeed){
           if(m.type==='wraith'&&Math.random()<.4){if(CF.dmg)flt('DODGE!',m.x,m.y-28,'#80deea',10);}
           else{const dmg=h.dmg;if(m.type==='golem'&&Math.random()<.3){h.hp-=Math.floor(dmg*.3);if(CF.dmg)flt('THORNS',h.x,h.y-58,'#a0897a',10);}m.hp-=dmg;m.flash=7;if(CF.ptcl)burstp(m.x,m.y,2,'#fff');if(CF.dmg)flt(dmg,m.x,m.y-22,'#ff5555',11);if(CF.shake)doShake();}
@@ -1401,11 +1417,10 @@ function update(dt,rawDt){
 function render(){
   ctx.clearRect(0,0,W,H);
 
-  // V2.8: Wave-based background images
+  // Wave-based background images (CHANGE 3)
   const bgImg=getBgImg(wave);
   if(bgImg&&bgImg.complete&&bgImg.naturalWidth>0){
     ctx.drawImage(bgImg,0,0,W,H);
-    // Dark overlay to keep HUD readable
     const ov=ctx.createLinearGradient(0,0,0,H);
     ov.addColorStop(0,'rgba(6,0,14,.78)');ov.addColorStop(.4,'rgba(6,0,14,.15)');ov.addColorStop(.6,'rgba(6,0,14,.15)');ov.addColorStop(1,'rgba(6,0,14,.82)');
     ctx.fillStyle=ov;ctx.fillRect(0,0,W,H);
@@ -1421,14 +1436,12 @@ function render(){
   // Spawn glow
   ctx.save();const sg=ctx.createRadialGradient(65,pathY,0,65,pathY,60);sg.addColorStop(0,'rgba(255,215,0,.04)');sg.addColorStop(1,'transparent');ctx.fillStyle=sg;ctx.beginPath();ctx.arc(65,pathY,60,0,Math.PI*2);ctx.fill();ctx.strokeStyle='rgba(255,215,0,.08)';ctx.lineWidth=1;ctx.setLineDash([3,10]);ctx.beginPath();ctx.arc(65,pathY,50,0,Math.PI*2);ctx.stroke();ctx.setLineDash([]);ctx.restore();
 
-  // V2.8: WIDER GATE — increased by ~0.5cm each side
-  // On screen: pathH * 1.2 height, width 70px (was ~56px)
+  // GATE (wider)
   const gw=70,gh=Math.max(200,Math.floor(pathH*1.18)),gx=W-gw,gy=pathY-gh/2;
   ctx.save();
   ctx.fillStyle='#07000f';ctx.fillRect(gx,gy,gw,gh);
   const gg=ctx.createLinearGradient(gx,gy,gx+gw,gy+gh);gg.addColorStop(0,'rgba(0,140,255,.12)');gg.addColorStop(1,'rgba(0,40,120,.06)');ctx.fillStyle=gg;ctx.fillRect(gx+2,gy+2,gw-4,gh-4);
   ctx.shadowColor='#00c8ff';ctx.shadowBlur=22;ctx.strokeStyle='rgba(0,200,255,.5)';ctx.lineWidth=2;ctx.strokeRect(gx+2,gy+2,gw-4,gh-4);ctx.shadowBlur=0;
-  // Arch decorations
   ctx.strokeStyle='rgba(0,200,255,.2)';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(gx+10,gy+12);ctx.lineTo(gx+gw-10,gy+12);ctx.stroke();
   ctx.fillStyle='rgba(0,200,255,.22)';ctx.font=`bold ${Math.floor(gw*.15)}px Cinzel`;ctx.textAlign='center';ctx.fillText('GATE',gx+gw/2,pathY+5);
   ctx.restore();
@@ -1440,16 +1453,12 @@ function render(){
   // Dragon aura
   minions.forEach(m=>{if(m.type==='dragon'){ctx.save();const ag=ctx.createRadialGradient(m.x,m.y,m.rad,m.x,m.y,m.rad+55);ag.addColorStop(0,'rgba(255,100,0,.18)');ag.addColorStop(.5,'rgba(255,60,0,.07)');ag.addColorStop(1,'rgba(255,30,0,0)');ctx.fillStyle=ag;ctx.beginPath();ctx.arc(m.x,m.y,m.rad+55,0,Math.PI*2);ctx.fill();ctx.restore();}});
 
-  // Particles
   if(CF.ptcl){particles.forEach(p=>{ctx.globalAlpha=Math.max(0,p.life);ctx.fillStyle=p.col;ctx.beginPath();ctx.arc(p.x,p.y,p.size,0,Math.PI*2);ctx.fill();});ctx.globalAlpha=1;}
 
-  // Meteors
   meteors.forEach(m=>{ctx.save();const mg=ctx.createRadialGradient(m.x,m.y,0,m.x,m.y,m.r);mg.addColorStop(0,'rgba(255,255,200,.88)');mg.addColorStop(.3,'rgba(255,120,0,.55)');mg.addColorStop(1,'rgba(255,30,0,0)');ctx.beginPath();ctx.arc(m.x,m.y,m.r,0,Math.PI*2);ctx.fillStyle=mg;ctx.fill();ctx.restore();});
 
-  // Zombies
   zombies.forEach(z=>{ctx.save();ctx.globalAlpha=.6;drawEnt(z.x,z.y,z.rad,'🧟',z.col,false,false,false);ctx.restore();});
 
-  // Heroes
   heroes.forEach(h=>{
     const frozen=Date.now()<h.freezeT,burning=Date.now()<(h.burnT||0);
     ctx.save();if(frozen)ctx.globalAlpha=.55;
@@ -1460,7 +1469,6 @@ function render(){
     ctx.restore();
   });
 
-  // Minions
   minions.forEach(m=>{
     const u=ALL_UNITS[m.type],evoLvl=m.evoLvl||0,evo=getEvoData(m.type,evoLvl),displayEmoji=evo?.emoji||u.emoji;
     ctx.save();
@@ -1539,7 +1547,7 @@ function buildDeck(){
   if(activeDeck.length>0)selUnit(activeDeck[0]);
 }
 
-/* GAME FLOW */
+/* ════ GAME FLOW ════ */
 function startGame(){
   show('reward-screen',false);show('shop',false);
   refreshSpellCDs();loadBoostsForMatch();
@@ -1547,10 +1555,14 @@ function startGame(){
   gold=sg;mana=50;souls=0;wave=1;combo=0;comboT=0;kills=0;goldE=sg;
   minions=[];heroes=[];particles=[];meteors=[];zombies=[];
   freezeT=0;rageT=0;actSpl=null;gT=0;mT=0;sT=0;hT=0;matchBossesKilled=0;waveStartTime=Date.now();
+
+  // V2.8.1: Reset partial-credit trackers for new session
+  partialCoinsAwarded=0;
+  killsCreditedToStats=false;
+
   Object.values(SPELLS).forEach(s=>s.until=0);
   document.querySelectorAll('.spb').forEach(b=>{b.classList.remove('asp','cd');b.style.opacity='1';});
   gc.style.cursor='default';
-  // Reset speed to 1x on new game
   gameSpeed=1;setSpeed(1);
   Object.keys(ALL_UNITS).forEach(k=>{PROG[k]={lvl:1,xp:0,max:100};});
   buildDeck();
@@ -1559,33 +1571,58 @@ function startGame(){
   GA=true;paused=false;document.getElementById('pov').classList.remove('on');
   document.getElementById('gw').classList.add('on');
   lastTs=performance.now();requestAnimationFrame(loop);
-  startAutoSave(); // V2.8: start mid-exit auto-save
+  startAutoSave(); // V2.8.1: start mid-exit auto-save (no double-count)
   if(CU){CU.gamesPlayed=(CU.gamesPlayed||0)+1;CU.sessionDays=CU.sessionDays||[];CU.sessionDays.push(Date.now());if(CU.sessionDays.length>60)CU.sessionDays=CU.sessionDays.slice(-60);saveUser();}
 }
 
+/* ── GAME OVER: credit only the remaining delta (not yet auto-saved) ── */
 function gameOver(){
   GA=false;stopAutoSave();
-  const reward=awardMatchCoins(kills,wave,matchBossesKilled);
-  if(CU){CU.bestWave=Math.max(CU.bestWave||0,wave);CU.totalKills=(CU.totalKills||0)+kills;CU.totalGold=(CU.totalGold||0)+Math.floor(goldE);saveUser();}
+
+  // Calculate full session total for display purposes
+  const base=calcBaseCoins(kills,wave);
+  const bossB=calcBossBonus(matchBossesKilled);
+  const sessionTotal=base+bossB;
+
+  // Credit only the coins not yet awarded via auto-save
+  const remaining=Math.max(0,sessionTotal-partialCoinsAwarded);
+  if(CU){
+    if(remaining>0)CU.darkCoins=(CU.darkCoins||0)+remaining;
+    CU.bestWave=Math.max(CU.bestWave||0,wave);
+    if(!killsCreditedToStats){
+      CU.totalKills=(CU.totalKills||0)+kills;
+      CU.totalGold=(CU.totalGold||0)+Math.floor(goldE);
+      killsCreditedToStats=true;
+    }
+    saveUser();
+  }
+
   document.getElementById('gw').classList.remove('on');
   document.getElementById('rw-sub').textContent=wave>1?`You reached Wave ${wave}!`:'The heroes overwhelmed you…';
-  document.getElementById('rw-kills').textContent=kills;document.getElementById('rw-waves').textContent=wave;
-  document.getElementById('rw-formula-result').textContent=reward.base+' 🪙';
-  if(reward.bossB>0){document.getElementById('rw-bossbonus-wrap').style.display='block';document.getElementById('rw-bossbonus').textContent=reward.bossB;document.getElementById('rw-bossbonus-cnt').textContent=matchBossesKilled;}else{document.getElementById('rw-bossbonus-wrap').style.display='none';}
-  document.getElementById('rw-earned').textContent=reward.total;document.getElementById('rw-total').textContent=CU?.darkCoins||0;
-  document.getElementById('rw-w').textContent=wave;document.getElementById('rw-k').textContent=kills;document.getElementById('rw-g').textContent=Math.floor(goldE);
-  updateDCDisplays();show('reward-screen',true);vib([100,60,150]);
+  document.getElementById('rw-kills').textContent=kills;
+  document.getElementById('rw-waves').textContent=wave;
+  document.getElementById('rw-formula-result').textContent=base+' 🪙';
+  if(bossB>0){
+    document.getElementById('rw-bossbonus-wrap').style.display='block';
+    document.getElementById('rw-bossbonus').textContent=bossB;
+    document.getElementById('rw-bossbonus-cnt').textContent=matchBossesKilled;
+  }else{
+    document.getElementById('rw-bossbonus-wrap').style.display='none';
+  }
+  document.getElementById('rw-earned').textContent=sessionTotal; // show full amount earned this game
+  document.getElementById('rw-total').textContent=CU?.darkCoins||0;
+  document.getElementById('rw-w').textContent=wave;
+  document.getElementById('rw-k').textContent=kills;
+  document.getElementById('rw-g').textContent=Math.floor(goldE);
+  updateDCDisplays();
+  show('reward-screen',true);
+  vib([100,60,150]);
 }
 
+/* ── QUIT HOME: credit remaining, commit stats, show banner ── */
 function quitHome(){
-  // V2.8: Save partial progress before quitting
-  if(GA&&CU&&kills>0){
-    const partial=calcBaseCoins(kills,Math.max(1,wave-1))+calcBossBonus(matchBossesKilled);
-    CU.darkCoins=(CU.darkCoins||0)+partial;
-    CU.bestWave=Math.max(CU.bestWave||0,wave);
-    CU.totalKills=(CU.totalKills||0)+kills;
-    CU.totalGold=(CU.totalGold||0)+Math.floor(goldE);
-    saveUser();updateDCDisplays();
+  if(GA&&CU){
+    creditPartialCoins(true); // credit remaining coins + commit kills/gold to stats
     showSaveBanner();
   }
   GA=false;paused=false;stopAutoSave();
@@ -1602,22 +1639,25 @@ function saveUser(){
   try{const users=LS.g('do_users')||{};users[CU.email]=CU;LS.s('do_users',users);LS.s('do_current',CU.email);}catch(e){console.warn('saveUser failed:',e);}
 }
 
-// V2.8: Save on visibility change (tab switch, minimize)
+// V2.8.1: Save on tab hide / minimize — credit delta only, no double-count
 document.addEventListener('visibilitychange',()=>{
-  if(document.hidden&&GA&&CU&&kills>0){
-    const partial=calcBaseCoins(kills,Math.max(1,wave-1))+calcBossBonus(matchBossesKilled);
-    if(partial>savedKillsForPartial){CU.darkCoins=(CU.darkCoins||0)+(partial-savedKillsForPartial);savedKillsForPartial=partial;}
-    CU.bestWave=Math.max(CU.bestWave||0,wave);CU.totalKills=(CU.totalKills||0)+kills;saveUser();
-  }else if(!document.hidden&&CU){catchUpIdle();}
+  if(document.hidden){
+    if(GA&&CU&&kills>0){
+      creditPartialCoins(false); // coins only while game is still running
+    }
+    if(CU)saveUser();
+  }else if(!document.hidden&&CU){
+    catchUpIdle();
+  }
 });
 
+// V2.8.1: Save on browser close — commit everything
 window.addEventListener('beforeunload',()=>{
   if(GA&&CU&&kills>0){
-    const partial=calcBaseCoins(kills,Math.max(1,wave-1))+calcBossBonus(matchBossesKilled);
-    CU.darkCoins=(CU.darkCoins||0)+partial;
-    CU.bestWave=Math.max(CU.bestWave||0,wave);CU.totalKills=(CU.totalKills||0)+kills;
+    creditPartialCoins(true); // include kills/gold stats on close
+  }else if(CU){
     saveUser();
-  }else if(CU){saveUser();}
+  }
 });
 </script>
 </body>
