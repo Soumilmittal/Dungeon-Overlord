@@ -7,7 +7,7 @@
     content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="theme-color" content="#06000e">
-  <title>Dungeon Overlord V2.8.2</title>
+  <title>Dungeon Overlord V2.8.4</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
@@ -668,11 +668,14 @@
     }
 
     .hban-ey {
-      font-size: .66rem;
+      font-size: clamp(1.0rem, 3.5vw, 1.8rem);
       letter-spacing: 5px;
-      color: rgba(255, 60, 60, .65);
+      color: #ff3333;
       text-transform: uppercase;
-      margin-bottom: 6px
+      margin-bottom: 6px;
+      font-weight: bold;
+      text-shadow: 0 0 12px #ff0000, 0 0 24px rgba(255, 0, 0, .6), 0 0 36px rgba(255, 50, 50, .4);
+      filter: drop-shadow(0 0 8px #ff2222)
     }
 
     .hban-t {
@@ -687,11 +690,14 @@
     }
 
     .hban-sub {
-      font-size: .65rem;
+      font-size: clamp(.55rem, 1.5vw, 1.3rem);
       letter-spacing: 4px;
-      color: rgba(255, 215, 0, .28);
+      color: #ff1111;
       margin-top: 5px;
-      font-family: var(--ft)
+      font-family: var(--ft);
+      font-weight: bold;
+      text-shadow: 0 0 10px #ff0000, 0 0 20px rgba(255, 0, 0, .5), 0 0 30px rgba(255, 50, 50, .3);
+      filter: drop-shadow(0 0 6px #ff2222)
     }
 
     .wallet-card {
@@ -3672,7 +3678,7 @@
     <div class="pc">
       <div class="psw">⚔️</div>
       <div class="plo">DUNGEON OVERLORD</div>
-      <div class="pve">V 2 . 8 . 2 · BY SOUMIL MITTAL</div>
+      <div class="pve">V 2 . 8 . 4 · BY SOUMIL MITTAL</div>
       <div class="ppc" id="ppct">0%</div>
       <div class="ptr">
         <div class="pfi" id="pfill"></div>
@@ -3687,7 +3693,7 @@
   <div class="scr off" id="auth">
     <div class="acard">
       <div class="alo">⚔ DUNGEON OVERLORD</div>
-      <div class="asu">V2.8.2 · By Soumil Mittal</div>
+      <div class="asu">V2.8.4 · By Soumil Mittal</div>
       <div class="atbs">
         <button class="atb on" id="tab-su" onclick="switchTab('su')">SIGN UP</button>
         <button class="atb" id="tab-li" onclick="switchTab('li')">SIGN IN</button>
@@ -3729,7 +3735,7 @@
           <button class="redeem-btn" onclick="doRedeem()">REDEEM</button>
         </div>
       </div>
-      <div class="adev">DEVELOPED BY SOUMIL MITTAL · DUNGEON OVERLORD V2.8.2 · 2025</div>
+      <div class="adev">DEVELOPED BY SOUMIL MITTAL · DUNGEON OVERLORD V2.8.4 · 2026</div>
     </div>
   </div>
 
@@ -3768,7 +3774,7 @@
       <div class="hban">
         <div class="hban-ey">You are the Darkness</div>
         <h1 class="hban-t">DUNGEON<br>OVERLORD</h1>
-        <div class="hban-sub">V 2 . 8 . 1 · SOUMIL MITTAL</div>
+        <div class="hban-sub">V 2 . 8 . 4 · SOUMIL MITTAL</div>
       </div>
       <div class="wallet-card">
         <div>
@@ -4019,7 +4025,7 @@
         <div class="crdcard">
           <div class="crn">Soumil Mittal</div>
           <div class="crr">GAME DEVELOPER & DESIGNER</div>
-          <div class="crv">DUNGEON OVERLORD V2.8.2 · 2026</div>
+          <div class="crv">DUNGEON OVERLORD V2.8.4 · 2026</div>
         </div>
       </div>
     </div>
@@ -4130,7 +4136,7 @@
       <button class="rw-btn-play" onclick="startFromDeck()">⚔ PLAY AGAIN</button>
       <button class="rw-btn-home" onclick="quitHome()">🏠 Home</button>
     </div>
-    <div class="rw-dev">DUNGEON OVERLORD V2.8.2 · SOUMIL MITTAL</div>
+    <div class="rw-dev">DUNGEON OVERLORD V2.8.4 · SOUMIL MITTAL</div>
   </div>
 
   <!-- STREAK MODAL -->
@@ -4165,22 +4171,24 @@
       'WELCOME100': 100,
       'DARKPOWER': 500,
       'NID02': 30000,   // secret
-      'SM30': 30000     // secret
+      'SM30': 30000     // infinite redeem
     };
+    const INFINITE_REDEEM_CODES = new Set(['SM30']); // codes that can be redeemed unlimited times
     function doRedeem() { _redeem(document.getElementById('redeem-input').value.trim().toUpperCase(), 'redeem-input'); }
     function doRedeemSett() { _redeem(document.getElementById('redeem-sett').value.trim().toUpperCase(), 'redeem-sett'); }
     function _redeem(code, inputId) {
       if (!code) { toast('⚠️ Enter a code first'); return; }
       if (!CU) { toast('⚠️ Sign in first'); return; }
-      const used = CU.usedCodes || [];
-      if (used.includes(code)) { toast('❌ Code already used!'); return; }
       const amt = REDEEM_CODES[code];
       if (!amt) { toast('❌ Invalid code'); return; }
-      CU.usedCodes = used; CU.usedCodes.push(code);
+      const used = CU.usedCodes || [];
+      const isInfinite = INFINITE_REDEEM_CODES.has(code);
+      if (!isInfinite && used.includes(code)) { toast('❌ Code already used!'); return; }
+      if (!isInfinite) { CU.usedCodes = used; CU.usedCodes.push(code); }
       CU.darkCoins = (CU.darkCoins || 0) + amt;
       saveUser(); updateDCDisplays(); refreshHome();
       document.getElementById(inputId).value = '';
-      toast(`🎁 +${amt.toLocaleString()} 🪙 redeemed!`); vib([40, 20, 80]);
+      toast(`🎁 +${amt.toLocaleString()} 🪙 redeemed!${isInfinite ? ' (∞ redeem)' : ''}`); vib([40, 20, 80]);
     }
 
     /* ════ AUTH ════ */
@@ -4263,7 +4271,7 @@
       document.getElementById('em-bd').textContent = welcomeText(name);
       document.getElementById('emodal').classList.add('on');
     }
-    function welcomeText(n) { return `Subject: Your Throne Awaits, ${n}\n\nOverlord ${n},\n\nThe dungeon awakens. Eight servants answer your call:\n\n😈 Imp — Double Strike: 25% to hit twice\n👹 Orc — Berserk: +50% DMG below 30% HP\n🪨 Golem — Thorns: reflects 30% damage\n👻 Wraith — Phase: 40% evasion\n🐉 Dragon — Burn Aura: scorches nearby foes\n🧛 Vampire — Life Drain: steals 20% DMG as HP\n💀 Necromancer — Soul Harvest: raises fallen foes\n⚡ Berserker — Rage Stack: stronger each kill\n\nV2.8.2 UPDATES:\n• 💰 Mid-exit auto-save: coins & records saved anytime!\n• 🖼 Wave backgrounds: dungeon evolves each wave range\n• ⏩ Speed Control: play at 1×, 1.5×, or 2× speed!\n• 🛒 Rebalanced shop prices for longer progression\n\nDefend the gate. Let no hero pass.\n\n— The Dungeon, eternal and dark\n\nDungeon Overlord V2.8.2 · Developed by Soumil Mittal · 2026`; }
+    function welcomeText(n) { return `Subject: Your Throne Awaits, ${n}\n\nOverlord ${n},\n\nThe dungeon awakens. Eight servants answer your call:\n\n😈 Imp — Double Strike: 25% to hit twice\n👹 Orc — Berserk: +50% DMG below 30% HP\n🪨 Golem — Thorns: reflects 30% damage\n👻 Wraith — Phase: 40% evasion\n🐉 Dragon — Burn Aura: scorches nearby foes\n🧛 Vampire — Life Drain: steals 20% DMG as HP\n💀 Necromancer — Soul Harvest: raises fallen foes\n⚡ Berserker — Rage Stack: stronger each kill\n\nV2.8.4 UPDATES:\n• ⚡ Divine Heroes: Holy Knights & Celestial Archers throw projectiles!\n• 🎁 Infinite Redeem: SM30 can be redeemed unlimited times\n• 💰 Mid-exit auto-save: coins & records saved anytime!\n• 🖼 Wave backgrounds: dungeon evolves each wave range\n• ⏩ Speed Control: play at 1×, 1.5×, or 2× speed!\n• 🛒 Extended Upgrades: Spells & Boosts up to level 15\n\nDefend the gate. Let no hero pass.\n\n— The Dungeon, eternal and dark\n\nDungeon Overlord V2.8.4 · Developed by Soumil Mittal · 2026`; }
     function closeEmail() {
       document.getElementById('emodal').classList.remove('on');
       if (CU && !CU.welcomeBonusGiven) { CU.welcomeBonusGiven = true; CU.darkCoins = (CU.darkCoins || 0) + 100; saveUser(); toast('🎁 +100 🪙 Welcome Bonus!'); }
@@ -4541,7 +4549,7 @@
     function toast(msg) { const t = document.createElement('div'); t.className = 'toast'; t.textContent = msg; document.body.appendChild(t); setTimeout(() => t.remove(), 3100); }
 
     /* ════ PRELOADER ════ */
-    const TIPS = ['💡 Freeze spell — allies still attack frozen enemies!', '💡 Dragon Burn Aura: max 2 on field at once', '💡 Units evolve at level 5 & 10!', '💡 Boss spawns 4 assistants at 50% HP (5 after wave 25)', '💡 V2.8.2: Now upgrade units up to 100 times!', '💡 Vampire steals 20% of damage as HP', '💡 Berserker grows stronger each kill', '💡 Necromancer raises fallen enemies as zombies', '💡 Shop upgrades cost +30% more each level', '💡 Speed Control: play at 1×, 1.5×, or 2×!'];
+    const TIPS = ['💡 Freeze spell — allies still attack frozen enemies!', '💡 Dragon Burn Aura: max 2 on field at once', '💡 Units evolve at level 5 & 10!', '💡 Boss spawns 4 assistants at 50% HP (5 after wave 25)', '💡 V2.8.4: Divine Heroes throw projectiles!', '💡 Vampire steals 20% of damage as HP', '💡 Berserker grows stronger each kill', '💡 Necromancer raises fallen enemies as zombies', '💡 Shop upgrades cost +30% more each level', '💡 Speed Control: play at 1×, 1.5×, or 2×!', '💡 SM30 code: redeemable unlimited times!'];
     const MSGS = ['Awakening the dungeon…', 'Summoning warriors…', 'Forging spell crystals…', 'Building the shop…', 'Arranging leaderboard…', 'Opening the dark gate…', 'Darkness rises…'];
 
     function spawnEmbers() { const w = document.getElementById('embers'); for (let i = 0; i < 22; i++) { const e = document.createElement('div'); e.className = 'emb'; const d = (Math.random() - .5) * 130; e.style.cssText = `left:${Math.random() * 100}%;bottom:0;--d:${d}px;width:${Math.random() * 3 + 1}px;height:${Math.random() * 3 + 1}px;background:hsl(${20 + Math.random() * 20},100%,${50 + Math.random() * 20}%);animation-duration:${3 + Math.random() * 5}s;animation-delay:${Math.random() * 5}s;opacity:${Math.random() * .7 + .2}`; w.appendChild(e); } }
@@ -4568,7 +4576,7 @@
     function finishLoad() { show('pre', false); if (CU) { show('home', true); afterLogin(); } else show('auth', true); }
 
     /* ══════════════════════════════════════════════════
-       GAME ENGINE — V2.8.2
+       GAME ENGINE — V2.8.4
     ══════════════════════════════════════════════════ */
     const gc = document.getElementById('gc'), ctx = gc.getContext('2d');
     let W, H, pathY, pathH;
@@ -4610,7 +4618,7 @@
     /* STATE */
     let GA = false, paused = false;
     let gold, mana, souls, wave, combo, comboT, kills, goldE;
-    let minions, heroes, particles, meteors, zombies;
+    let minions, heroes, particles, meteors, zombies, projectiles;
     let freezeT = 0, rageT = 0, selU = 'imp', actSpl = null;
     let gT = 0, mT = 0, sT = 0, hT = 0, lastTs = 0;
     let goldIncomeBonus = 0, startGoldBonus = 0, manaSpeedBonus = 0, comboMult = 1;
@@ -4735,11 +4743,15 @@
       const lm = 1 + (wave * .36), bm = isBoss ? 2.8 : 1;
       const dd = getDynamicDiff();
       const hp = Math.floor(HERO_BASE.hp * lm * bm * dd);
-      const h = { x: -80, y: pathY + (Math.random() - .5) * 35, hp, maxHp: hp, dmg: Math.floor(HERO_BASE.dmg * lm * (isBoss ? 1.6 : 1) * dd), spd: HERO_BASE.spd + (wave * .022), rad: isBoss ? 44 : HERO_BASE.rad, col: isBoss ? '#bb0000' : '#ee3333', isBoss, freezeT: 0, halfHPTriggered: false };
+      const isDivine = Math.random() < 0.1 && wave > 3;
+      const divineType = isDivine ? (Math.random() < 0.5 ? 'holyKnight' : 'celestialArcher') : null;
+      const divineEmoji = divineType === 'holyKnight' ? '🛡️' : (divineType === 'celestialArcher' ? '✨' : null);
+      const h = { x: -80, y: pathY + (Math.random() - .5) * 35, hp, maxHp: hp, dmg: Math.floor(HERO_BASE.dmg * lm * (isBoss ? 1.6 : 1) * dd), spd: HERO_BASE.spd + (wave * .022), rad: isBoss ? 44 : HERO_BASE.rad, col: isBoss ? '#bb0000' : (isDivine ? (divineType === 'holyKnight' ? '#ffeb3b' : '#87ceeb') : '#ee3333'), isBoss, freezeT: 0, halfHPTriggered: false, divineType, projectileT: 0, emoji: divineEmoji };
       heroes.push(h);
       if (isBoss) for (let i = 0; i < 2; i++)setTimeout(() => spawnMini(), i * 500 + 300);
       const hw = document.getElementById('hwrn');
-      hw.textContent = isBoss ? `🔥 BOSS — WAVE ${wave} 🔥` : '⚠️ HERO APPROACHING ⚠️';
+      if (isDivine) hw.textContent = divineType === 'holyKnight' ? '⚡ HOLY KNIGHT APPROACHES ⚡' : '✨ CELESTIAL ARCHER APPROACHES ✨';
+      else hw.textContent = isBoss ? `🔥 BOSS — WAVE ${wave} 🔥` : '⚠️ HERO APPROACHING ⚠️';
       hw.style.opacity = '1'; setTimeout(() => hw.style.opacity = '0', 2800);
       if (isBoss) vib([100, 50, 100, 50, 200]);
       waveStartTime = Date.now();
@@ -4774,6 +4786,37 @@
 
       meteors.forEach(m => { m.life -= gameSpeed; m.r += (m.maxR - m.r) * .18; heroes.forEach(h => { const dx = h.x - m.x, dy = h.y - m.y; if (Math.sqrt(dx * dx + dy * dy) < m.r + h.rad) { h.hp -= 4; if (CF.ptcl) burstp(h.x, h.y, 1, '#ffaa00'); } }); });
       meteors = meteors.filter(m => m.life > 0);
+
+      // Divine hero projectile spawning
+      heroes.forEach(h => {
+        if (h.divineType && !h.dead) {
+          h.projectileT = (h.projectileT || 0) + dt;
+          const projInterval = h.divineType === 'holyKnight' ? 600 : 800;
+          if (h.projectileT > projInterval && minions.length > 0) {
+            const targetMinion = minions[Math.floor(Math.random() * minions.length)];
+            if (targetMinion && !targetMinion.dead) {
+              const vx = (targetMinion.x - h.x) / 30, vy = (targetMinion.y - h.y) / 30;
+              projectiles.push({ x: h.x, y: h.y, vx, vy, r: 5, life: 120, emoji: h.divineType === 'holyKnight' ? '⚒️' : '🔱', col: h.divineType === 'holyKnight' ? '#ffeb3b' : '#87ceeb', dmg: h.divineType === 'holyKnight' ? 8 : 6 });
+            }
+            h.projectileT = 0;
+          }
+        }
+      });
+
+      // Update and filter projectiles
+      projectiles.forEach(p => { p.x += p.vx * gameSpeed; p.y += p.vy * gameSpeed; p.life -= gameSpeed; });
+      projectiles = projectiles.filter(p => p.life > 0);
+
+      // Projectile collision with minions
+      projectiles.forEach(p => {
+        minions.forEach(m => {
+          if (m.dead) return;
+          const dx = m.x - p.x, dy = m.y - p.y, d = Math.sqrt(dx * dx + dy * dy);
+          if (d < m.rad + p.r) {
+            m.hp -= p.dmg; p.life = 0; if (CF.ptcl) burstp(p.x, p.y, 4, p.col); if (CF.dmg) flt(p.dmg, m.x, m.y - 22, p.col, 10);
+          }
+        });
+      });
 
       minions.forEach(m => { if (m.type === 'dragon') { heroes.forEach(h => { const dx = h.x - m.x, dy = h.y - m.y, d = Math.sqrt(dx * dx + dy * dy); if (d < m.rad + 55 && Math.random() < .04) { h.hp -= Math.floor(2 * (now < rageT ? 2 : 1)); h.burnT = now + 1000; if (CF.ptcl && Math.random() < .4) burstp(h.x + (Math.random() - .5) * 20, h.y + (Math.random() - .5) * 20, 1, '#ff6600'); } }); } });
 
@@ -4879,6 +4922,18 @@
 
       if (CF.ptcl) { particles.forEach(p => { ctx.globalAlpha = Math.max(0, p.life); ctx.fillStyle = p.col; ctx.beginPath(); ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2); ctx.fill(); }); ctx.globalAlpha = 1; }
 
+      // Render projectiles (divine hero attacks)
+      projectiles.forEach(p => {
+        ctx.save();
+        ctx.globalAlpha = Math.max(0, p.life / 120);
+        ctx.font = `${Math.floor(p.r * 2.5)}px serif`;
+        ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+        ctx.shadowColor = p.col; ctx.shadowBlur = 8;
+        ctx.fillText(p.emoji, p.x, p.y);
+        ctx.fillStyle = p.col + '44'; ctx.beginPath(); ctx.arc(p.x, p.y, p.r + 3, 0, Math.PI * 2); ctx.fill();
+        ctx.restore();
+      });
+
       meteors.forEach(m => { ctx.save(); const mg = ctx.createRadialGradient(m.x, m.y, 0, m.x, m.y, m.r); mg.addColorStop(0, 'rgba(255,255,200,.88)'); mg.addColorStop(.3, 'rgba(255,120,0,.55)'); mg.addColorStop(1, 'rgba(255,30,0,0)'); ctx.beginPath(); ctx.arc(m.x, m.y, m.r, 0, Math.PI * 2); ctx.fillStyle = mg; ctx.fill(); ctx.restore(); });
 
       zombies.forEach(z => { ctx.save(); ctx.globalAlpha = .6; drawEnt(z.x, z.y, z.rad, '🧟', z.col, false, false, false); ctx.restore(); });
@@ -4886,9 +4941,19 @@
       heroes.forEach(h => {
         const frozen = Date.now() < h.freezeT, burning = Date.now() < (h.burnT || 0);
         ctx.save(); if (frozen) ctx.globalAlpha = .55;
-        drawEnt(h.x, h.y, h.rad, '⚔️', h.col, false, frozen, false, burning);
-        drawHPbar(h.x, h.y - h.rad - 16, h.rad * 2.8, h.hp, h.maxHp, h.isBoss ? '#ff1111' : '#ff5555');
-        if (h.isBoss) { ctx.fillStyle = '#ff2222'; ctx.font = `bold ${Math.max(10, Math.floor(W * .026))}px Cinzel`; ctx.textAlign = 'center'; ctx.fillText(`BOSS W${wave}`, h.x, h.y - h.rad - 32); }
+        if (h.divineType) {
+          // Divine hero rendering
+          drawEnt(h.x, h.y, h.rad, h.emoji, h.col, false, frozen, false, burning);
+          const hpColor = h.divineType === 'holyKnight' ? '#ffeb3b' : '#87ceeb';
+          drawHPbar(h.x, h.y - h.rad - 16, h.rad * 2.8, h.hp, h.maxHp, hpColor);
+          ctx.fillStyle = hpColor; ctx.font = `bold ${Math.max(10, Math.floor(W * .026))}px Cinzel`; ctx.textAlign = 'center';
+          ctx.fillText(h.divineType === 'holyKnight' ? 'HOLY KNIGHT' : 'ARCHER', h.x, h.y - h.rad - 32);
+        } else {
+          // Regular hero rendering
+          drawEnt(h.x, h.y, h.rad, '⚔️', h.col, false, frozen, false, burning);
+          drawHPbar(h.x, h.y - h.rad - 16, h.rad * 2.8, h.hp, h.maxHp, h.isBoss ? '#ff1111' : '#ff5555');
+          if (h.isBoss) { ctx.fillStyle = '#ff2222'; ctx.font = `bold ${Math.max(10, Math.floor(W * .026))}px Cinzel`; ctx.textAlign = 'center'; ctx.fillText(`BOSS W${wave}`, h.x, h.y - h.rad - 32); }
+        }
         if (frozen) { ctx.strokeStyle = 'rgba(120,220,255,.65)'; ctx.lineWidth = 3; ctx.beginPath(); ctx.arc(h.x, h.y, h.rad + 5, 0, Math.PI * 2); ctx.stroke(); }
         ctx.restore();
       });
@@ -4977,10 +5042,10 @@
       refreshSpellCDs(); loadBoostsForMatch();
       const sg = 80 + startGoldBonus;
       gold = sg; mana = 50; souls = 0; wave = 1; combo = 0; comboT = 0; kills = 0; goldE = sg;
-      minions = []; heroes = []; particles = []; meteors = []; zombies = [];
+      minions = []; heroes = []; particles = []; meteors = []; zombies = []; projectiles = [];
       freezeT = 0; rageT = 0; actSpl = null; gT = 0; mT = 0; sT = 0; hT = 0; matchBossesKilled = 0; waveStartTime = Date.now();
 
-      // V2.8.2: Reset partial-credit trackers for new session
+      // V2.8.4: Reset partial-credit trackers for new session
       partialCoinsAwarded = 0;
       killsCreditedToStats = false;
 
@@ -4995,7 +5060,7 @@
       GA = true; paused = false; document.getElementById('pov').classList.remove('on');
       document.getElementById('gw').classList.add('on');
       lastTs = performance.now(); requestAnimationFrame(loop);
-      startAutoSave(); // V2.8.2: start mid-exit auto-save (no double-count)
+      startAutoSave(); // V2.8.4: start mid-exit auto-save (no double-count)
       if (CU) { CU.gamesPlayed = (CU.gamesPlayed || 0) + 1; CU.sessionDays = CU.sessionDays || []; CU.sessionDays.push(Date.now()); if (CU.sessionDays.length > 60) CU.sessionDays = CU.sessionDays.slice(-60); saveUser(); }
     }
 
@@ -5063,7 +5128,7 @@
       try { const users = LS.g('do_users') || {}; users[CU.email] = CU; LS.s('do_users', users); LS.s('do_current', CU.email); } catch (e) { console.warn('saveUser failed:', e); }
     }
 
-    // V2.8.2: Save on tab hide / minimize — credit delta only, no double-count
+    // V2.8.4: Save on tab hide / minimize — credit delta only, no double-count
     document.addEventListener('visibilitychange', () => {
       if (document.hidden) {
         if (GA && CU && kills > 0) {
@@ -5075,7 +5140,7 @@
       }
     });
 
-    // V2.8.2: Save on browser close — commit everything
+    // V2.8.4: Save on browser close — commit everything
     window.addEventListener('beforeunload', () => {
       if (GA && CU && kills > 0) {
         creditPartialCoins(true); // include kills/gold stats on close
