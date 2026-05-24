@@ -212,7 +212,7 @@ html,body{margin:0;padding:0;width:100%;height:100%;background:var(--bg);font-fa
 .lb-empty{text-align:center;padding:40px 20px;color:#333;font-size:.82rem}
 
 /* ── SHOP ── */
-#shop{background:linear-gradient(135deg,rgba(255,180,0,.12) 0%,rgba(155,0,255,.08) 50%,rgba(232,32,32,.08) 100%),#020005;position:relative;overflow-y:auto}
+#shop{background:linear-gradient(135deg,rgba(255,180,0,.12) 0%,rgba(155,0,255,.08) 50%,rgba(232,32,32,.08) 100%),#020005;position:relative;overflow-y:auto;scroll-behavior:smooth;-webkit-overflow-scrolling:touch}
 #shop::before{content:'';position:fixed;top:0;left:0;right:0;height:300px;background:radial-gradient(ellipse at 50% 0%,rgba(255,180,0,.15) 0%,transparent 70%);pointer-events:none;z-index:0}
 .shop-inner{width:min(600px,100%);margin:0 auto;padding:calc(var(--st)+8px) 14px calc(var(--sb)+40px);position:relative;z-index:1}
 .shop-hdr{display:flex;align-items:center;justify-content:space-between;padding:18px 16px;position:sticky;top:0;background:linear-gradient(135deg,rgba(20,8,40,.96),rgba(15,5,25,.94));z-index:15;border-bottom:2px solid rgba(255,215,0,.18);border-radius:0 0 14px 14px;backdrop-filter:blur(12px);box-shadow:0 8px 32px rgba(255,180,0,.12),0 0 0 1px rgba(255,215,0,.1);margin-bottom:16px}
@@ -976,15 +976,15 @@ Object.keys(ALL_UNITS).forEach(u=>{
 function getUpgradeCost(base,lvl){return Math.round(base*Math.pow(1.3,lvl));}
 
 const SHOP_SPELLS=[
-  {id:'meteor_cd',name:'Meteor Mastery',emoji:'☄️',desc:'Reduce Meteor cooldown by 500ms',baseVal:3500,reduce:500,baseCost:320,max:4},
-  {id:'freeze_cd',name:'Glacial Mastery',emoji:'❄️',desc:'Reduce Freeze cooldown by 600ms',baseVal:5000,reduce:600,baseCost:320,max:4},
-  {id:'rage_cd',  name:'Rage Mastery',  emoji:'🔥',desc:'Reduce Rage cooldown by 700ms', baseVal:6000,reduce:700,baseCost:320,max:4},
+  {id:'meteor_cd',name:'Meteor Mastery',emoji:'☄️',desc:'Reduce Meteor cooldown by 500ms',baseVal:3500,reduce:500,baseCost:320,max:15},
+  {id:'freeze_cd',name:'Glacial Mastery',emoji:'❄️',desc:'Reduce Freeze cooldown by 600ms',baseVal:5000,reduce:600,baseCost:320,max:15},
+  {id:'rage_cd',  name:'Rage Mastery',  emoji:'🔥',desc:'Reduce Rage cooldown by 700ms', baseVal:6000,reduce:700,baseCost:320,max:15},
 ];
 const SHOP_BOOSTS=[
-  {id:'income',    emoji:'💰',name:'Dark Treasury',desc:'+1 gold per passive tick',      baseCost:240,max:3},
-  {id:'startgold', emoji:'🏦',name:'War Chest',    desc:'Start each match with +30 gold',baseCost:320,max:3},
-  {id:'manaspd',   emoji:'⚡',name:'Mana Flow',    desc:'Mana 15% faster',               baseCost:280,max:3},
-  {id:'combobonus',emoji:'🔥',name:'Combo King',   desc:'Combo bonus ×1.5',              baseCost:360,max:2},
+  {id:'income',    emoji:'💰',name:'Dark Treasury',desc:'+1 gold per passive tick',      baseCost:240,max:15},
+  {id:'startgold', emoji:'🏦',name:'War Chest',    desc:'Start each match with +30 gold',baseCost:320,max:15},
+  {id:'manaspd',   emoji:'⚡',name:'Mana Flow',    desc:'Mana 15% faster',               baseCost:280,max:15},
+  {id:'combobonus',emoji:'🔥',name:'Combo King',   desc:'Combo bonus ×1.5',              baseCost:360,max:15},
 ];
 function getUL(key){return(CU?.shopUpgrades||{})[key]||0;}
 function setUL(key,lvl){if(!CU)return;CU.shopUpgrades=CU.shopUpgrades||{};CU.shopUpgrades[key]=lvl;saveUser();}
