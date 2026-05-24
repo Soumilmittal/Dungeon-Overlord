@@ -668,11 +668,14 @@
     }
 
     .hban-ey {
-      font-size: .66rem;
+      font-size: clamp(1.0rem, 3.5vw, 1.8rem);
       letter-spacing: 5px;
-      color: rgba(255, 60, 60, .65);
+      color: #ff3333;
       text-transform: uppercase;
-      margin-bottom: 6px
+      margin-bottom: 6px;
+      font-weight: bold;
+      text-shadow: 0 0 12px #ff0000, 0 0 24px rgba(255, 0, 0, .6), 0 0 36px rgba(255, 50, 50, .4);
+      filter: drop-shadow(0 0 8px #ff2222)
     }
 
     .hban-t {
@@ -687,11 +690,14 @@
     }
 
     .hban-sub {
-      font-size: .65rem;
+      font-size: clamp(.55rem, 1.5vw, 1.3rem);
       letter-spacing: 4px;
-      color: rgba(255, 215, 0, .28);
+      color: #ff1111;
       margin-top: 5px;
-      font-family: var(--ft)
+      font-family: var(--ft);
+      font-weight: bold;
+      text-shadow: 0 0 10px #ff0000, 0 0 20px rgba(255, 0, 0, .5), 0 0 30px rgba(255, 50, 50, .3);
+      filter: drop-shadow(0 0 6px #ff2222)
     }
 
     .wallet-card {
