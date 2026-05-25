@@ -936,6 +936,81 @@
       cursor: not-allowed
     }
 
+
+    .spin-card {
+      width: 100%;
+      background: linear-gradient(135deg, rgba(0, 230, 118, .07), rgba(255, 215, 0, .05));
+      border: 1px solid rgba(0, 230, 118, .18);
+      border-radius: 16px;
+      padding: 13px 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      box-shadow: 0 8px 24px rgba(0, 230, 118, .04)
+    }
+
+    .spin-ico {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      font-size: 1.7rem;
+      background: conic-gradient(from 0deg, var(--gold), var(--green), var(--blue), var(--orange), var(--gold));
+      box-shadow: 0 0 18px rgba(0, 230, 118, .18)
+    }
+
+    .spin-mid {
+      flex: 1
+    }
+
+    .spin-lbl {
+      font-size: .58rem;
+      letter-spacing: 2px;
+      color: rgba(0, 230, 118, .7);
+      text-transform: uppercase;
+      margin-bottom: 3px;
+      font-family: var(--ft)
+    }
+
+    .spin-amt {
+      font-family: var(--ft);
+      font-size: 1.15rem;
+      color: #fff;
+      line-height: 1
+    }
+
+    .spin-sub {
+      font-size: .62rem;
+      color: #555;
+      margin-top: 3px
+    }
+
+    .spin-btn {
+      padding: 9px 13px;
+      border-radius: 10px;
+      border: 1px solid rgba(0, 230, 118, .34);
+      background: linear-gradient(135deg, rgba(0, 230, 118, .16), rgba(255, 215, 0, .08));
+      color: var(--green);
+      font-family: var(--ft);
+      font-size: .7rem;
+      font-weight: 800;
+      cursor: pointer;
+      letter-spacing: 1px;
+      min-height: 40px;
+      white-space: nowrap;
+      transition: .14s
+    }
+
+    .spin-btn:active {
+      transform: scale(.95)
+    }
+
+    .spin-btn.dis {
+      opacity: .42;
+      cursor: not-allowed
+    }
+
     .hstats-row {
       display: flex;
       gap: 8px;
@@ -2253,6 +2328,43 @@
       padding: 0 2px
     }
 
+
+    .bst-prog {
+      width: 100%;
+      height: 7px;
+      border-radius: 7px;
+      background: rgba(255, 255, 255, .055);
+      overflow: hidden;
+      margin-top: 2px
+    }
+
+    .bst-prog-fill {
+      height: 100%;
+      border-radius: 7px;
+      background: linear-gradient(90deg, var(--orange), var(--gold));
+      box-shadow: 0 0 12px rgba(255, 215, 0, .16);
+      transition: width .25s
+    }
+
+    .bst-stat {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      padding: 8px;
+      border-radius: 8px;
+      background: rgba(0, 0, 0, .18);
+      color: rgba(255, 255, 255, .72);
+      font-size: .62rem;
+      line-height: 1.3
+    }
+
+    .bst-stat span:first-child {
+      color: var(--gold);
+      font-family: var(--ft);
+      font-size: .64rem
+    }
+
     .bst-buy {
       width: 100%;
       padding: 9px 10px;
@@ -2303,229 +2415,376 @@
 
     /* ── SETTINGS ── */
     #sett {
-      background: #050010
+      background:
+        radial-gradient(circle at 50% -12%, rgba(255, 215, 0, .12), transparent 34%),
+        radial-gradient(circle at 0% 22%, rgba(0, 210, 255, .07), transparent 28%),
+        linear-gradient(180deg, #08020f 0%, #040008 58%, #020005 100%)
     }
 
     .seti {
-      width: min(580px, 100%);
+      width: min(680px, 100%);
       margin: 0 auto;
-      padding: calc(var(--st)+8px) 14px calc(var(--sb)+40px)
+      padding: calc(var(--st) + 10px) 14px calc(var(--sb) + 44px)
     }
 
     .seth {
       display: flex;
       align-items: center;
       gap: 12px;
-      padding: 14px 0 20px;
+      padding: 14px 0 16px;
       position: sticky;
       top: 0;
-      background: #050010;
       z-index: 5;
-      border-bottom: 1px solid rgba(255, 255, 255, .04)
+      background: linear-gradient(180deg, rgba(8, 2, 15, .98), rgba(8, 2, 15, .88) 70%, rgba(8, 2, 15, 0));
+      backdrop-filter: blur(16px)
+    }
+
+    .seth .bck {
+      border-color: rgba(255, 215, 0, .2);
+      background: linear-gradient(135deg, rgba(255, 215, 0, .12), rgba(255, 255, 255, .035));
+      box-shadow: 0 8px 24px rgba(0, 0, 0, .28)
+    }
+
+    .set-title-wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 2px
     }
 
     .stit {
       font-family: var(--ft);
-      font-size: 1.35rem
+      font-size: 1.42rem;
+      line-height: 1;
+      letter-spacing: 2px;
+      color: #fff;
+      text-shadow: 0 0 18px rgba(255, 215, 0, .16)
+    }
+
+    .stsub {
+      font-family: var(--ft);
+      font-size: .5rem;
+      letter-spacing: 2.2px;
+      color: rgba(255, 215, 0, .46)
     }
 
     .ssec2 {
-      margin-bottom: 20px
+      margin-bottom: 14px;
+      padding: 14px;
+      border: 1px solid rgba(255, 255, 255, .075);
+      border-radius: 8px;
+      background: linear-gradient(145deg, rgba(255, 255, 255, .052), rgba(255, 255, 255, .018));
+      box-shadow: 0 14px 34px rgba(0, 0, 0, .24), inset 0 1px 0 rgba(255, 255, 255, .045);
+      backdrop-filter: blur(10px)
     }
 
     .slbl2 {
-      font-size: .58rem;
-      letter-spacing: 3px;
-      color: #2a2a2a;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--ft);
+      font-size: .62rem;
+      letter-spacing: 2.5px;
+      color: rgba(255, 215, 0, .62);
       text-transform: uppercase;
-      margin-bottom: 8px;
-      padding-bottom: 5px;
-      border-bottom: 1px solid rgba(255, 255, 255, .04);
-      font-family: var(--ft)
+      margin-bottom: 11px;
+      padding-bottom: 9px;
+      border-bottom: 1px solid rgba(255, 215, 0, .1)
     }
 
     .anlgr {
       display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 7px;
-      margin-bottom: 7px
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px
     }
 
     .ac {
-      background: rgba(255, 255, 255, .03);
-      border: 1px solid var(--brd);
-      border-radius: 12px;
-      padding: 12px 11px
+      position: relative;
+      min-height: 94px;
+      overflow: hidden;
+      background: linear-gradient(150deg, rgba(16, 10, 28, .92), rgba(8, 5, 18, .72));
+      border: 1px solid rgba(255, 255, 255, .08);
+      border-radius: 8px;
+      padding: 13px 12px;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, .045)
+    }
+
+    .ac::before {
+      content: '';
+      position: absolute;
+      inset: 0 0 auto;
+      height: 2px;
+      background: linear-gradient(90deg, var(--gold), rgba(0, 210, 255, .65), transparent);
+      opacity: .7
+    }
+
+    .ac::after {
+      content: '';
+      position: absolute;
+      right: 10px;
+      top: 10px;
+      width: 28px;
+      height: 28px;
+      border: 1px solid rgba(255, 255, 255, .07);
+      border-radius: 50%;
+      background: rgba(255, 255, 255, .025)
     }
 
     .ac.s2 {
-      grid-column: 1/-1
+      grid-column: 1/-1;
+      min-height: 0
     }
 
     .alb {
+      position: relative;
+      z-index: 1;
+      max-width: calc(100% - 34px);
       font-size: .55rem;
-      color: #2e2e2e;
-      letter-spacing: 2px;
+      color: rgba(255, 255, 255, .46);
+      letter-spacing: 1.8px;
       text-transform: uppercase;
-      margin-bottom: 4px
+      margin-bottom: 9px;
+      line-height: 1.35
     }
 
     .avl {
+      position: relative;
+      z-index: 1;
       font-family: var(--ft);
-      font-size: 1.75rem;
+      font-size: clamp(1.35rem, 8vw, 1.9rem);
       color: var(--gold);
-      line-height: 1
+      line-height: 1;
+      text-shadow: 0 0 18px rgba(255, 215, 0, .12);
+      overflow-wrap: anywhere
     }
 
     .asb {
-      font-size: .65rem;
-      color: #333;
-      margin-top: 3px
+      position: relative;
+      z-index: 1;
+      font-size: .66rem;
+      color: rgba(255, 255, 255, .38);
+      margin-top: 6px
     }
 
     .asb.g {
-      color: var(--green)
+      color: rgba(0, 230, 118, .8)
     }
 
     .real-note {
-      background: rgba(255, 215, 0, .03);
-      border: 1px solid rgba(255, 215, 0, .08);
-      border-radius: 9px;
-      padding: 8px 12px;
-      font-size: .66rem;
-      color: rgba(255, 215, 0, .32);
-      line-height: 1.5;
-      margin-bottom: 8px;
+      background: linear-gradient(135deg, rgba(255, 215, 0, .09), rgba(0, 210, 255, .035));
+      border: 1px solid rgba(255, 215, 0, .14);
+      border-radius: 8px;
+      padding: 9px 12px;
+      font-size: .67rem;
+      color: rgba(255, 255, 255, .58);
+      line-height: 1.45;
+      margin-bottom: 10px;
       text-align: center
     }
 
     .mchr {
-      height: 50px;
+      height: 68px;
       display: flex;
       align-items: flex-end;
-      gap: 3px;
-      margin-top: 8px
+      gap: 5px;
+      margin-top: 10px;
+      padding: 10px 8px 0;
+      border-radius: 8px;
+      background: rgba(0, 0, 0, .18)
     }
 
     .cbar {
       flex: 1;
-      border-radius: 2px 2px 0 0;
+      min-height: 4px;
+      border-radius: 4px 4px 0 0;
+      box-shadow: 0 0 12px rgba(255, 215, 0, .12);
       transition: height 1s cubic-bezier(.25, .46, .45, .94)
     }
 
     .cday {
       flex: 1;
       text-align: center;
-      font-size: .46rem;
-      color: #2a2a2a
+      font-size: .5rem;
+      color: rgba(255, 255, 255, .34)
     }
 
     .ubrow {
-      margin-bottom: 7px
+      margin-bottom: 9px
     }
 
     .ubtop {
       display: flex;
       justify-content: space-between;
-      font-size: .65rem;
-      margin-bottom: 3px
+      gap: 10px;
+      font-size: .66rem;
+      margin-bottom: 5px;
+      color: rgba(255, 255, 255, .72)
+    }
+
+    .ubtop span:last-child {
+      color: rgba(255, 215, 0, .62) !important;
+      font-family: var(--ft);
+      font-size: .58rem
     }
 
     .ubbg {
-      height: 5px;
-      background: rgba(255, 255, 255, .04);
-      border-radius: 3px;
+      height: 7px;
+      background: rgba(255, 255, 255, .055);
+      border-radius: 7px;
       overflow: hidden
     }
 
     .ubfi {
       height: 100%;
-      border-radius: 3px;
+      border-radius: 7px;
+      box-shadow: 0 0 12px rgba(255, 255, 255, .12);
       transition: width 1.1s cubic-bezier(.25, .46, .45, .94)
+    }
+
+    #sett .redeem-row {
+      gap: 8px
+    }
+
+    #sett .redeem-fi {
+      min-height: 48px;
+      border-radius: 8px;
+      background: rgba(0, 0, 0, .24);
+      border-color: rgba(255, 215, 0, .16);
+      color: #fff
+    }
+
+    #sett .redeem-btn {
+      min-height: 48px;
+      border-radius: 8px;
+      background: linear-gradient(135deg, rgba(255, 215, 0, .95), rgba(255, 140, 0, .86));
+      color: #150800;
+      box-shadow: 0 10px 26px rgba(255, 170, 0, .14)
     }
 
     .togrow {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: clamp(12px, 3vw, 14px) 14px;
-      background: rgba(255, 255, 255, .03);
-      border: 1px solid var(--brd);
-      border-radius: 12px;
-      margin-bottom: 6px;
-      min-height: 58px
+      gap: 12px;
+      padding: 13px 14px;
+      background: linear-gradient(135deg, rgba(255, 255, 255, .045), rgba(255, 255, 255, .018));
+      border: 1px solid rgba(255, 255, 255, .08);
+      border-radius: 8px;
+      margin-bottom: 8px;
+      min-height: 60px;
+      transition: transform .18s, border-color .18s, background .18s
+    }
+
+    .togrow:active {
+      transform: scale(.985)
     }
 
     .togl {
-      font-size: .88rem;
-      font-weight: 600;
-      margin-bottom: 2px
+      font-size: .9rem;
+      font-weight: 800;
+      margin-bottom: 3px;
+      color: rgba(255, 255, 255, .9)
     }
 
     .togs {
-      font-size: .65rem;
-      color: #333
+      font-size: .66rem;
+      color: rgba(255, 255, 255, .38)
     }
 
     .tgl {
-      width: 48px;
-      height: 26px;
-      background: #181818;
-      border-radius: 13px;
+      width: 52px;
+      height: 30px;
+      background: rgba(0, 0, 0, .42);
+      border-radius: 999px;
       position: relative;
       cursor: pointer;
       transition: .25s;
-      border: 1px solid rgba(255, 255, 255, .07);
-      flex-shrink: 0
+      border: 1px solid rgba(255, 255, 255, .1);
+      flex-shrink: 0;
+      box-shadow: inset 0 2px 8px rgba(0, 0, 0, .35)
     }
 
     .tgl.on {
-      background: var(--purple)
+      background: linear-gradient(135deg, rgba(0, 210, 255, .9), rgba(0, 230, 118, .82));
+      border-color: rgba(255, 255, 255, .22);
+      box-shadow: 0 0 20px rgba(0, 210, 255, .16)
     }
 
     .tgl::after {
       content: '';
       position: absolute;
-      width: 20px;
-      height: 20px;
+      width: 24px;
+      height: 24px;
       border-radius: 50%;
       background: #fff;
       top: 2px;
       left: 2px;
       transition: .25s;
-      box-shadow: 0 1px 4px rgba(0, 0, 0, .4)
+      box-shadow: 0 2px 8px rgba(0, 0, 0, .38)
     }
 
     .tgl.on::after {
       left: 24px
     }
 
+    #sett .ac[style] {
+      margin-bottom: 9px !important;
+      background: linear-gradient(135deg, rgba(255, 215, 0, .075), rgba(255, 255, 255, .026));
+      border-color: rgba(255, 215, 0, .13)
+    }
+
+    #sett-nm {
+      color: #fff;
+      letter-spacing: .3px
+    }
+
+    #sett-em {
+      color: rgba(255, 255, 255, .42) !important
+    }
+
     .crdcard {
-      background: rgba(255, 255, 255, .03);
-      border: 1px solid rgba(255, 215, 0, .11);
-      border-radius: 13px;
-      padding: 20px;
-      text-align: center
+      position: relative;
+      overflow: hidden;
+      background: linear-gradient(145deg, rgba(255, 215, 0, .085), rgba(255, 255, 255, .025));
+      border: 1px solid rgba(255, 215, 0, .16);
+      border-radius: 8px;
+      padding: 22px 18px;
+      text-align: center;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, .05)
+    }
+
+    .crdcard::before {
+      content: '';
+      position: absolute;
+      inset: 0 0 auto;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--gold), transparent)
     }
 
     .crn {
       font-family: var(--fd);
-      font-size: 1.1rem;
+      font-size: 1.22rem;
       color: var(--gold);
-      margin-bottom: 3px
+      margin-bottom: 4px;
+      text-shadow: 0 0 20px rgba(255, 215, 0, .18)
     }
 
     .crr {
       font-size: .68rem;
-      color: #333;
+      color: rgba(255, 255, 255, .44);
       letter-spacing: 2px
     }
 
     .crv {
       font-size: .61rem;
-      color: var(--purple);
-      margin-top: 7px;
+      color: rgba(0, 210, 255, .66);
+      margin-top: 8px;
       letter-spacing: 2px
+    }
+
+    @media (min-width: 620px) {
+      .anlgr {
+        grid-template-columns: repeat(3, minmax(0, 1fr))
+      }
     }
 
     /* ── GAME HUD ── */
@@ -3476,6 +3735,92 @@
       transform: scale(.97)
     }
 
+
+    .spin-modal {
+      width: min(380px, 92vw);
+      background: linear-gradient(135deg, rgba(6, 22, 18, .98), rgba(34, 18, 5, .96));
+      border: 1.5px solid rgba(0, 230, 118, .28);
+      border-radius: 20px;
+      padding: 24px 20px;
+      text-align: center;
+      box-shadow: 0 0 55px rgba(0, 230, 118, .14)
+    }
+
+    .spin-wheel-wrap {
+      position: relative;
+      width: 220px;
+      height: 220px;
+      margin: 12px auto 18px
+    }
+
+    .spin-pointer {
+      position: absolute;
+      top: -7px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 0;
+      height: 0;
+      border-left: 13px solid transparent;
+      border-right: 13px solid transparent;
+      border-top: 24px solid var(--gold);
+      z-index: 2;
+      filter: drop-shadow(0 2px 5px rgba(0, 0, 0, .45))
+    }
+
+    .spin-wheel {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      border: 5px solid rgba(255, 255, 255, .09);
+      background: conic-gradient(#ffd54a 0 45deg, #00e676 45deg 90deg, #40c4ff 90deg 135deg, #ff7043 135deg 180deg, #ce93d8 180deg 225deg, #ffee58 225deg 270deg, #26c6da 270deg 315deg, #ff8a65 315deg 360deg);
+      box-shadow: inset 0 0 0 12px rgba(0, 0, 0, .18), 0 0 32px rgba(255, 215, 0, .16);
+      transition: transform 3s cubic-bezier(.16, .82, .18, 1)
+    }
+
+    .spin-wheel::after {
+      content: 'SPIN';
+      position: absolute;
+      inset: 76px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      background: rgba(5, 0, 12, .92);
+      border: 1px solid rgba(255, 215, 0, .28);
+      color: var(--gold);
+      font-family: var(--ft);
+      font-size: .8rem;
+      letter-spacing: 2px
+    }
+
+    .spin-result {
+      min-height: 24px;
+      color: var(--gold);
+      font-family: var(--ft);
+      font-size: .86rem;
+      letter-spacing: 1px;
+      margin-bottom: 12px
+    }
+
+    .spin-cl {
+      width: 100%;
+      padding: 13px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, rgba(0, 230, 118, .9), rgba(255, 215, 0, .82));
+      border: none;
+      color: #06120b;
+      font-family: var(--ft);
+      font-weight: 900;
+      font-size: .88rem;
+      letter-spacing: 2px;
+      cursor: pointer;
+      min-height: 50px
+    }
+
+    .spin-cl.dis {
+      opacity: .45;
+      cursor: not-allowed
+    }
+
     /* ── MID-EXIT SAVE BANNER ── */
     .save-banner {
       position: fixed;
@@ -3830,6 +4175,15 @@
         </div>
         <button class="idle-claim" id="idle-btn" onclick="claimIdle()">CLAIM</button>
       </div>
+      <div class="spin-card">
+        <div class="spin-ico">🎡</div>
+        <div class="spin-mid">
+          <div class="spin-lbl">Daily Spin</div>
+          <div class="spin-amt" id="spin-title">Reward Wheel Ready</div>
+          <div class="spin-sub" id="spin-sub">Spin once every day</div>
+        </div>
+        <button class="spin-btn" id="spin-btn" onclick="openSpinWheel()">SPIN</button>
+      </div>
       <div class="streak-card">
         <div class="streak-top">
           <div style="display:flex;align-items:center;gap:9px"><span class="streak-ico">🔥</span>
@@ -3889,7 +4243,7 @@
         <div class="db-title">🃏 DECK BUILDER</div>
         <div class="db-info" id="db-count-txt">0/5 chosen</div>
       </div>
-      <div class="db-note">Choose exactly 5 units. Duplicates cost +20% each. Max 2 dragons.</div>
+      <div class="db-note">Choose exactly 5 units. Duplicates cost +20% each. Max 3 dragons.</div>
       <div
         style="font-size:.6rem;letter-spacing:3px;color:#2a2a2a;text-transform:uppercase;margin-bottom:8px;font-family:var(--ft)">
         Your Deck</div>
@@ -3943,7 +4297,7 @@
         <div class="spl-grid" id="spl-grid"></div>
       </div>
       <div id="shop-boosts" style="display:none">
-        <div class="ssec-t">Passive Boosts</div>
+        <div class="ssec-t">Passive Boosts — Battle Power, Idle Earnings & Idle Storage</div>
         <div class="boost-grid" id="boost-grid"></div>
       </div>
     </div>
@@ -3954,7 +4308,10 @@
     <div class="seti">
       <div class="seth">
         <div class="bck" onclick="closeSett()">←</div>
-        <div class="stit">SETTINGS</div>
+        <div class="set-title-wrap">
+          <div class="stit">SETTINGS</div>
+          <div class="stsub">V2.8.6 CONTROL PANEL</div>
+        </div>
       </div>
       <div class="ssec2">
         <div class="slbl2">📊 Analytics</div>
@@ -4101,7 +4458,7 @@
       </div>
       <div class="pico" onclick="togglePause()">⏸</div>
     </div>
-    <div id="dragon-cap-warn" class="dragon-cap" style="display:none">🐉 MAX 2 DRAGONS!</div>
+    <div id="dragon-cap-warn" class="dragon-cap" style="display:none">🐉 MAX 3 DRAGONS!</div>
     <div class="kfw" id="kfw"></div>
     <div class="hwrn" id="hwrn"></div>
     <div id="fxl" style="position:absolute;inset:0;pointer-events:none;z-index:15"></div>
@@ -4110,6 +4467,21 @@
     </div>
   </div>
 
+
+  <div class="streak-rew-bg" id="spin-modal">
+    <div class="spin-modal">
+      <div class="sr-tt">DAILY SPIN</div>
+      <div class="sr-sub" id="spin-modal-sub">One reward every day</div>
+      <div class="spin-wheel-wrap">
+        <div class="spin-pointer"></div>
+        <div class="spin-wheel" id="spin-wheel"></div>
+      </div>
+      <div class="spin-result" id="spin-result">Ready to spin</div>
+      <button class="spin-cl" id="spin-claim" onclick="spinDailyWheel()">SPIN WHEEL</button>
+      <button class="sr-cl" onclick="closeSpinWheel()"
+        style="margin-top:8px;background:rgba(255,255,255,.08)">CLOSE</button>
+    </div>
+  </div>
   <!-- MID-EXIT SAVE BANNER -->
   <div class="save-banner" id="save-banner">💾 Progress saved!</div>
 
@@ -4247,6 +4619,8 @@
       if (!Array.isArray(u.usedCodes)) u.usedCodes = [];
       const valid = ['imp', 'orc', 'golem', 'wraith', 'dragon', 'vampire', 'necromancer', 'berserker'];
       if (!Array.isArray(u.deck) || u.deck.length === 0 || !u.deck.every(t => valid.includes(t))) u.deck = ['imp', 'orc', 'golem', 'wraith', 'dragon'];
+      if (!u.dailySpin || typeof u.dailySpin !== 'object') u.dailySpin = { lastSpinDate: '', totalSpins: 0 };
+      else { if (typeof u.dailySpin.lastSpinDate !== 'string') u.dailySpin.lastSpinDate = ''; if (typeof u.dailySpin.totalSpins !== 'number') u.dailySpin.totalSpins = 0; }
       if (!u.streak || typeof u.streak !== 'object') u.streak = { count: 0, lastClaimDate: '', totalDaysClaimed: 0 };
       else { if (typeof u.streak.count !== 'number') u.streak.count = 0; if (typeof u.streak.lastClaimDate !== 'string') u.streak.lastClaimDate = ''; if (typeof u.streak.totalDaysClaimed !== 'number') u.streak.totalDaysClaimed = 0; }
       if (!u.idle || typeof u.idle !== 'object') u.idle = { lastTick: Date.now(), pending: 0 };
@@ -4346,12 +4720,88 @@
     function updateDCDisplays() { const dc = CU?.darkCoins || 0; const life = CU?.lifetimeCoinsEarned || 0;['nav-dc', 'wc-val', 'shop-bal', 'my-dc', 'a-dc'].forEach(id => { const el = document.getElementById(id); if (el) el.textContent = dc; }); const lifeEl = document.getElementById('a-life'); if (lifeEl) lifeEl.textContent = life; }
 
     /* ════ IDLE ════ */
-    const IDLE_RATE = 5 * 60 * 1000, IDLE_CAP = 144; let idleIv = null;
-    function catchUpIdle() { if (!CU || !CU.idle) return; const now = Date.now(), elapsed = now - (CU.idle.lastTick || now), earned = Math.floor(elapsed / IDLE_RATE); if (earned > 0) { CU.idle.pending = Math.min(IDLE_CAP, (CU.idle.pending || 0) + earned); CU.idle.lastTick = (CU.idle.lastTick || now) + earned * IDLE_RATE; saveUser(); } updateIdleUI(); }
+    const IDLE_RATE = 5 * 60 * 1000, BASE_IDLE_CAP = 144; let idleIv = null;
+    function getIdleMult() { return parseFloat((1 + getUL('idlemult') * .2).toFixed(1)); }
+    function getIdleCap() { return BASE_IDLE_CAP + getUL('idlecap') * 72; }
+    function fmtIdle(n) { return Number.isInteger(n) ? n : n.toFixed(1); }
+    function catchUpIdle() {
+      if (!CU || !CU.idle) return;
+      const now = Date.now(), elapsed = now - (CU.idle.lastTick || now), ticks = Math.floor(elapsed / IDLE_RATE);
+      if (ticks > 0) {
+        const earned = parseFloat((ticks * getIdleMult()).toFixed(1));
+        CU.idle.pending = Math.min(getIdleCap(), parseFloat(((CU.idle.pending || 0) + earned).toFixed(1)));
+        CU.idle.lastTick = (CU.idle.lastTick || now) + ticks * IDLE_RATE;
+        saveUser();
+      }
+      updateIdleUI();
+    }
     function startIdleTicker() { if (idleIv) clearInterval(idleIv); idleIv = setInterval(() => { if (CU) catchUpIdle(); }, 15000); }
-    function updateIdleUI() { if (!CU) return; const p = CU.idle?.pending || 0; const el = document.getElementById('idle-amt'); const sub = document.getElementById('idle-sub'); const btn = document.getElementById('idle-btn'); if (el) el.textContent = p; if (sub) { if (p >= IDLE_CAP) sub.textContent = '💯 Full — claim now!'; else { const next = IDLE_RATE - ((Date.now() - (CU.idle?.lastTick || Date.now())) % IDLE_RATE); sub.textContent = `+1 🪙 / 5 min · next ~${Math.ceil(next / 60000)}m`; } } if (btn) { btn.classList.toggle('dis', p <= 0); btn.textContent = p > 0 ? `CLAIM +${p}` : 'CLAIM'; } }
-    function claimIdle() { if (!CU) return; const p = CU.idle?.pending || 0; if (p <= 0) { toast('⏳ No idle coins yet!'); return; } addDarkCoins(p); CU.idle.pending = 0; CU.idle.lastTick = Date.now(); saveUser(); toast(`💤 +${p} 🪙 idle coins!`); vib(40); updateIdleUI(); updateDCDisplays(); refreshHome(); }
-
+    function updateIdleUI() {
+      if (!CU) return;
+      const p = CU.idle?.pending || 0, claimable = Math.floor(p), cap = getIdleCap(), mult = getIdleMult();
+      const el = document.getElementById('idle-amt'), sub = document.getElementById('idle-sub'), btn = document.getElementById('idle-btn');
+      if (el) el.textContent = fmtIdle(p);
+      if (sub) {
+        if (p >= cap) sub.textContent = `💯 Full at ${cap} 🪙 — claim now!`;
+        else {
+          const next = IDLE_RATE - ((Date.now() - (CU.idle?.lastTick || Date.now())) % IDLE_RATE);
+          sub.textContent = `+${mult} 🪙 / 5 min · cap ${cap} · next ~${Math.ceil(next / 60000)}m`;
+        }
+      }
+      if (btn) { btn.classList.toggle('dis', claimable <= 0); btn.textContent = claimable > 0 ? `CLAIM +${claimable}` : 'CLAIM'; }
+    }
+    function claimIdle() {
+      if (!CU) return;
+      const p = CU.idle?.pending || 0, claimable = Math.floor(p);
+      if (claimable <= 0) { toast('⏳ No full idle coin yet!'); return; }
+      addDarkCoins(claimable);
+      CU.idle.pending = parseFloat(Math.max(0, p - claimable).toFixed(1));
+      CU.idle.lastTick = Date.now();
+      saveUser(); toast(`💤 +${claimable} 🪙 idle coins!`); vib(40); updateIdleUI(); updateDCDisplays(); refreshHome();
+    }
+    /* ════ DAILY SPIN ════ */
+    const SPIN_REWARDS = [
+      { coin: 100, label: '100 🪙' },
+      { coin: 250, label: '250 🪙' },
+      { coin: 500, label: '500 🪙' },
+      { coin: 750, label: '750 🪙' },
+      { coin: 1000, label: '1,000 🪙' },
+      { coin: 1500, label: '1,500 🪙' },
+      { coin: 2500, label: '2,500 🪙' },
+      { coin: 5000, label: '5,000 🪙' }
+    ];
+    let spinBusy = false, spinRotation = 0;
+    function canSpinToday() { return CU && CU.dailySpin?.lastSpinDate !== todayStr(); }
+    function openSpinWheel() { updateSpinUI(); document.getElementById('spin-modal').classList.add('on'); }
+    function closeSpinWheel() { if (!spinBusy) document.getElementById('spin-modal').classList.remove('on'); }
+    function updateSpinUI() {
+      if (!CU) return;
+      const ready = canSpinToday();
+      const btn = document.getElementById('spin-btn'), title = document.getElementById('spin-title'), sub = document.getElementById('spin-sub'), claim = document.getElementById('spin-claim'), result = document.getElementById('spin-result');
+      if (btn) { btn.classList.toggle('dis', !ready); btn.textContent = ready ? 'SPIN' : 'DONE'; }
+      if (title) title.textContent = ready ? 'Reward Wheel Ready' : 'Come Back Tomorrow';
+      if (sub) sub.textContent = ready ? 'Spin once every day' : `${CU.dailySpin?.totalSpins || 0} lifetime spin(s)`;
+      if (claim) { claim.classList.toggle('dis', !ready || spinBusy); claim.textContent = ready ? (spinBusy ? 'SPINNING...' : 'SPIN WHEEL') : 'CLAIMED TODAY'; }
+      if (result && !spinBusy) result.textContent = ready ? 'Ready to spin' : 'Daily reward already claimed';
+    }
+    function spinDailyWheel() {
+      if (!CU || spinBusy) return;
+      if (!canSpinToday()) { toast('✅ Daily spin already claimed!'); updateSpinUI(); return; }
+      const wheel = document.getElementById('spin-wheel'), result = document.getElementById('spin-result');
+      const idx = Math.floor(Math.random() * SPIN_REWARDS.length), reward = SPIN_REWARDS[idx], slice = 360 / SPIN_REWARDS.length;
+      spinBusy = true; if (result) result.textContent = 'Spinning...'; updateSpinUI();
+      spinRotation += 1440 + (360 - (idx * slice + slice / 2));
+      if (wheel) wheel.style.transform = `rotate(${spinRotation}deg)`;
+      setTimeout(() => {
+        addDarkCoins(reward.coin);
+        CU.dailySpin.lastSpinDate = todayStr();
+        CU.dailySpin.totalSpins = (CU.dailySpin.totalSpins || 0) + 1;
+        saveUser(); updateDCDisplays(); refreshHome();
+        if (result) result.textContent = `You won ${reward.label}!`;
+        toast(`🎡 Daily Spin: +${reward.coin.toLocaleString()} 🪙`); vib([40, 30, 80, 30, 120]);
+        spinBusy = false; updateSpinUI();
+      }, 3100);
+    }
     /* ════ STREAK ════ */
     const STREAK_REWARDS = [{ d: 1, coin: 10, emoji: '🪙' }, { d: 2, coin: 20, emoji: '💰' }, { d: 3, coin: 35, emoji: '💎' }, { d: 4, coin: 50, emoji: '⭐' }, { d: 5, coin: 75, emoji: '🎁' }, { d: 6, coin: 100, emoji: '👑' }, { d: 7, coin: 200, emoji: '🏆' }];
     function todayStr() { return new Date().toDateString(); }
@@ -4385,11 +4835,11 @@
 
     /* ════ UNIT DEFINITIONS (8 units) ════ */
     const ALL_UNITS = {
-      imp: { emoji: '😈', img: 'characters/the_imp.png', cost: 15, hp: 40, dmg: 3, spd: 1.8, rad: 14, col: '#a8e6cf', trait: 'Frenzy', tier: 'common', abilityName: 'Double Strike: 25% to hit twice' },
+      imp: { emoji: '😈', img: 'characters/villains/the_imp.png', cost: 15, hp: 40, dmg: 3, spd: 1.8, rad: 14, col: '#a8e6cf', trait: 'Frenzy', tier: 'common', abilityName: 'Double Strike: 25% to hit twice' },
       orc: { emoji: '👹', cost: 30, hp: 120, dmg: 6, spd: 0.9, rad: 20, col: '#dcedc1', trait: 'Berserk', tier: 'common', abilityName: '<30% HP: +50% DMG & faster regen' },
-      golem: { emoji: '🪨', img: 'characters/the_golem.png', cost: 60, hp: 300, dmg: 8, spd: 0.5, rad: 28, col: '#a0897a', trait: 'Thorns', tier: 'rare', abilityName: 'Reflects 30% damage back' },
+      golem: { emoji: '🪨', img: 'characters/villains/the_golem.png', cost: 60, hp: 300, dmg: 8, spd: 0.5, rad: 28, col: '#a0897a', trait: 'Thorns', tier: 'rare', abilityName: 'Reflects 30% damage back' },
       wraith: { emoji: '👻', cost: 80, hp: 60, dmg: 15, spd: 2.5, rad: 18, col: '#80deea', trait: 'Phase', tier: 'rare', abilityName: '40% evasion + phases through allies' },
-      dragon: { emoji: '🐉', cost: 150, hp: 500, dmg: 40, spd: 1.0, rad: 35, col: '#ff8a80', trait: 'Burn Aura', tier: 'epic', abilityName: 'Burns ALL nearby foes (max 2 on field!)' },
+      dragon: { emoji: '🐉', cost: 150, hp: 500, dmg: 40, spd: 1.0, rad: 35, col: '#ff8a80', trait: 'Burn Aura', tier: 'epic', abilityName: 'Burns ALL nearby foes (max 3 on field!)' },
       vampire: { emoji: '🧛', cost: 70, hp: 80, dmg: 12, spd: 1.6, rad: 16, col: '#ce93d8', trait: 'Life Drain', tier: 'rare', abilityName: 'Steals 20% of damage dealt as HP' },
       necromancer: { emoji: '💀', cost: 110, hp: 90, dmg: 10, spd: 0.8, rad: 22, col: '#80cbc4', trait: 'Soul Harvest', tier: 'epic', abilityName: 'Raises fallen enemies as zombies' },
       berserker: { emoji: '⚡', cost: 90, hp: 150, dmg: 20, spd: 1.4, rad: 24, col: '#ffcc02', trait: 'Rage Stack', tier: 'legend', abilityName: 'DMG +10% per kill this match' },
@@ -4446,16 +4896,18 @@
       { id: 'rage_cd', name: 'Rage Mastery', emoji: '🔥', desc: 'Reduce Rage cooldown by 700ms', baseVal: 6000, reduce: 700, baseCost: 320, max: 15 },
     ];
     const SHOP_BOOSTS = [
-      { id: 'income', emoji: '💰', name: 'Dark Treasury', desc: '+1 gold per passive tick', baseCost: 240, max: 15 },
-      { id: 'startgold', emoji: '🏦', name: 'War Chest', desc: 'Start each match with +30 gold', baseCost: 320, max: 15 },
-      { id: 'manaspd', emoji: '⚡', name: 'Mana Flow', desc: 'Mana 15% faster', baseCost: 280, max: 15 },
-      { id: 'combobonus', emoji: '🔥', name: 'Combo King', desc: 'Combo bonus ×1.5', baseCost: 360, max: 15 },
+      { id: 'idlemult', emoji: '💤', name: 'Idle Engine', desc: 'Increase idle earnings: 1.0x, 1.2x, 1.4x...', baseCost: 180, max: 10, stat: 'idleMult' },
+      { id: 'idlecap', emoji: '📦', name: 'Vault Expansion', desc: 'Increase idle storage limit by +72 coins', baseCost: 220, max: 10, stat: 'idleCap' },
+      { id: 'income', emoji: '💰', name: 'Dark Treasury', desc: '+1 gold per passive tick in battle', baseCost: 240, max: 15, stat: 'battleIncome' },
+      { id: 'startgold', emoji: '🏦', name: 'War Chest', desc: 'Start each match with +30 gold', baseCost: 320, max: 15, stat: 'startGold' },
+      { id: 'manaspd', emoji: '⚡', name: 'Mana Flow', desc: 'Mana 15% faster', baseCost: 280, max: 15, stat: 'manaSpeed' },
+      { id: 'combobonus', emoji: '🔥', name: 'Combo King', desc: 'Combo bonus ×1.5', baseCost: 360, max: 15, stat: 'combo' },
     ];
     function getUL(key) { return (CU?.shopUpgrades || {})[key] || 0; }
     function setUL(key, lvl) { if (!CU) return; CU.shopUpgrades = CU.shopUpgrades || {}; CU.shopUpgrades[key] = lvl; saveUser(); }
 
     /* ════ DECK BUILDER ════ */
-    let currentDeck = []; const DECK_SIZE = 5, MAX_DRAGONS = 2;
+    let currentDeck = []; const DECK_SIZE = 5, MAX_DRAGONS = 3;
 
     function buildDeckUI() {
       renderDeckSlots(); renderRoster();
@@ -4513,7 +4965,7 @@
       document.getElementById('my-wave').textContent = CU.bestWave || 0;
       document.getElementById('my-games').textContent = CU.gamesPlayed || 0;
       document.getElementById('my-kills').textContent = CU.totalKills || 0;
-      updateDCDisplays(); updateIdleUI(); renderStreak();
+      updateDCDisplays(); updateIdleUI(); updateSpinUI(); renderStreak();
     }
     function fillSett() {
       if (!CU) return;
@@ -4595,22 +5047,31 @@
       });
     }
     function buySpell(id, baseCost, max) { const lvl = getUL(id); if (lvl >= max) { toast('Already maxed!'); return; } const cost = getUpgradeCost(baseCost, lvl); if (!spendDC(cost)) { toast('❌ Not enough coins!'); return; } setUL(id, lvl + 1); toast('✅ Spell upgraded!'); vib(30); buildSpellUpgrades(); }
+    function boostStatText(b, lvl) {
+      if (b.stat === 'idleMult') return `${(1 + lvl * .2).toFixed(1)}x idle coins`;
+      if (b.stat === 'idleCap') return `${BASE_IDLE_CAP + lvl * 72} idle cap`;
+      if (b.stat === 'battleIncome') return `+${lvl} gold / battle tick`;
+      if (b.stat === 'startGold') return `+${lvl * 30} start gold`;
+      if (b.stat === 'manaSpeed') return `+${Math.round(lvl * 15)}% mana speed`;
+      if (b.stat === 'combo') return lvl > 0 ? '1.5x combo bonus' : '1.0x combo bonus';
+      return `Lv.${lvl}`;
+    }
     function buildBoosts() {
       const grid = document.getElementById('boost-grid'); grid.innerHTML = '';
       SHOP_BOOSTS.forEach(b => {
         const lvl = getUL(b.id), maxed = lvl >= b.max, cost = getUpgradeCost(b.baseCost, lvl), canAfford = (CU?.darkCoins || 0) >= cost;
         const card = document.createElement('div'); card.className = 'bst-card';
-        card.innerHTML = `<div class="bst-ico">${b.emoji}</div><div class="bst-name">${b.name}</div><div class="bst-desc">${b.desc}</div><div style="font-size:.6rem;color:#2a2a2a;margin-bottom:3px">Lv.${lvl}/${b.max}</div><button class="bst-buy${maxed ? ' owned' : ''}" ${maxed || !canAfford ? 'disabled' : ''} onclick="buyBoost('${b.id}',${b.baseCost},${b.max})">${maxed ? '✓ MAX' : (canAfford ? cost + '🪙 BUY' : 'Low')}</button>`;
+        const nextText = maxed ? 'MAXED' : boostStatText(b, lvl + 1);
+        card.innerHTML = `<div class="bst-ico">${b.emoji}</div><div class="bst-name">${b.name}</div><div class="bst-desc">${b.desc}</div><div class="bst-prog"><div class="bst-prog-fill" style="width:${(lvl / b.max) * 100}%"></div></div><div class="bst-stat"><span>${boostStatText(b, lvl)}</span>${maxed ? '' : `<span>→ ${nextText}</span>`}</div><div style="font-size:.6rem;color:rgba(255,255,255,.35);margin-bottom:3px">Lv.${lvl}/${b.max}</div><button class="bst-buy${maxed ? ' owned' : ''}" ${maxed || !canAfford ? 'disabled' : ''} onclick="buyBoost('${b.id}',${b.baseCost},${b.max})">${maxed ? '✓ MAX' : (canAfford ? cost + '🪙 BUY' : 'Low')}</button>`;
         grid.appendChild(card);
       });
     }
-    function buyBoost(id, baseCost, max) { const lvl = getUL(id); if (lvl >= max) { toast('Already maxed!'); return; } const cost = getUpgradeCost(baseCost, lvl); if (!spendDC(cost)) { toast('❌ Not enough coins!'); return; } setUL(id, lvl + 1); toast('✅ Boost active next match!'); vib(30); buildBoosts(); }
-
+    function buyBoost(id, baseCost, max) { const lvl = getUL(id); if (lvl >= max) { toast('Already maxed!'); return; } const cost = getUpgradeCost(baseCost, lvl); if (!spendDC(cost)) { toast('❌ Not enough coins!'); return; } setUL(id, lvl + 1); toast(id.startsWith('idle') ? '✅ Idle boost upgraded!' : '✅ Boost active next match!'); vib(30); buildBoosts(); updateIdleUI(); }
     /* ════ TOAST ════ */
     function toast(msg) { const t = document.createElement('div'); t.className = 'toast'; t.textContent = msg; document.body.appendChild(t); setTimeout(() => t.remove(), 3100); }
 
     /* ════ PRELOADER ════ */
-    const TIPS = ['💡 Freeze spell — allies still attack frozen enemies!', '💡 Dragon Burn Aura: max 2 on field at once', '💡 Units evolve at level 5 & 10!', '💡 Boss spawns 4 assistants at 50% HP (5 after wave 25)', '💡 V2.8.6: Divine Heroes throw projectiles!', '💡 Vampire steals 20% of damage as HP', '💡 Berserker grows stronger each kill', '💡 Necromancer raises fallen enemies as zombies', '💡 Shop upgrades cost +30% more each level', '💡 Speed Control: play at 1×, 1.5×, or 2×!', '💡 SM30 code: redeemable unlimited times!'];
+    const TIPS = ['💡 Freeze spell — allies still attack frozen enemies!', '💡 Dragon Burn Aura: max 3 on field at once', '💡 Units evolve at level 5 & 10!', '💡 Boss spawns 4 assistants at 50% HP (5 after wave 25)', '💡 V2.8.6: Divine Heroes throw projectiles!', '💡 Vampire steals 20% of damage as HP', '💡 Berserker grows stronger each kill', '💡 Necromancer raises fallen enemies as zombies', '💡 Shop upgrades cost +30% more each level', '💡 Speed Control: play at 1×, 1.5×, or 2×!', '💡 SM30 code: redeemable unlimited times!'];
     const MSGS = ['Awakening the dungeon…', 'Summoning warriors…', 'Forging spell crystals…', 'Building the shop…', 'Arranging leaderboard…', 'Opening the dark gate…', 'Darkness rises…'];
 
     function spawnEmbers() { const w = document.getElementById('embers'); for (let i = 0; i < 22; i++) { const e = document.createElement('div'); e.className = 'emb'; const d = (Math.random() - .5) * 130; e.style.cssText = `left:${Math.random() * 100}%;bottom:0;--d:${d}px;width:${Math.random() * 3 + 1}px;height:${Math.random() * 3 + 1}px;background:hsl(${20 + Math.random() * 20},100%,${50 + Math.random() * 20}%);animation-duration:${3 + Math.random() * 5}s;animation-delay:${Math.random() * 5}s;opacity:${Math.random() * .7 + .2}`; w.appendChild(e); } }
@@ -4786,7 +5247,7 @@
     function spawnMinion(x, y) {
       const st = getStats(selU);
       const fieldDragons = minions.filter(m => m.type === 'dragon' && !m.dead).length;
-      if (selU === 'dragon' && fieldDragons >= MAX_DRAGONS) { document.getElementById('dragon-cap-warn').style.display = 'block'; setTimeout(() => document.getElementById('dragon-cap-warn').style.display = 'none', 2000); toast('🐉 Max 2 dragons!'); return; }
+      if (selU === 'dragon' && fieldDragons >= MAX_DRAGONS) { document.getElementById('dragon-cap-warn').style.display = 'block'; setTimeout(() => document.getElementById('dragon-cap-warn').style.display = 'none', 2000); toast('🐉 Max 3 dragons!'); return; }
       const sameCount = minions.filter(m => m.type === selU && !m.dead).length;
       const scaledCost = Math.floor(st.cost * (1 + sameCount * .2));
       if (gold < scaledCost) { toast(`💰 Need ${scaledCost}g`); return; }
