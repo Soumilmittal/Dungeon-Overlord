@@ -960,7 +960,9 @@
       box-shadow: 0 0 18px rgba(0, 230, 118, .18)
     }
 
-    .spin-mid { flex: 1 }
+    .spin-mid {
+      flex: 1
+    }
 
     .spin-lbl {
       font-size: .58rem;
@@ -1000,8 +1002,15 @@
       transition: .14s
     }
 
-    .spin-btn:active { transform: scale(.95) }
-    .spin-btn.dis { opacity: .42; cursor: not-allowed }
+    .spin-btn:active {
+      transform: scale(.95)
+    }
+
+    .spin-btn.dis {
+      opacity: .42;
+      cursor: not-allowed
+    }
+
     .hstats-row {
       display: flex;
       gap: 8px;
@@ -2355,6 +2364,7 @@
       font-family: var(--ft);
       font-size: .64rem
     }
+
     .bst-buy {
       width: 100%;
       padding: 9px 10px;
@@ -3806,7 +3816,11 @@
       min-height: 50px
     }
 
-    .spin-cl.dis { opacity: .45; cursor: not-allowed }
+    .spin-cl.dis {
+      opacity: .45;
+      cursor: not-allowed
+    }
+
     /* ── MID-EXIT SAVE BANNER ── */
     .save-banner {
       position: fixed;
@@ -4294,7 +4308,10 @@
     <div class="seti">
       <div class="seth">
         <div class="bck" onclick="closeSett()">←</div>
-        <div class="set-title-wrap"><div class="stit">SETTINGS</div><div class="stsub">V2.8.8 CONTROL PANEL</div></div>
+        <div class="set-title-wrap">
+          <div class="stit">SETTINGS</div>
+          <div class="stsub">V2.8.8 CONTROL PANEL</div>
+        </div>
       </div>
       <div class="ssec2">
         <div class="slbl2">📊 Analytics</div>
@@ -4461,7 +4478,8 @@
       </div>
       <div class="spin-result" id="spin-result">Ready to spin</div>
       <button class="spin-cl" id="spin-claim" onclick="spinDailyWheel()">SPIN WHEEL</button>
-      <button class="sr-cl" onclick="closeSpinWheel()" style="margin-top:8px;background:rgba(255,255,255,.08)">CLOSE</button>
+      <button class="sr-cl" onclick="closeSpinWheel()"
+        style="margin-top:8px;background:rgba(255,255,255,.08)">CLOSE</button>
     </div>
   </div>
   <!-- MID-EXIT SAVE BANNER -->
@@ -5490,7 +5508,7 @@
       ctx.font = `${Math.floor(r * 1.05)}px serif`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText(emoji, x, y + 1);
       if (enraged) { ctx.strokeStyle = 'rgba(255,80,0,.3)'; ctx.lineWidth = 5; ctx.beginPath(); ctx.arc(x, y, r + 7, 0, Math.PI * 2); ctx.stroke(); }
       ctx.restore();
-    }    function drawHPbar(x, y, w, hp, max, col) { const pct = Math.max(0, hp / max); ctx.fillStyle = 'rgba(0,0,0,.7)'; ctx.fillRect(x - w / 2, y, w, 7); ctx.fillStyle = col; ctx.fillRect(x - w / 2 + 1, y + 1, (w - 2) * pct, 5); }
+    } function drawHPbar(x, y, w, hp, max, col) { const pct = Math.max(0, hp / max); ctx.fillStyle = 'rgba(0,0,0,.7)'; ctx.fillRect(x - w / 2, y, w, 7); ctx.fillStyle = col; ctx.fillRect(x - w / 2 + 1, y + 1, (w - 2) * pct, 5); }
     const lighten = (h, a) => { try { const c = h.replace('#', ''), r = parseInt(c.slice(0, 2), 16), g = parseInt(c.slice(2, 4), 16), b = parseInt(c.slice(4, 6), 16); return `rgb(${Math.min(255, r + a)},${Math.min(255, g + a)},${Math.min(255, b + a)})` } catch { return h } };
     const darken = (h, a) => { try { const c = h.replace('#', ''), r = parseInt(c.slice(0, 2), 16), g = parseInt(c.slice(2, 4), 16), b = parseInt(c.slice(4, 6), 16); return `rgb(${Math.max(0, r - a)},${Math.max(0, g - a)},${Math.max(0, b - a)})` } catch { return h } };
 
@@ -5661,15 +5679,3 @@
 </body>
 
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
