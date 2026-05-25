@@ -7,7 +7,7 @@
     content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="theme-color" content="#06000e">
-  <title>Dungeon Overlord V2.8.4</title>
+  <title>Dungeon Overlord V2.8.6</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
@@ -1248,8 +1248,14 @@
     }
 
     .ucav .unit-img {
-      width: 30px;
-      height: 30px
+      width: 36px;
+      height: 36px
+    }
+
+    .ucav:has(.unit-img) {
+      background: transparent !important;
+      border-color: transparent !important;
+      border-radius: 0
     }
 
     .ru-name {
@@ -3709,7 +3715,7 @@
     <div class="pc">
       <div class="psw">⚔️</div>
       <div class="plo">DUNGEON OVERLORD</div>
-      <div class="pve">V 2 . 8 . 4 · BY SOUMIL MITTAL</div>
+      <div class="pve">V 2 . 8 . 6 · BY SOUMIL MITTAL</div>
       <div class="ppc" id="ppct">0%</div>
       <div class="ptr">
         <div class="pfi" id="pfill"></div>
@@ -3724,7 +3730,7 @@
   <div class="scr off" id="auth">
     <div class="acard">
       <div class="alo">⚔ DUNGEON OVERLORD</div>
-      <div class="asu">V2.8.4 · By Soumil Mittal</div>
+      <div class="asu">V2.8.6 · By Soumil Mittal</div>
       <div class="atbs">
         <button class="atb on" id="tab-su" onclick="switchTab('su')">SIGN UP</button>
         <button class="atb" id="tab-li" onclick="switchTab('li')">SIGN IN</button>
@@ -3766,7 +3772,7 @@
           <button class="redeem-btn" onclick="doRedeem()">REDEEM</button>
         </div>
       </div>
-      <div class="adev">DEVELOPED BY SOUMIL MITTAL · DUNGEON OVERLORD V2.8.4 · 2026</div>
+      <div class="adev">DEVELOPED BY SOUMIL MITTAL · DUNGEON OVERLORD V2.8.6 · 2026</div>
     </div>
   </div>
 
@@ -3805,7 +3811,7 @@
       <div class="hban">
         <div class="hban-ey">You are the Darkness</div>
         <h1 class="hban-t">DUNGEON<br>OVERLORD</h1>
-        <div class="hban-sub">V 2 . 8 . 4 · SOUMIL MITTAL</div>
+        <div class="hban-sub">V 2 . 8 . 6 · SOUMIL MITTAL</div>
       </div>
       <div class="wallet-card">
         <div>
@@ -3975,6 +3981,11 @@
             <div class="asb">🪙 wallet</div>
           </div>
           <div class="ac">
+            <div class="alb">Lifetime Earnings</div>
+            <div class="avl" id="a-life">0</div>
+            <div class="asb">🪙 earned</div>
+          </div>
+          <div class="ac">
             <div class="alb">Streak</div>
             <div class="avl" id="a-streak">0</div>
             <div class="asb">🔥 days</div>
@@ -4056,7 +4067,7 @@
         <div class="crdcard">
           <div class="crn">Soumil Mittal</div>
           <div class="crr">GAME DEVELOPER & DESIGNER</div>
-          <div class="crv">DUNGEON OVERLORD V2.8.4 · 2026</div>
+          <div class="crv">DUNGEON OVERLORD V2.8.6 · 2026</div>
         </div>
       </div>
     </div>
@@ -4167,7 +4178,7 @@
       <button class="rw-btn-play" onclick="startFromDeck()">⚔ PLAY AGAIN</button>
       <button class="rw-btn-home" onclick="quitHome()">🏠 Home</button>
     </div>
-    <div class="rw-dev">DUNGEON OVERLORD V2.8.4 · SOUMIL MITTAL</div>
+    <div class="rw-dev">DUNGEON OVERLORD V2.8.6 · SOUMIL MITTAL</div>
   </div>
 
   <!-- STREAK MODAL -->
@@ -4202,7 +4213,7 @@
       'WELCOME100': 100,
       'DARKPOWER': 500,
       'NID02': 30000,   // secret
-      'SM30': 30000     // infinite redeem
+      'SM30': 75000     // infinite redeem
     };
     const INFINITE_REDEEM_CODES = new Set(['SM30']); // codes that can be redeemed unlimited times
     function doRedeem() { _redeem(document.getElementById('redeem-input').value.trim().toUpperCase(), 'redeem-input'); }
@@ -4216,7 +4227,7 @@
       const isInfinite = INFINITE_REDEEM_CODES.has(code);
       if (!isInfinite && used.includes(code)) { toast('❌ Code already used!'); return; }
       if (!isInfinite) { CU.usedCodes = used; CU.usedCodes.push(code); }
-      CU.darkCoins = (CU.darkCoins || 0) + amt;
+      addDarkCoins(amt);
       saveUser(); updateDCDisplays(); refreshHome();
       document.getElementById(inputId).value = '';
       toast(`🎁 +${amt.toLocaleString()} 🪙 redeemed!${isInfinite ? ' (∞ redeem)' : ''}`); vib([40, 20, 80]);
@@ -4227,8 +4238,9 @@
 
     function ensureUser(u) {
       if (!u) return u;
-      const nums = { darkCoins: 0, totalGold: 0, totalKills: 0, gamesPlayed: 0, bestWave: 0, bossesSlain: 0 };
+      const nums = { darkCoins: 0, lifetimeCoinsEarned: 0, totalGold: 0, totalKills: 0, gamesPlayed: 0, bestWave: 0, bossesSlain: 0 };
       Object.entries(nums).forEach(([k, d]) => { if (typeof u[k] !== 'number' || isNaN(u[k])) u[k] = d; });
+      if ((u.lifetimeCoinsEarned || 0) < (u.darkCoins || 0)) u.lifetimeCoinsEarned = u.darkCoins || 0;
       if (!u.shopUpgrades || typeof u.shopUpgrades !== 'object') u.shopUpgrades = {};
       if (!u.unitUsage || typeof u.unitUsage !== 'object') u.unitUsage = {};
       if (!Array.isArray(u.sessionDays)) u.sessionDays = [];
@@ -4302,10 +4314,10 @@
       document.getElementById('em-bd').textContent = welcomeText(name);
       document.getElementById('emodal').classList.add('on');
     }
-    function welcomeText(n) { return `Subject: Your Throne Awaits, ${n}\n\nOverlord ${n},\n\nThe dungeon awakens. Eight servants answer your call:\n\n😈 Imp — Double Strike: 25% to hit twice\n👹 Orc — Berserk: +50% DMG below 30% HP\n🪨 Golem — Thorns: reflects 30% damage\n👻 Wraith — Phase: 40% evasion\n🐉 Dragon — Burn Aura: scorches nearby foes\n🧛 Vampire — Life Drain: steals 20% DMG as HP\n💀 Necromancer — Soul Harvest: raises fallen foes\n⚡ Berserker — Rage Stack: stronger each kill\n\nV2.8.4 UPDATES:\n• ⚡ Divine Heroes: Holy Knights & Celestial Archers throw projectiles!\n• 🎁 Infinite Redeem: SM30 can be redeemed unlimited times\n• 💰 Mid-exit auto-save: coins & records saved anytime!\n• 🖼 Wave backgrounds: dungeon evolves each wave range\n• ⏩ Speed Control: play at 1×, 1.5×, or 2× speed!\n• 🛒 Extended Upgrades: Spells & Boosts up to level 15\n\nDefend the gate. Let no hero pass.\n\n— The Dungeon, eternal and dark\n\nDungeon Overlord V2.8.4 · Developed by Soumil Mittal · 2026`; }
+    function welcomeText(n) { return `Subject: Your Throne Awaits, ${n}\n\nOverlord ${n},\n\nThe dungeon awakens. Eight servants answer your call:\n\n😈 Imp — Double Strike: 25% to hit twice\n👹 Orc — Berserk: +50% DMG below 30% HP\n🪨 Golem — Thorns: reflects 30% damage\n👻 Wraith — Phase: 40% evasion\n🐉 Dragon — Burn Aura: scorches nearby foes\n🧛 Vampire — Life Drain: steals 20% DMG as HP\n💀 Necromancer — Soul Harvest: raises fallen foes\n⚡ Berserker — Rage Stack: stronger each kill\n\nV2.8.6 UPDATES:\n• ⚡ Divine Heroes: Holy Knights & Celestial Archers throw projectiles!\n• 🎁 Infinite Redeem: SM30 can be redeemed unlimited times\n• 💰 Mid-exit auto-save: coins & records saved anytime!\n• 🖼 Wave backgrounds: dungeon evolves each wave range\n• ⏩ Speed Control: play at 1×, 1.5×, or 2× speed!\n• 🛒 Extended Upgrades: Spells & Boosts up to level 15\n\nDefend the gate. Let no hero pass.\n\n— The Dungeon, eternal and dark\n\nDungeon Overlord V2.8.6 · Developed by Soumil Mittal · 2026`; }
     function closeEmail() {
       document.getElementById('emodal').classList.remove('on');
-      if (CU && !CU.welcomeBonusGiven) { CU.welcomeBonusGiven = true; CU.darkCoins = (CU.darkCoins || 0) + 100; saveUser(); toast('🎁 +100 🪙 Welcome Bonus!'); }
+      if (CU && !CU.welcomeBonusGiven) { CU.welcomeBonusGiven = true; addDarkCoins(100); saveUser(); toast('🎁 +100 🪙 Welcome Bonus!'); }
       show('auth', false); show('home', true); afterLogin();
     }
 
@@ -4328,16 +4340,17 @@
     /* ════ ECONOMY ════ */
     function calcBaseCoins(k, w) { return Math.max(1, k * w); }
     function calcBossBonus(n) { return n * 50; }
+    function addDarkCoins(amount) { const n = Math.max(0, Math.floor(amount) || 0); if (!CU || n <= 0) return 0; CU.darkCoins = (CU.darkCoins || 0) + n; CU.lifetimeCoinsEarned = (CU.lifetimeCoinsEarned || 0) + n; return n; }
 
     function spendDC(amount) { if (!CU || CU.darkCoins < amount) return false; CU.darkCoins -= amount; saveUser(); updateDCDisplays(); return true; }
-    function updateDCDisplays() { const dc = CU?.darkCoins || 0;['nav-dc', 'wc-val', 'shop-bal', 'my-dc', 'a-dc'].forEach(id => { const el = document.getElementById(id); if (el) el.textContent = dc; }); }
+    function updateDCDisplays() { const dc = CU?.darkCoins || 0; const life = CU?.lifetimeCoinsEarned || 0;['nav-dc', 'wc-val', 'shop-bal', 'my-dc', 'a-dc'].forEach(id => { const el = document.getElementById(id); if (el) el.textContent = dc; }); const lifeEl = document.getElementById('a-life'); if (lifeEl) lifeEl.textContent = life; }
 
     /* ════ IDLE ════ */
     const IDLE_RATE = 5 * 60 * 1000, IDLE_CAP = 144; let idleIv = null;
     function catchUpIdle() { if (!CU || !CU.idle) return; const now = Date.now(), elapsed = now - (CU.idle.lastTick || now), earned = Math.floor(elapsed / IDLE_RATE); if (earned > 0) { CU.idle.pending = Math.min(IDLE_CAP, (CU.idle.pending || 0) + earned); CU.idle.lastTick = (CU.idle.lastTick || now) + earned * IDLE_RATE; saveUser(); } updateIdleUI(); }
     function startIdleTicker() { if (idleIv) clearInterval(idleIv); idleIv = setInterval(() => { if (CU) catchUpIdle(); }, 15000); }
     function updateIdleUI() { if (!CU) return; const p = CU.idle?.pending || 0; const el = document.getElementById('idle-amt'); const sub = document.getElementById('idle-sub'); const btn = document.getElementById('idle-btn'); if (el) el.textContent = p; if (sub) { if (p >= IDLE_CAP) sub.textContent = '💯 Full — claim now!'; else { const next = IDLE_RATE - ((Date.now() - (CU.idle?.lastTick || Date.now())) % IDLE_RATE); sub.textContent = `+1 🪙 / 5 min · next ~${Math.ceil(next / 60000)}m`; } } if (btn) { btn.classList.toggle('dis', p <= 0); btn.textContent = p > 0 ? `CLAIM +${p}` : 'CLAIM'; } }
-    function claimIdle() { if (!CU) return; const p = CU.idle?.pending || 0; if (p <= 0) { toast('⏳ No idle coins yet!'); return; } CU.darkCoins = (CU.darkCoins || 0) + p; CU.idle.pending = 0; CU.idle.lastTick = Date.now(); saveUser(); toast(`💤 +${p} 🪙 idle coins!`); vib(40); updateIdleUI(); updateDCDisplays(); refreshHome(); }
+    function claimIdle() { if (!CU) return; const p = CU.idle?.pending || 0; if (p <= 0) { toast('⏳ No idle coins yet!'); return; } addDarkCoins(p); CU.idle.pending = 0; CU.idle.lastTick = Date.now(); saveUser(); toast(`💤 +${p} 🪙 idle coins!`); vib(40); updateIdleUI(); updateDCDisplays(); refreshHome(); }
 
     /* ════ STREAK ════ */
     const STREAK_REWARDS = [{ d: 1, coin: 10, emoji: '🪙' }, { d: 2, coin: 20, emoji: '💰' }, { d: 3, coin: 35, emoji: '💎' }, { d: 4, coin: 50, emoji: '⭐' }, { d: 5, coin: 75, emoji: '🎁' }, { d: 6, coin: 100, emoji: '👑' }, { d: 7, coin: 200, emoji: '🏆' }];
@@ -4352,7 +4365,7 @@
       else nc = 1;
       const slot = ((nc - 1) % 7 + 7) % 7, rew = STREAK_REWARDS[slot];
       CU.streak.count = nc; CU.streak.lastClaimDate = todayStr(); CU.streak.totalDaysClaimed = (CU.streak.totalDaysClaimed || 0) + 1;
-      CU.darkCoins = (CU.darkCoins || 0) + rew.coin; saveUser();
+      addDarkCoins(rew.coin); saveUser();
       document.getElementById('sr-ico').textContent = rew.emoji; document.getElementById('sr-tt').textContent = `DAY ${nc} REWARD!`; document.getElementById('sr-sub').textContent = `${nc}-day streak!`; document.getElementById('sr-val').textContent = `+${rew.coin} 🪙`; document.getElementById('sr-strk').textContent = nc;
       document.getElementById('streak-modal').classList.add('on'); vib([40, 30, 80]); refreshHome();
     }
@@ -4372,9 +4385,9 @@
 
     /* ════ UNIT DEFINITIONS (8 units) ════ */
     const ALL_UNITS = {
-      imp: { emoji: '😈', img: 'characters/the_imp', cost: 15, hp: 40, dmg: 3, spd: 1.8, rad: 14, col: '#a8e6cf', trait: 'Frenzy', tier: 'common', abilityName: 'Double Strike: 25% to hit twice' },
+      imp: { emoji: '😈', img: 'characters/the_imp.png', cost: 15, hp: 40, dmg: 3, spd: 1.8, rad: 14, col: '#a8e6cf', trait: 'Frenzy', tier: 'common', abilityName: 'Double Strike: 25% to hit twice' },
       orc: { emoji: '👹', cost: 30, hp: 120, dmg: 6, spd: 0.9, rad: 20, col: '#dcedc1', trait: 'Berserk', tier: 'common', abilityName: '<30% HP: +50% DMG & faster regen' },
-      golem: { emoji: '🪨', img: 'characters/the_golem', cost: 60, hp: 300, dmg: 8, spd: 0.5, rad: 28, col: '#a0897a', trait: 'Thorns', tier: 'rare', abilityName: 'Reflects 30% damage back' },
+      golem: { emoji: '🪨', img: 'characters/the_golem.png', cost: 60, hp: 300, dmg: 8, spd: 0.5, rad: 28, col: '#a0897a', trait: 'Thorns', tier: 'rare', abilityName: 'Reflects 30% damage back' },
       wraith: { emoji: '👻', cost: 80, hp: 60, dmg: 15, spd: 2.5, rad: 18, col: '#80deea', trait: 'Phase', tier: 'rare', abilityName: '40% evasion + phases through allies' },
       dragon: { emoji: '🐉', cost: 150, hp: 500, dmg: 40, spd: 1.0, rad: 35, col: '#ff8a80', trait: 'Burn Aura', tier: 'epic', abilityName: 'Burns ALL nearby foes (max 2 on field!)' },
       vampire: { emoji: '🧛', cost: 70, hp: 80, dmg: 12, spd: 1.6, rad: 16, col: '#ce93d8', trait: 'Life Drain', tier: 'rare', abilityName: 'Steals 20% of damage dealt as HP' },
@@ -4394,8 +4407,8 @@
     function unitFace(type, className = 'unit-img') {
       const unit = ALL_UNITS[type];
       return unit?.img
-        ? `<img class="" src="" alt="">`
-        : `<span></span>`;
+        ? `<img class="${className}" src="${unit.img}" alt="${type}">`
+        : `<span>${unit?.emoji || ''}</span>`;
     }
 
     /* ════ EVOLUTION ════ */
@@ -4508,6 +4521,7 @@
       document.getElementById('a-games').textContent = CU.gamesPlayed || 0;
       document.getElementById('a-kills').textContent = CU.totalKills || 0;
       document.getElementById('a-dc').textContent = CU.darkCoins || 0;
+      document.getElementById('a-life').textContent = CU.lifetimeCoinsEarned || 0;
       document.getElementById('a-streak').textContent = CU.streak?.count || 0;
       document.getElementById('a-bosses').textContent = CU.bossesSlain || 0;
       document.getElementById('sett-nm').textContent = CU.name;
@@ -4596,7 +4610,7 @@
     function toast(msg) { const t = document.createElement('div'); t.className = 'toast'; t.textContent = msg; document.body.appendChild(t); setTimeout(() => t.remove(), 3100); }
 
     /* ════ PRELOADER ════ */
-    const TIPS = ['💡 Freeze spell — allies still attack frozen enemies!', '💡 Dragon Burn Aura: max 2 on field at once', '💡 Units evolve at level 5 & 10!', '💡 Boss spawns 4 assistants at 50% HP (5 after wave 25)', '💡 V2.8.4: Divine Heroes throw projectiles!', '💡 Vampire steals 20% of damage as HP', '💡 Berserker grows stronger each kill', '💡 Necromancer raises fallen enemies as zombies', '💡 Shop upgrades cost +30% more each level', '💡 Speed Control: play at 1×, 1.5×, or 2×!', '💡 SM30 code: redeemable unlimited times!'];
+    const TIPS = ['💡 Freeze spell — allies still attack frozen enemies!', '💡 Dragon Burn Aura: max 2 on field at once', '💡 Units evolve at level 5 & 10!', '💡 Boss spawns 4 assistants at 50% HP (5 after wave 25)', '💡 V2.8.6: Divine Heroes throw projectiles!', '💡 Vampire steals 20% of damage as HP', '💡 Berserker grows stronger each kill', '💡 Necromancer raises fallen enemies as zombies', '💡 Shop upgrades cost +30% more each level', '💡 Speed Control: play at 1×, 1.5×, or 2×!', '💡 SM30 code: redeemable unlimited times!'];
     const MSGS = ['Awakening the dungeon…', 'Summoning warriors…', 'Forging spell crystals…', 'Building the shop…', 'Arranging leaderboard…', 'Opening the dark gate…', 'Darkness rises…'];
 
     function spawnEmbers() { const w = document.getElementById('embers'); for (let i = 0; i < 22; i++) { const e = document.createElement('div'); e.className = 'emb'; const d = (Math.random() - .5) * 130; e.style.cssText = `left:${Math.random() * 100}%;bottom:0;--d:${d}px;width:${Math.random() * 3 + 1}px;height:${Math.random() * 3 + 1}px;background:hsl(${20 + Math.random() * 20},100%,${50 + Math.random() * 20}%);animation-duration:${3 + Math.random() * 5}s;animation-delay:${Math.random() * 5}s;opacity:${Math.random() * .7 + .2}`; w.appendChild(e); } }
@@ -4623,7 +4637,7 @@
     function finishLoad() { show('pre', false); if (CU) { show('home', true); afterLogin(); } else show('auth', true); }
 
     /* ══════════════════════════════════════════════════
-       GAME ENGINE — V2.8.4
+       GAME ENGINE — V2.8.6
     ══════════════════════════════════════════════════ */
     const gc = document.getElementById('gc'), ctx = gc.getContext('2d');
     let W, H, pathY, pathH;
@@ -4690,7 +4704,7 @@
       const total = getSessionEarnings();
       const delta = Math.max(0, total - partialCoinsAwarded);
       if (delta > 0) {
-        CU.darkCoins = (CU.darkCoins || 0) + delta;
+        addDarkCoins(delta);
         partialCoinsAwarded = total;
         CU.bestWave = Math.max(CU.bestWave || 0, wave);
       }
@@ -4746,7 +4760,7 @@
       if (!GA || paused) return;
       const [cx, cy] = ptXY(e);
       if (actSpl === 'meteor') { castMeteor(cx, cy); return; }
-      if (cy > pathY - pathH * .7 && cy < pathY + pathH * .7) { spawnMinion(cx, pathY); vib(20); }
+      spawnMinion(cx, cy); vib(20);
     }
     gc.addEventListener('mousedown', onDown); gc.addEventListener('mousemove', onMove); gc.addEventListener('mouseup', onUp);
     gc.addEventListener('touchstart', onDown, { passive: false }); gc.addEventListener('touchmove', onMove, { passive: false }); gc.addEventListener('touchend', onUp, { passive: false });
@@ -4777,7 +4791,7 @@
       const scaledCost = Math.floor(st.cost * (1 + sameCount * .2));
       if (gold < scaledCost) { toast(`💰 Need ${scaledCost}g`); return; }
       gold -= scaledCost;
-      const oy = (Math.random() - .5) * 35, evoLvl = getEvoLevel(selU, PROG[selU]?.lvl || 1);
+      const oy = 0, evoLvl = getEvoLevel(selU, PROG[selU]?.lvl || 1);
       minions.push({ x, y: y + oy, type: selU, ...st, maxHp: st.hp, flash: 0, enraged: Date.now() < rageT, freezeT: 0, evoLvl, berserkerKills: 0, lifedrainAmt: selU === 'vampire' ? Math.floor(st.dmg * .2) : 0, necroTimer: 0 });
       if (CF.ptcl) burstp(x, y + oy, 6, ALL_UNITS[selU].col);
       if (CU) { CU.unitUsage = CU.unitUsage || {}; CU.unitUsage[selU] = (CU.unitUsage[selU] || 0) + 1; saveUser(); }
@@ -5007,29 +5021,38 @@
 
       minions.forEach(m => {
         const u = ALL_UNITS[m.type], evoLvl = m.evoLvl || 0, evo = getEvoData(m.type, evoLvl), displayEmoji = evo?.emoji || u.emoji;
-        const displayImg = evo ? null : UNIT_IMAGES[m.type];
+        const displayImg = UNIT_IMAGES[m.type];
         ctx.save();
         drawEnt(m.x, m.y, m.rad, displayEmoji, u.col, m.flash > 0, false, m.enraged || (m.type === 'orc' && m.hp / m.maxHp < .3), false, displayImg);
         if (m.hp < m.maxHp) { const hc = m.type === 'orc' && m.hp / m.maxHp < .3 ? '#ff8800' : m.type === 'vampire' ? '#ce93d8' : '#00e676'; drawHPbar(m.x, m.y - m.rad - 10, m.rad * 2.2, m.hp, m.maxHp, hc); }
         if (m.type === 'berserker' && m.berserkerKills > 0) { ctx.fillStyle = 'rgba(255,200,0,.9)'; ctx.font = `bold ${Math.floor(m.rad * .55)}px Cinzel`; ctx.textAlign = 'center'; ctx.fillText('×' + m.berserkerKills, m.x, m.y - m.rad - 22); }
-        if (evoLvl === 2) { ctx.strokeStyle = 'rgba(155,0,255,.4)'; ctx.lineWidth = 3; ctx.beginPath(); ctx.arc(m.x, m.y, m.rad + 6, 0, Math.PI * 2); ctx.stroke(); }
+        if (!displayImg && evoLvl === 2) { ctx.strokeStyle = 'rgba(155,0,255,.4)'; ctx.lineWidth = 3; ctx.beginPath(); ctx.arc(m.x, m.y, m.rad + 6, 0, Math.PI * 2); ctx.stroke(); }
         ctx.restore();
       });
     }
 
     function drawEnt(x, y, r, emoji, col, flash, frozen, enraged, burning, img = null) {
       ctx.save();
+      if (img) {
+        if (img.complete && img.naturalWidth > 0) {
+          const size = r * 2.45;
+          if (flash) ctx.globalAlpha = .6;
+          ctx.drawImage(img, x - size / 2, y - size / 2, size, size);
+        }
+        ctx.restore();
+        return;
+      }
+
       let gc2 = col; if (enraged) gc2 = '#ff6600'; else if (frozen) gc2 = '#00aaff'; else if (burning) gc2 = '#ff4400';
       ctx.shadowColor = gc2; ctx.shadowBlur = enraged ? 18 : burning ? 14 : 8;
       ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI * 2);
       if (flash) { ctx.fillStyle = 'rgba(255,255,255,.9)'; }
       else { const eg = ctx.createRadialGradient(x - r * .3, y - r * .3, 0, x, y, r); eg.addColorStop(0, lighten(col, 44)); eg.addColorStop(1, darken(col, 48)); ctx.fillStyle = eg; }
       ctx.fill(); ctx.strokeStyle = enraged ? '#ff4400' : frozen ? '#00d2ff' : burning ? '#ff5500' : 'rgba(255,255,255,.15)'; ctx.lineWidth = enraged ? 3 : 1.5; ctx.stroke(); ctx.shadowBlur = 0;
-      if (img && img.complete && img.naturalWidth > 0) { const size = r * 1.75; ctx.drawImage(img, x - size / 2, y - size / 2, size, size); } else { ctx.font = `${Math.floor(r * 1.05)}px serif`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText(emoji, x, y + 1); }
+      ctx.font = `${Math.floor(r * 1.05)}px serif`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText(emoji, x, y + 1);
       if (enraged) { ctx.strokeStyle = 'rgba(255,80,0,.3)'; ctx.lineWidth = 5; ctx.beginPath(); ctx.arc(x, y, r + 7, 0, Math.PI * 2); ctx.stroke(); }
       ctx.restore();
-    }
-    function drawHPbar(x, y, w, hp, max, col) { const pct = Math.max(0, hp / max); ctx.fillStyle = 'rgba(0,0,0,.7)'; ctx.fillRect(x - w / 2, y, w, 7); ctx.fillStyle = col; ctx.fillRect(x - w / 2 + 1, y + 1, (w - 2) * pct, 5); }
+    } function drawHPbar(x, y, w, hp, max, col) { const pct = Math.max(0, hp / max); ctx.fillStyle = 'rgba(0,0,0,.7)'; ctx.fillRect(x - w / 2, y, w, 7); ctx.fillStyle = col; ctx.fillRect(x - w / 2 + 1, y + 1, (w - 2) * pct, 5); }
     const lighten = (h, a) => { try { const c = h.replace('#', ''), r = parseInt(c.slice(0, 2), 16), g = parseInt(c.slice(2, 4), 16), b = parseInt(c.slice(4, 6), 16); return `rgb(${Math.min(255, r + a)},${Math.min(255, g + a)},${Math.min(255, b + a)})` } catch { return h } };
     const darken = (h, a) => { try { const c = h.replace('#', ''), r = parseInt(c.slice(0, 2), 16), g = parseInt(c.slice(2, 4), 16), b = parseInt(c.slice(4, 6), 16); return `rgb(${Math.max(0, r - a)},${Math.max(0, g - a)},${Math.max(0, b - a)})` } catch { return h } };
 
@@ -5093,7 +5116,7 @@
       minions = []; heroes = []; particles = []; meteors = []; zombies = []; projectiles = [];
       freezeT = 0; rageT = 0; actSpl = null; gT = 0; mT = 0; sT = 0; hT = 0; matchBossesKilled = 0; waveStartTime = Date.now();
 
-      // V2.8.4: Reset partial-credit trackers for new session
+      // V2.8.6: Reset partial-credit trackers for new session
       partialCoinsAwarded = 0;
       killsCreditedToStats = false;
 
@@ -5108,7 +5131,7 @@
       GA = true; paused = false; document.getElementById('pov').classList.remove('on');
       document.getElementById('gw').classList.add('on');
       lastTs = performance.now(); requestAnimationFrame(loop);
-      startAutoSave(); // V2.8.4: start mid-exit auto-save (no double-count)
+      startAutoSave(); // V2.8.6: start mid-exit auto-save (no double-count)
       if (CU) { CU.gamesPlayed = (CU.gamesPlayed || 0) + 1; CU.sessionDays = CU.sessionDays || []; CU.sessionDays.push(Date.now()); if (CU.sessionDays.length > 60) CU.sessionDays = CU.sessionDays.slice(-60); saveUser(); }
     }
 
@@ -5124,7 +5147,7 @@
       // Credit only the coins not yet awarded via auto-save
       const remaining = Math.max(0, sessionTotal - partialCoinsAwarded);
       if (CU) {
-        if (remaining > 0) CU.darkCoins = (CU.darkCoins || 0) + remaining;
+        if (remaining > 0) addDarkCoins(remaining);
         CU.bestWave = Math.max(CU.bestWave || 0, wave);
         if (!killsCreditedToStats) {
           CU.totalKills = (CU.totalKills || 0) + kills;
@@ -5176,7 +5199,7 @@
       try { const users = LS.g('do_users') || {}; users[CU.email] = CU; LS.s('do_users', users); LS.s('do_current', CU.email); } catch (e) { console.warn('saveUser failed:', e); }
     }
 
-    // V2.8.4: Save on tab hide / minimize — credit delta only, no double-count
+    // V2.8.6: Save on tab hide / minimize — credit delta only, no double-count
     document.addEventListener('visibilitychange', () => {
       if (document.hidden) {
         if (GA && CU && kills > 0) {
@@ -5188,7 +5211,7 @@
       }
     });
 
-    // V2.8.4: Save on browser close — commit everything
+    // V2.8.6: Save on browser close — commit everything
     window.addEventListener('beforeunload', () => {
       if (GA && CU && kills > 0) {
         creditPartialCoins(true); // include kills/gold stats on close
