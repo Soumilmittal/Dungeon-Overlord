@@ -4836,23 +4836,33 @@
     /* ════ UNIT DEFINITIONS (8 units) ════ */
     const ALL_UNITS = {
       imp: { emoji: '😈', img: 'characters/villains/the_imp.png', cost: 15, hp: 40, dmg: 3, spd: 1.8, rad: 14, col: '#a8e6cf', trait: 'Frenzy', tier: 'common', abilityName: 'Double Strike: 25% to hit twice' },
-      orc: { emoji: '👹', cost: 30, hp: 120, dmg: 6, spd: 0.9, rad: 20, col: '#dcedc1', trait: 'Berserk', tier: 'common', abilityName: '<30% HP: +50% DMG & faster regen' },
+      orc: { emoji: '👹', img: 'characters/villains/the_orc.png', cost: 30, hp: 120, dmg: 6, spd: 0.9, rad: 20, col: '#dcedc1', trait: 'Berserk', tier: 'common', abilityName: '<30% HP: +50% DMG & faster regen' },
       golem: { emoji: '🪨', img: 'characters/villains/the_golem.png', cost: 60, hp: 300, dmg: 8, spd: 0.5, rad: 28, col: '#a0897a', trait: 'Thorns', tier: 'rare', abilityName: 'Reflects 30% damage back' },
-      wraith: { emoji: '👻', cost: 80, hp: 60, dmg: 15, spd: 2.5, rad: 18, col: '#80deea', trait: 'Phase', tier: 'rare', abilityName: '40% evasion + phases through allies' },
-      dragon: { emoji: '🐉', cost: 150, hp: 500, dmg: 40, spd: 1.0, rad: 35, col: '#ff8a80', trait: 'Burn Aura', tier: 'epic', abilityName: 'Burns ALL nearby foes (max 3 on field!)' },
-      vampire: { emoji: '🧛', cost: 70, hp: 80, dmg: 12, spd: 1.6, rad: 16, col: '#ce93d8', trait: 'Life Drain', tier: 'rare', abilityName: 'Steals 20% of damage dealt as HP' },
+      wraith: { emoji: '👻', img: 'characters/villains/the_wraith.png', cost: 80, hp: 60, dmg: 15, spd: 2.5, rad: 18, col: '#80deea', trait: 'Phase', tier: 'rare', abilityName: '40% evasion + phases through allies' },
+      dragon: { emoji: '🐉', img: 'characters/villains/the_dragon.png', cost: 150, hp: 500, dmg: 40, spd: 1.0, rad: 35, col: '#ff8a80', trait: 'Burn Aura', tier: 'epic', abilityName: 'Burns ALL nearby foes (max 3 on field!)' },
+      vampire: { emoji: '🧛', img: 'characters/villains/the_vampire.png', cost: 70, hp: 80, dmg: 12, spd: 1.6, rad: 16, col: '#ce93d8', trait: 'Life Drain', tier: 'rare', abilityName: 'Steals 20% of damage dealt as HP' },
       necromancer: { emoji: '💀', cost: 110, hp: 90, dmg: 10, spd: 0.8, rad: 22, col: '#80cbc4', trait: 'Soul Harvest', tier: 'epic', abilityName: 'Raises fallen enemies as zombies' },
       berserker: { emoji: '⚡', cost: 90, hp: 150, dmg: 20, spd: 1.4, rad: 24, col: '#ffcc02', trait: 'Rage Stack', tier: 'legend', abilityName: 'DMG +10% per kill this match' },
     };
 
+    function makeCharImg(src) { const img = new Image(); img.failed = false; img.src = src; img.onerror = () => { img.failed = true; }; return img; }
+
     const UNIT_IMAGES = {};
     Object.entries(ALL_UNITS).forEach(([type, unit]) => {
-      if (unit.img) {
-        const img = new Image();
-        img.src = unit.img;
-        UNIT_IMAGES[type] = img;
-      }
+      if (unit.img) UNIT_IMAGES[type] = makeCharImg(unit.img);
     });
+
+    const CHARACTER_RANGE_ENDS = [10, 20, 30, 40];
+    const HERO_IMAGES = {}, BOSS_IMAGES = {};
+    CHARACTER_RANGE_ENDS.forEach(endWave => {
+      HERO_IMAGES[endWave] = makeCharImg(`characters/heroes/hero${endWave}.png`);
+      BOSS_IMAGES[endWave] = makeCharImg(`characters/boss/boss${endWave}.png`);
+    });
+    function getCharacterRangeEnd(w) {
+      const endWave = Math.ceil(Math.max(1, w) / 10) * 10;
+      return CHARACTER_RANGE_ENDS.find(v => endWave <= v) || CHARACTER_RANGE_ENDS[CHARACTER_RANGE_ENDS.length - 1];
+    }
+    function getHeroImg(w, isBoss) { return (isBoss ? BOSS_IMAGES : HERO_IMAGES)[getCharacterRangeEnd(w)]; }
 
     function unitFace(type, className = 'unit-img') {
       const unit = ALL_UNITS[type];
@@ -5263,7 +5273,7 @@
       const isDivine = Math.random() < 0.1 && wave > 3;
       const divineType = isDivine ? (Math.random() < 0.5 ? 'holyKnight' : 'celestialArcher') : null;
       const divineEmoji = divineType === 'holyKnight' ? '🛡️' : (divineType === 'celestialArcher' ? '✨' : null);
-      const h = { x: -80, y: pathY + (Math.random() - .5) * 35, hp, maxHp: hp, dmg: Math.floor(HERO_BASE.dmg * lm * (isBoss ? 1.6 : 1) * dd), spd: HERO_BASE.spd + (wave * .022), rad: isBoss ? 44 : HERO_BASE.rad, col: isBoss ? '#bb0000' : (isDivine ? (divineType === 'holyKnight' ? '#ffeb3b' : '#87ceeb') : '#ee3333'), isBoss, freezeT: 0, halfHPTriggered: false, divineType, projectileT: 0, emoji: divineEmoji };
+      const h = { x: -80, y: pathY + (Math.random() - .5) * 35, hp, maxHp: hp, dmg: Math.floor(HERO_BASE.dmg * lm * (isBoss ? 1.6 : 1) * dd), spd: HERO_BASE.spd + (wave * .022), rad: isBoss ? 44 : HERO_BASE.rad, col: isBoss ? '#bb0000' : (isDivine ? (divineType === 'holyKnight' ? '#ffeb3b' : '#87ceeb') : '#ee3333'), isBoss, freezeT: 0, halfHPTriggered: false, divineType, projectileT: 0, emoji: divineEmoji, img: isDivine ? null : getHeroImg(wave, isBoss) };
       heroes.push(h);
       if (isBoss) for (let i = 0; i < 2; i++)setTimeout(() => spawnMini(), i * 500 + 300);
       const hw = document.getElementById('hwrn');
@@ -5273,7 +5283,7 @@
       if (isBoss) vib([100, 50, 100, 50, 200]);
       waveStartTime = Date.now();
     }
-    function spawnMini(x, y) { const hp = 60; const px = x || (W * .3 + Math.random() * (W * .4)), py = y || (pathY + (Math.random() - .5) * 60); heroes.push({ x: px, y: py, hp, maxHp: hp, dmg: 4, spd: .8, rad: 16, col: '#990000', isBoss: false, freezeT: 0, halfHPTriggered: false }); }
+    function spawnMini(x, y) { const hp = 60; const px = x || (W * .3 + Math.random() * (W * .4)), py = y || (pathY + (Math.random() - .5) * 60); heroes.push({ x: px, y: py, hp, maxHp: hp, dmg: 4, spd: .8, rad: 16, col: '#990000', isBoss: false, freezeT: 0, halfHPTriggered: false, img: getHeroImg(wave, false) }); }
     function spawnBossAssistants(bx, by, count) { for (let i = 0; i < count; i++)setTimeout(() => { const ang = (Math.PI * 2 / count) * i, r = 60; spawnMini(bx + Math.cos(ang) * r, by + Math.sin(ang) * r); }, i * 200 + 100); toast(`💀 Boss summoned ${count} assistants!`); vib([60, 30, 60, 30, 100]); }
     function spawnZombie(x, y) { zombies.push({ x, y, hp: 30, maxHp: 30, dmg: 3, spd: .8, rad: 12, col: '#80cbc4', born: Date.now(), life: 8000 }); }
 
@@ -5467,7 +5477,7 @@
           ctx.fillText(h.divineType === 'holyKnight' ? 'HOLY KNIGHT' : 'ARCHER', h.x, h.y - h.rad - 32);
         } else {
           // Regular hero rendering
-          drawEnt(h.x, h.y, h.rad, '⚔️', h.col, false, frozen, false, burning);
+          drawEnt(h.x, h.y, h.rad, '⚔️', h.col, false, frozen, false, burning, h.img);
           drawHPbar(h.x, h.y - h.rad - 16, h.rad * 2.8, h.hp, h.maxHp, h.isBoss ? '#ff1111' : '#ff5555');
           if (h.isBoss) { ctx.fillStyle = '#ff2222'; ctx.font = `bold ${Math.max(10, Math.floor(W * .026))}px Cinzel`; ctx.textAlign = 'center'; ctx.fillText(`BOSS W${wave}`, h.x, h.y - h.rad - 32); }
         }
@@ -5489,7 +5499,7 @@
 
     function drawEnt(x, y, r, emoji, col, flash, frozen, enraged, burning, img = null) {
       ctx.save();
-      if (img) {
+      if (img && !img.failed) {
         if (img.complete && img.naturalWidth > 0) {
           const size = r * 2.45;
           if (flash) ctx.globalAlpha = .6;
@@ -5498,7 +5508,6 @@
         ctx.restore();
         return;
       }
-
       let gc2 = col; if (enraged) gc2 = '#ff6600'; else if (frozen) gc2 = '#00aaff'; else if (burning) gc2 = '#ff4400';
       ctx.shadowColor = gc2; ctx.shadowBlur = enraged ? 18 : burning ? 14 : 8;
       ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI * 2);
