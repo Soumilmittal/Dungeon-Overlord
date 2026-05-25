@@ -1248,14 +1248,8 @@
     }
 
     .ucav .unit-img {
-      width: 36px;
-      height: 36px
-    }
-
-    .ucav:has(.unit-img) {
-      background: transparent !important;
-      border-color: transparent !important;
-      border-radius: 0
+      width: 30px;
+      height: 30px
     }
 
     .ru-name {
@@ -5013,28 +5007,18 @@
 
       minions.forEach(m => {
         const u = ALL_UNITS[m.type], evoLvl = m.evoLvl || 0, evo = getEvoData(m.type, evoLvl), displayEmoji = evo?.emoji || u.emoji;
-        const displayImg = UNIT_IMAGES[m.type];
+        const displayImg = evo ? null : UNIT_IMAGES[m.type];
         ctx.save();
         drawEnt(m.x, m.y, m.rad, displayEmoji, u.col, m.flash > 0, false, m.enraged || (m.type === 'orc' && m.hp / m.maxHp < .3), false, displayImg);
         if (m.hp < m.maxHp) { const hc = m.type === 'orc' && m.hp / m.maxHp < .3 ? '#ff8800' : m.type === 'vampire' ? '#ce93d8' : '#00e676'; drawHPbar(m.x, m.y - m.rad - 10, m.rad * 2.2, m.hp, m.maxHp, hc); }
         if (m.type === 'berserker' && m.berserkerKills > 0) { ctx.fillStyle = 'rgba(255,200,0,.9)'; ctx.font = `bold ${Math.floor(m.rad * .55)}px Cinzel`; ctx.textAlign = 'center'; ctx.fillText('×' + m.berserkerKills, m.x, m.y - m.rad - 22); }
-        if (!displayImg && evoLvl === 2) { ctx.strokeStyle = 'rgba(155,0,255,.4)'; ctx.lineWidth = 3; ctx.beginPath(); ctx.arc(m.x, m.y, m.rad + 6, 0, Math.PI * 2); ctx.stroke(); }
+        if (evoLvl === 2) { ctx.strokeStyle = 'rgba(155,0,255,.4)'; ctx.lineWidth = 3; ctx.beginPath(); ctx.arc(m.x, m.y, m.rad + 6, 0, Math.PI * 2); ctx.stroke(); }
         ctx.restore();
       });
     }
 
     function drawEnt(x, y, r, emoji, col, flash, frozen, enraged, burning, img = null) {
       ctx.save();
-      if (img) {
-        if (img.complete && img.naturalWidth > 0) {
-          const size = r * 2.45;
-          if (flash) ctx.globalAlpha = .6;
-          ctx.drawImage(img, x - size / 2, y - size / 2, size, size);
-        }
-        ctx.restore();
-        return;
-      }
-
       let gc2 = col; if (enraged) gc2 = '#ff6600'; else if (frozen) gc2 = '#00aaff'; else if (burning) gc2 = '#ff4400';
       ctx.shadowColor = gc2; ctx.shadowBlur = enraged ? 18 : burning ? 14 : 8;
       ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI * 2);
@@ -5044,7 +5028,8 @@
       ctx.font = `${Math.floor(r * 1.05)}px serif`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText(emoji, x, y + 1);
       if (enraged) { ctx.strokeStyle = 'rgba(255,80,0,.3)'; ctx.lineWidth = 5; ctx.beginPath(); ctx.arc(x, y, r + 7, 0, Math.PI * 2); ctx.stroke(); }
       ctx.restore();
-    }    function drawHPbar(x, y, w, hp, max, col) { const pct = Math.max(0, hp / max); ctx.fillStyle = 'rgba(0,0,0,.7)'; ctx.fillRect(x - w / 2, y, w, 7); ctx.fillStyle = col; ctx.fillRect(x - w / 2 + 1, y + 1, (w - 2) * pct, 5); }
+    }
+    function drawHPbar(x, y, w, hp, max, col) { const pct = Math.max(0, hp / max); ctx.fillStyle = 'rgba(0,0,0,.7)'; ctx.fillRect(x - w / 2, y, w, 7); ctx.fillStyle = col; ctx.fillRect(x - w / 2 + 1, y + 1, (w - 2) * pct, 5); }
     const lighten = (h, a) => { try { const c = h.replace('#', ''), r = parseInt(c.slice(0, 2), 16), g = parseInt(c.slice(2, 4), 16), b = parseInt(c.slice(4, 6), 16); return `rgb(${Math.min(255, r + a)},${Math.min(255, g + a)},${Math.min(255, b + a)})` } catch { return h } };
     const darken = (h, a) => { try { const c = h.replace('#', ''), r = parseInt(c.slice(0, 2), 16), g = parseInt(c.slice(2, 4), 16), b = parseInt(c.slice(4, 6), 16); return `rgb(${Math.max(0, r - a)},${Math.max(0, g - a)},${Math.max(0, b - a)})` } catch { return h } };
 
@@ -5215,5 +5200,3 @@
 </body>
 
 </html>
-
-
