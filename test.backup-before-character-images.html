@@ -1217,39 +1217,8 @@
       box-shadow: 0 0 12px rgba(255, 215, 0, .12)
     }
 
-    .unit-img {
-      width: 100%;
-      height: 100%;
-      object-fit: contain;
-      display: block;
-      pointer-events: none
-    }
-
-    .deck-unit-img {
-      width: 32px;
-      height: 32px;
-      object-fit: contain
-    }
-
     .ru-emoji {
       font-size: 1.8rem
-    }
-
-    .ru-emoji .unit-img {
-      width: 42px;
-      height: 42px;
-      margin: 0 auto
-    }
-
-    .uup-emoji .unit-img {
-      width: 54px;
-      height: 54px;
-      margin: 0 auto
-    }
-
-    .ucav .unit-img {
-      width: 30px;
-      height: 30px
     }
 
     .ru-name {
@@ -4372,31 +4341,15 @@
 
     /* ════ UNIT DEFINITIONS (8 units) ════ */
     const ALL_UNITS = {
-      imp: { emoji: '😈', img: 'characters/the_imp.png', cost: 15, hp: 40, dmg: 3, spd: 1.8, rad: 14, col: '#a8e6cf', trait: 'Frenzy', tier: 'common', abilityName: 'Double Strike: 25% to hit twice' },
+      imp: { emoji: '😈', cost: 15, hp: 40, dmg: 3, spd: 1.8, rad: 14, col: '#a8e6cf', trait: 'Frenzy', tier: 'common', abilityName: 'Double Strike: 25% to hit twice' },
       orc: { emoji: '👹', cost: 30, hp: 120, dmg: 6, spd: 0.9, rad: 20, col: '#dcedc1', trait: 'Berserk', tier: 'common', abilityName: '<30% HP: +50% DMG & faster regen' },
-      golem: { emoji: '🪨', img: 'characters/the_golem.png', cost: 60, hp: 300, dmg: 8, spd: 0.5, rad: 28, col: '#a0897a', trait: 'Thorns', tier: 'rare', abilityName: 'Reflects 30% damage back' },
+      golem: { emoji: '🪨', cost: 60, hp: 300, dmg: 8, spd: 0.5, rad: 28, col: '#a0897a', trait: 'Thorns', tier: 'rare', abilityName: 'Reflects 30% damage back' },
       wraith: { emoji: '👻', cost: 80, hp: 60, dmg: 15, spd: 2.5, rad: 18, col: '#80deea', trait: 'Phase', tier: 'rare', abilityName: '40% evasion + phases through allies' },
       dragon: { emoji: '🐉', cost: 150, hp: 500, dmg: 40, spd: 1.0, rad: 35, col: '#ff8a80', trait: 'Burn Aura', tier: 'epic', abilityName: 'Burns ALL nearby foes (max 2 on field!)' },
       vampire: { emoji: '🧛', cost: 70, hp: 80, dmg: 12, spd: 1.6, rad: 16, col: '#ce93d8', trait: 'Life Drain', tier: 'rare', abilityName: 'Steals 20% of damage dealt as HP' },
       necromancer: { emoji: '💀', cost: 110, hp: 90, dmg: 10, spd: 0.8, rad: 22, col: '#80cbc4', trait: 'Soul Harvest', tier: 'epic', abilityName: 'Raises fallen enemies as zombies' },
       berserker: { emoji: '⚡', cost: 90, hp: 150, dmg: 20, spd: 1.4, rad: 24, col: '#ffcc02', trait: 'Rage Stack', tier: 'legend', abilityName: 'DMG +10% per kill this match' },
     };
-
-    const UNIT_IMAGES = {};
-    Object.entries(ALL_UNITS).forEach(([type, unit]) => {
-      if (unit.img) {
-        const img = new Image();
-        img.src = unit.img;
-        UNIT_IMAGES[type] = img;
-      }
-    });
-
-    function unitFace(type, className = 'unit-img') {
-      const unit = ALL_UNITS[type];
-      return unit?.img
-        ? `<img class="${className}" src="${unit.img}" alt="${type}">`
-        : `<span>${unit?.emoji || ''}</span>`;
-    }
 
     /* ════ EVOLUTION ════ */
     const EVO = {
@@ -4453,7 +4406,7 @@
       const wrap = document.getElementById('deck-slots'); wrap.innerHTML = '';
       for (let i = 0; i < DECK_SIZE; i++) {
         const slot = document.createElement('div'); slot.className = 'deck-slot';
-        if (i < currentDeck.length) { const t = currentDeck[i], u = ALL_UNITS[t]; slot.classList.add('filled'); slot.innerHTML = `${unitFace(t, 'deck-unit-img')}<span style="font-size:.48rem;color:#888;font-family:var(--ft);text-transform:uppercase">${t}</span><div class="ds-x" onclick="removeDeckSlot(${i})">✕</div>`; }
+        if (i < currentDeck.length) { const t = currentDeck[i], u = ALL_UNITS[t]; slot.classList.add('filled'); slot.innerHTML = `<span style="font-size:1.6rem">${u.emoji}</span><span style="font-size:.48rem;color:#888;font-family:var(--ft);text-transform:uppercase">${t}</span><div class="ds-x" onclick="removeDeckSlot(${i})">✕</div>`; }
         else slot.innerHTML = '<span style="font-size:1.2rem;opacity:.25">+</span>';
         wrap.appendChild(slot);
       }
@@ -4473,7 +4426,7 @@
         if (currentDeck.includes(type)) card.classList.add('in-deck');
         const evoLvl = getEvoLevel(type, PROG[type]?.lvl || 1), evoEmoji = ['', '✨', '👑'][evoLvl];
         const cnt = currentDeck.filter(t => t === type).length;
-        card.innerHTML = `<div class="ru-tier ${tc[u.tier]}">${tl[u.tier]}</div>${evoLvl > 0 ? `<div class="evo-badge">${evoEmoji}</div>` : ''}<div class="ru-emoji">${unitFace(type)}</div><div class="ru-name" style="color:${u.col}">${type}</div><div class="ru-trait">${u.trait}</div><div class="ru-cost"><div class="ru-cd"></div>${u.cost}g</div>${cnt > 0 ? `<div style="font-size:.58rem;color:var(--gold)">×${cnt} in deck</div>` : ''}`;
+        card.innerHTML = `<div class="ru-tier ${tc[u.tier]}">${tl[u.tier]}</div>${evoLvl > 0 ? `<div class="evo-badge">${evoEmoji}</div>` : ''}<div class="ru-emoji">${u.emoji}</div><div class="ru-name" style="color:${u.col}">${type}</div><div class="ru-trait">${u.trait}</div><div class="ru-cost"><div class="ru-cd"></div>${u.cost}g</div>${cnt > 0 ? `<div style="font-size:.58rem;color:var(--gold)">×${cnt} in deck</div>` : ''}`;
         card.onclick = () => addToDeck(type); grid.appendChild(card);
       });
     }
@@ -4555,7 +4508,7 @@
         const prgPct = ((hpL + dmgL + spdL) / (maxUpg * 3)) * 100;
         const evoLvl = getEvoLevel(unit, PROG[unit]?.lvl || 1);
         const evoInfo = evoLvl > 0 ? `<div class="evo-unlock">✨ ${getEvoData(unit, evoLvl)?.name || ''} Evolved!</div>` : `<div class="evo-unlock" style="opacity:.4">✨ Evolves at Lv.5</div>`;
-        card.innerHTML = `<div class="uup-emoji">${unitFace(unit)}</div><div class="uup-name" style="color:${u.col}">${unit.toUpperCase()}</div><div class="uup-ability">${u.abilityName}</div><div class="uup-lvlbar"><div class="uup-lvlbar-fill" style="width:${prgPct}%"></div></div><div class="uup-lvl">HP Lv.${hpL}/${maxUpg} · DMG Lv.${dmgL}/${maxUpg} · SPD Lv.${spdL}/10</div><div class="uup-stats">❤️ <span>${effHp}</span> ⚔️ <span>${effDmg}</span> 💨 <span>${effSpd}</span></div>${evoInfo}<div class="uup-upgrow" id="upgrow-${unit}"></div>`;
+        card.innerHTML = `<div class="uup-emoji">${u.emoji}</div><div class="uup-name" style="color:${u.col}">${unit.toUpperCase()}</div><div class="uup-ability">${u.abilityName}</div><div class="uup-lvlbar"><div class="uup-lvlbar-fill" style="width:${prgPct}%"></div></div><div class="uup-lvl">HP Lv.${hpL}/${maxUpg} · DMG Lv.${dmgL}/${maxUpg} · SPD Lv.${spdL}/10</div><div class="uup-stats">❤️ <span>${effHp}</span> ⚔️ <span>${effDmg}</span> 💨 <span>${effSpd}</span></div>${evoInfo}<div class="uup-upgrow" id="upgrow-${unit}"></div>`;
         grid.appendChild(card);
         const row = document.getElementById('upgrow-' + unit);
         SHOP_UNIT_UPGRADES[unit].forEach(upg => {
@@ -5007,9 +4960,8 @@
 
       minions.forEach(m => {
         const u = ALL_UNITS[m.type], evoLvl = m.evoLvl || 0, evo = getEvoData(m.type, evoLvl), displayEmoji = evo?.emoji || u.emoji;
-        const displayImg = evo ? null : UNIT_IMAGES[m.type];
         ctx.save();
-        drawEnt(m.x, m.y, m.rad, displayEmoji, u.col, m.flash > 0, false, m.enraged || (m.type === 'orc' && m.hp / m.maxHp < .3), false, displayImg);
+        drawEnt(m.x, m.y, m.rad, displayEmoji, u.col, m.flash > 0, false, m.enraged || (m.type === 'orc' && m.hp / m.maxHp < .3), false);
         if (m.hp < m.maxHp) { const hc = m.type === 'orc' && m.hp / m.maxHp < .3 ? '#ff8800' : m.type === 'vampire' ? '#ce93d8' : '#00e676'; drawHPbar(m.x, m.y - m.rad - 10, m.rad * 2.2, m.hp, m.maxHp, hc); }
         if (m.type === 'berserker' && m.berserkerKills > 0) { ctx.fillStyle = 'rgba(255,200,0,.9)'; ctx.font = `bold ${Math.floor(m.rad * .55)}px Cinzel`; ctx.textAlign = 'center'; ctx.fillText('×' + m.berserkerKills, m.x, m.y - m.rad - 22); }
         if (evoLvl === 2) { ctx.strokeStyle = 'rgba(155,0,255,.4)'; ctx.lineWidth = 3; ctx.beginPath(); ctx.arc(m.x, m.y, m.rad + 6, 0, Math.PI * 2); ctx.stroke(); }
@@ -5017,7 +4969,7 @@
       });
     }
 
-    function drawEnt(x, y, r, emoji, col, flash, frozen, enraged, burning, img = null) {
+    function drawEnt(x, y, r, emoji, col, flash, frozen, enraged, burning) {
       ctx.save();
       let gc2 = col; if (enraged) gc2 = '#ff6600'; else if (frozen) gc2 = '#00aaff'; else if (burning) gc2 = '#ff4400';
       ctx.shadowColor = gc2; ctx.shadowBlur = enraged ? 18 : burning ? 14 : 8;
@@ -5078,7 +5030,7 @@
         const u = ALL_UNITS[t], el = document.createElement('div'); el.className = 'uc'; el.id = 'uc-' + t;
         el.setAttribute('role', 'button'); el.onclick = () => { selUnit(t); vib(12); };
         const anyUpg = getUL(t + '_hp') + getUL(t + '_dmg') + getUL(t + '_spd') > 0, evoLvl = getEvoLevel(t, PROG[t]?.lvl || 1);
-        el.innerHTML = `${anyUpg ? '<div class="uc-boost">🛒</div>' : ''}${evoLvl > 0 ? `<div class="uc-evo">${['', '✨', '👑'][evoLvl]}</div>` : ''}<div class="ucav" style="background:${u.col}12;border-color:${u.col}28">${unitFace(t)}<div class="ulvl" id="ul-${t}">${PROG[t]?.lvl || 1}</div></div><div class="ucn">${t}</div><div class="ucc"><div class="ucd"></div>${u.cost}</div><div class="uct">${u.trait}</div><div class="xpbg"><div class="xpf" id="xpf-${t}"></div></div><div class="uc-cnt" id="cnt-${t}" style="position:absolute;top:-4px;right:-4px;background:rgba(0,0,0,.8);border:1px solid rgba(255,255,255,.18);border-radius:8px;font-size:7px;font-weight:900;padding:1px 4px;color:#fff;display:none"></div>`;
+        el.innerHTML = `${anyUpg ? '<div class="uc-boost">🛒</div>' : ''}${evoLvl > 0 ? `<div class="uc-evo">${['', '✨', '👑'][evoLvl]}</div>` : ''}<div class="ucav" style="background:${u.col}12;border-color:${u.col}28"><span>${u.emoji}</span><div class="ulvl" id="ul-${t}">${PROG[t]?.lvl || 1}</div></div><div class="ucn">${t}</div><div class="ucc"><div class="ucd"></div>${u.cost}</div><div class="uct">${u.trait}</div><div class="xpbg"><div class="xpf" id="xpf-${t}"></div></div><div class="uc-cnt" id="cnt-${t}" style="position:absolute;top:-4px;right:-4px;background:rgba(0,0,0,.8);border:1px solid rgba(255,255,255,.18);border-radius:8px;font-size:7px;font-weight:900;padding:1px 4px;color:#fff;display:none"></div>`;
         row.appendChild(el);
       });
       if (activeDeck.length > 0) selUnit(activeDeck[0]);
