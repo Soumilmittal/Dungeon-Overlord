@@ -2319,6 +2319,42 @@
       padding: 0 2px
     }
 
+
+    .bst-prog {
+      width: 100%;
+      height: 7px;
+      border-radius: 7px;
+      background: rgba(255, 255, 255, .055);
+      overflow: hidden;
+      margin-top: 2px
+    }
+
+    .bst-prog-fill {
+      height: 100%;
+      border-radius: 7px;
+      background: linear-gradient(90deg, var(--orange), var(--gold));
+      box-shadow: 0 0 12px rgba(255, 215, 0, .16);
+      transition: width .25s
+    }
+
+    .bst-stat {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      padding: 8px;
+      border-radius: 8px;
+      background: rgba(0, 0, 0, .18);
+      color: rgba(255, 255, 255, .72);
+      font-size: .62rem;
+      line-height: 1.3
+    }
+
+    .bst-stat span:first-child {
+      color: var(--gold);
+      font-family: var(--ft);
+      font-size: .64rem
+    }
     .bst-buy {
       width: 100%;
       padding: 9px 10px;
@@ -4247,7 +4283,7 @@
         <div class="spl-grid" id="spl-grid"></div>
       </div>
       <div id="shop-boosts" style="display:none">
-        <div class="ssec-t">Passive Boosts</div>
+        <div class="ssec-t">Passive Boosts — Battle Power, Idle Earnings & Idle Storage</div>
         <div class="boost-grid" id="boost-grid"></div>
       </div>
     </div>
@@ -4666,13 +4702,45 @@
     function updateDCDisplays() { const dc = CU?.darkCoins || 0; const life = CU?.lifetimeCoinsEarned || 0;['nav-dc', 'wc-val', 'shop-bal', 'my-dc', 'a-dc'].forEach(id => { const el = document.getElementById(id); if (el) el.textContent = dc; }); const lifeEl = document.getElementById('a-life'); if (lifeEl) lifeEl.textContent = life; }
 
     /* ════ IDLE ════ */
-    const IDLE_RATE = 5 * 60 * 1000, IDLE_CAP = 144; let idleIv = null;
-    function catchUpIdle() { if (!CU || !CU.idle) return; const now = Date.now(), elapsed = now - (CU.idle.lastTick || now), earned = Math.floor(elapsed / IDLE_RATE); if (earned > 0) { CU.idle.pending = Math.min(IDLE_CAP, (CU.idle.pending || 0) + earned); CU.idle.lastTick = (CU.idle.lastTick || now) + earned * IDLE_RATE; saveUser(); } updateIdleUI(); }
+    const IDLE_RATE = 5 * 60 * 1000, BASE_IDLE_CAP = 144; let idleIv = null;
+    function getIdleMult() { return parseFloat((1 + getUL('idlemult') * .2).toFixed(1)); }
+    function getIdleCap() { return BASE_IDLE_CAP + getUL('idlecap') * 72; }
+    function fmtIdle(n) { return Number.isInteger(n) ? n : n.toFixed(1); }
+    function catchUpIdle() {
+      if (!CU || !CU.idle) return;
+      const now = Date.now(), elapsed = now - (CU.idle.lastTick || now), ticks = Math.floor(elapsed / IDLE_RATE);
+      if (ticks > 0) {
+        const earned = parseFloat((ticks * getIdleMult()).toFixed(1));
+        CU.idle.pending = Math.min(getIdleCap(), parseFloat(((CU.idle.pending || 0) + earned).toFixed(1)));
+        CU.idle.lastTick = (CU.idle.lastTick || now) + ticks * IDLE_RATE;
+        saveUser();
+      }
+      updateIdleUI();
+    }
     function startIdleTicker() { if (idleIv) clearInterval(idleIv); idleIv = setInterval(() => { if (CU) catchUpIdle(); }, 15000); }
-    function updateIdleUI() { if (!CU) return; const p = CU.idle?.pending || 0; const el = document.getElementById('idle-amt'); const sub = document.getElementById('idle-sub'); const btn = document.getElementById('idle-btn'); if (el) el.textContent = p; if (sub) { if (p >= IDLE_CAP) sub.textContent = '💯 Full — claim now!'; else { const next = IDLE_RATE - ((Date.now() - (CU.idle?.lastTick || Date.now())) % IDLE_RATE); sub.textContent = `+1 🪙 / 5 min · next ~${Math.ceil(next / 60000)}m`; } } if (btn) { btn.classList.toggle('dis', p <= 0); btn.textContent = p > 0 ? `CLAIM +${p}` : 'CLAIM'; } }
-    function claimIdle() { if (!CU) return; const p = CU.idle?.pending || 0; if (p <= 0) { toast('⏳ No idle coins yet!'); return; } addDarkCoins(p); CU.idle.pending = 0; CU.idle.lastTick = Date.now(); saveUser(); toast(`💤 +${p} 🪙 idle coins!`); vib(40); updateIdleUI(); updateDCDisplays(); refreshHome(); }
-
-
+    function updateIdleUI() {
+      if (!CU) return;
+      const p = CU.idle?.pending || 0, claimable = Math.floor(p), cap = getIdleCap(), mult = getIdleMult();
+      const el = document.getElementById('idle-amt'), sub = document.getElementById('idle-sub'), btn = document.getElementById('idle-btn');
+      if (el) el.textContent = fmtIdle(p);
+      if (sub) {
+        if (p >= cap) sub.textContent = `💯 Full at ${cap} 🪙 — claim now!`;
+        else {
+          const next = IDLE_RATE - ((Date.now() - (CU.idle?.lastTick || Date.now())) % IDLE_RATE);
+          sub.textContent = `+${mult} 🪙 / 5 min · cap ${cap} · next ~${Math.ceil(next / 60000)}m`;
+        }
+      }
+      if (btn) { btn.classList.toggle('dis', claimable <= 0); btn.textContent = claimable > 0 ? `CLAIM +${claimable}` : 'CLAIM'; }
+    }
+    function claimIdle() {
+      if (!CU) return;
+      const p = CU.idle?.pending || 0, claimable = Math.floor(p);
+      if (claimable <= 0) { toast('⏳ No full idle coin yet!'); return; }
+      addDarkCoins(claimable);
+      CU.idle.pending = parseFloat(Math.max(0, p - claimable).toFixed(1));
+      CU.idle.lastTick = Date.now();
+      saveUser(); toast(`💤 +${claimable} 🪙 idle coins!`); vib(40); updateIdleUI(); updateDCDisplays(); refreshHome();
+    }
     /* ════ DAILY SPIN ════ */
     const SPIN_REWARDS = [
       { coin: 100, label: '100 🪙' },
@@ -4749,9 +4817,9 @@
 
     /* ════ UNIT DEFINITIONS (8 units) ════ */
     const ALL_UNITS = {
-      imp: { emoji: '😈', img: 'characters/the_imp.png', cost: 15, hp: 40, dmg: 3, spd: 1.8, rad: 14, col: '#a8e6cf', trait: 'Frenzy', tier: 'common', abilityName: 'Double Strike: 25% to hit twice' },
+      imp: { emoji: '😈', img: 'characters/villains/the_imp.png', cost: 15, hp: 40, dmg: 3, spd: 1.8, rad: 14, col: '#a8e6cf', trait: 'Frenzy', tier: 'common', abilityName: 'Double Strike: 25% to hit twice' },
       orc: { emoji: '👹', cost: 30, hp: 120, dmg: 6, spd: 0.9, rad: 20, col: '#dcedc1', trait: 'Berserk', tier: 'common', abilityName: '<30% HP: +50% DMG & faster regen' },
-      golem: { emoji: '🪨', img: 'characters/the_golem.png', cost: 60, hp: 300, dmg: 8, spd: 0.5, rad: 28, col: '#a0897a', trait: 'Thorns', tier: 'rare', abilityName: 'Reflects 30% damage back' },
+      golem: { emoji: '🪨', img: 'characters/villains/the_golem.png', cost: 60, hp: 300, dmg: 8, spd: 0.5, rad: 28, col: '#a0897a', trait: 'Thorns', tier: 'rare', abilityName: 'Reflects 30% damage back' },
       wraith: { emoji: '👻', cost: 80, hp: 60, dmg: 15, spd: 2.5, rad: 18, col: '#80deea', trait: 'Phase', tier: 'rare', abilityName: '40% evasion + phases through allies' },
       dragon: { emoji: '🐉', cost: 150, hp: 500, dmg: 40, spd: 1.0, rad: 35, col: '#ff8a80', trait: 'Burn Aura', tier: 'epic', abilityName: 'Burns ALL nearby foes (max 3 on field!)' },
       vampire: { emoji: '🧛', cost: 70, hp: 80, dmg: 12, spd: 1.6, rad: 16, col: '#ce93d8', trait: 'Life Drain', tier: 'rare', abilityName: 'Steals 20% of damage dealt as HP' },
@@ -4810,10 +4878,12 @@
       { id: 'rage_cd', name: 'Rage Mastery', emoji: '🔥', desc: 'Reduce Rage cooldown by 700ms', baseVal: 6000, reduce: 700, baseCost: 320, max: 15 },
     ];
     const SHOP_BOOSTS = [
-      { id: 'income', emoji: '💰', name: 'Dark Treasury', desc: '+1 gold per passive tick', baseCost: 240, max: 15 },
-      { id: 'startgold', emoji: '🏦', name: 'War Chest', desc: 'Start each match with +30 gold', baseCost: 320, max: 15 },
-      { id: 'manaspd', emoji: '⚡', name: 'Mana Flow', desc: 'Mana 15% faster', baseCost: 280, max: 15 },
-      { id: 'combobonus', emoji: '🔥', name: 'Combo King', desc: 'Combo bonus ×1.5', baseCost: 360, max: 15 },
+      { id: 'idlemult', emoji: '💤', name: 'Idle Engine', desc: 'Increase idle earnings: 1.0x, 1.2x, 1.4x...', baseCost: 180, max: 10, stat: 'idleMult' },
+      { id: 'idlecap', emoji: '📦', name: 'Vault Expansion', desc: 'Increase idle storage limit by +72 coins', baseCost: 220, max: 10, stat: 'idleCap' },
+      { id: 'income', emoji: '💰', name: 'Dark Treasury', desc: '+1 gold per passive tick in battle', baseCost: 240, max: 15, stat: 'battleIncome' },
+      { id: 'startgold', emoji: '🏦', name: 'War Chest', desc: 'Start each match with +30 gold', baseCost: 320, max: 15, stat: 'startGold' },
+      { id: 'manaspd', emoji: '⚡', name: 'Mana Flow', desc: 'Mana 15% faster', baseCost: 280, max: 15, stat: 'manaSpeed' },
+      { id: 'combobonus', emoji: '🔥', name: 'Combo King', desc: 'Combo bonus ×1.5', baseCost: 360, max: 15, stat: 'combo' },
     ];
     function getUL(key) { return (CU?.shopUpgrades || {})[key] || 0; }
     function setUL(key, lvl) { if (!CU) return; CU.shopUpgrades = CU.shopUpgrades || {}; CU.shopUpgrades[key] = lvl; saveUser(); }
@@ -4959,17 +5029,26 @@
       });
     }
     function buySpell(id, baseCost, max) { const lvl = getUL(id); if (lvl >= max) { toast('Already maxed!'); return; } const cost = getUpgradeCost(baseCost, lvl); if (!spendDC(cost)) { toast('❌ Not enough coins!'); return; } setUL(id, lvl + 1); toast('✅ Spell upgraded!'); vib(30); buildSpellUpgrades(); }
+    function boostStatText(b, lvl) {
+      if (b.stat === 'idleMult') return `${(1 + lvl * .2).toFixed(1)}x idle coins`;
+      if (b.stat === 'idleCap') return `${BASE_IDLE_CAP + lvl * 72} idle cap`;
+      if (b.stat === 'battleIncome') return `+${lvl} gold / battle tick`;
+      if (b.stat === 'startGold') return `+${lvl * 30} start gold`;
+      if (b.stat === 'manaSpeed') return `+${Math.round(lvl * 15)}% mana speed`;
+      if (b.stat === 'combo') return lvl > 0 ? '1.5x combo bonus' : '1.0x combo bonus';
+      return `Lv.${lvl}`;
+    }
     function buildBoosts() {
       const grid = document.getElementById('boost-grid'); grid.innerHTML = '';
       SHOP_BOOSTS.forEach(b => {
         const lvl = getUL(b.id), maxed = lvl >= b.max, cost = getUpgradeCost(b.baseCost, lvl), canAfford = (CU?.darkCoins || 0) >= cost;
         const card = document.createElement('div'); card.className = 'bst-card';
-        card.innerHTML = `<div class="bst-ico">${b.emoji}</div><div class="bst-name">${b.name}</div><div class="bst-desc">${b.desc}</div><div style="font-size:.6rem;color:#2a2a2a;margin-bottom:3px">Lv.${lvl}/${b.max}</div><button class="bst-buy${maxed ? ' owned' : ''}" ${maxed || !canAfford ? 'disabled' : ''} onclick="buyBoost('${b.id}',${b.baseCost},${b.max})">${maxed ? '✓ MAX' : (canAfford ? cost + '🪙 BUY' : 'Low')}</button>`;
+        const nextText = maxed ? 'MAXED' : boostStatText(b, lvl + 1);
+        card.innerHTML = `<div class="bst-ico">${b.emoji}</div><div class="bst-name">${b.name}</div><div class="bst-desc">${b.desc}</div><div class="bst-prog"><div class="bst-prog-fill" style="width:${(lvl / b.max) * 100}%"></div></div><div class="bst-stat"><span>${boostStatText(b, lvl)}</span>${maxed ? '' : `<span>→ ${nextText}</span>`}</div><div style="font-size:.6rem;color:rgba(255,255,255,.35);margin-bottom:3px">Lv.${lvl}/${b.max}</div><button class="bst-buy${maxed ? ' owned' : ''}" ${maxed || !canAfford ? 'disabled' : ''} onclick="buyBoost('${b.id}',${b.baseCost},${b.max})">${maxed ? '✓ MAX' : (canAfford ? cost + '🪙 BUY' : 'Low')}</button>`;
         grid.appendChild(card);
       });
     }
-    function buyBoost(id, baseCost, max) { const lvl = getUL(id); if (lvl >= max) { toast('Already maxed!'); return; } const cost = getUpgradeCost(baseCost, lvl); if (!spendDC(cost)) { toast('❌ Not enough coins!'); return; } setUL(id, lvl + 1); toast('✅ Boost active next match!'); vib(30); buildBoosts(); }
-
+    function buyBoost(id, baseCost, max) { const lvl = getUL(id); if (lvl >= max) { toast('Already maxed!'); return; } const cost = getUpgradeCost(baseCost, lvl); if (!spendDC(cost)) { toast('❌ Not enough coins!'); return; } setUL(id, lvl + 1); toast(id.startsWith('idle') ? '✅ Idle boost upgraded!' : '✅ Boost active next match!'); vib(30); buildBoosts(); updateIdleUI(); }
     /* ════ TOAST ════ */
     function toast(msg) { const t = document.createElement('div'); t.className = 'toast'; t.textContent = msg; document.body.appendChild(t); setTimeout(() => t.remove(), 3100); }
 
@@ -5587,6 +5666,9 @@
 </body>
 
 </html>
+
+
+
 
 
 
