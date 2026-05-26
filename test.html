@@ -17,6 +17,8 @@
     :root {
       --gold: #ffd700;
       --gold2: #b8860b;
+      --gem: #8f5cff;
+      --gem2: #b998ff;
       --red: #e82020;
       --red2: #7a0000;
       --blue: #00c8ff;
@@ -1311,15 +1313,14 @@
     }
 
     .ru-emoji .unit-img {
-      width: 42px;
-      height: 42px;
+      width: 56px;
+      height: 56px;
       margin: 0 auto
     }
 
     .uup-emoji .unit-img {
-      width: 54px;
-      height: 54px;
-      margin: 0 auto
+      width: 68px;
+      height: 68px;
     }
 
     .ucav .unit-img {
@@ -4146,6 +4147,7 @@
       </div>
       <div class="hrgt">
         <div class="dc-pill">🪙<span id="nav-dc">0</span></div>
+      <div class="dc-pill" style="background:linear-gradient(135deg,var(--gem),var(--gem2));">💎<span id="nav-gems">0</span></div>
         <div class="nico" onclick="openLB()">🏆</div>
         <div class="nico" onclick="openShop()">🛒</div>
         <div class="nico" onclick="openSett()">⚙️</div>
@@ -4162,6 +4164,7 @@
         <div>
           <div class="wc-lbl">Dark Coin Wallet</div>
           <div class="wc-val">🪙 <span id="wc-val">0</span></div>
+          <div class="wc-val" style="margin-top:8px">💎 <span id="wc-gems">0</span></div>
           <div class="wc-note">Earn from battles · Spend in Shop</div>
         </div>
         <div style="font-size:2.4rem;opacity:.25">🏦</div>
@@ -4289,7 +4292,7 @@
         <button class="stab" id="stab-boosts" onclick="shopTab('boosts')">⚡ BOOSTS</button>
       </div>
       <div id="shop-units">
-        <div class="ssec-t">Upgrade Minions — Up to 15 Levels Each (cost +30% per level)</div>
+        <div class="ssec-t">Upgrade Minions — Up to 15 Levels Each (cost +10% per level)</div>
         <div class="uup-grid" id="uup-grid"></div>
       </div>
       <div id="shop-spells" style="display:none">
@@ -4338,9 +4341,19 @@
             <div class="asb">🪙 wallet</div>
           </div>
           <div class="ac">
+            <div class="alb">Gems</div>
+            <div class="avl" id="a-gems">0</div>
+            <div class="asb">💎 wallet</div>
+          </div>
+          <div class="ac">
             <div class="alb">Lifetime Earnings</div>
             <div class="avl" id="a-life">0</div>
             <div class="asb">🪙 earned</div>
+          </div>
+          <div class="ac">
+            <div class="alb">Lifetime Gems</div>
+            <div class="avl" id="a-life-gems">0</div>
+            <div class="asb">💎 earned</div>
           </div>
           <div class="ac">
             <div class="alb">Streak</div>
@@ -4610,9 +4623,10 @@
 
     function ensureUser(u) {
       if (!u) return u;
-      const nums = { darkCoins: 0, lifetimeCoinsEarned: 0, totalGold: 0, totalKills: 0, gamesPlayed: 0, bestWave: 0, bossesSlain: 0 };
+      const nums = { darkCoins: 0, lifetimeCoinsEarned: 0, gems: 0, lifetimeGemsEarned: 0, totalGold: 0, totalKills: 0, gamesPlayed: 0, bestWave: 0, bossesSlain: 0 };
       Object.entries(nums).forEach(([k, d]) => { if (typeof u[k] !== 'number' || isNaN(u[k])) u[k] = d; });
       if ((u.lifetimeCoinsEarned || 0) < (u.darkCoins || 0)) u.lifetimeCoinsEarned = u.darkCoins || 0;
+      if ((u.lifetimeGemsEarned || 0) < (u.gems || 0)) u.lifetimeGemsEarned = u.gems || 0;
       if (!u.shopUpgrades || typeof u.shopUpgrades !== 'object') u.shopUpgrades = {};
       if (!u.unitUsage || typeof u.unitUsage !== 'object') u.unitUsage = {};
       if (!Array.isArray(u.sessionDays)) u.sessionDays = [];
@@ -4715,9 +4729,12 @@
     function calcBaseCoins(k, w) { return Math.max(1, k * w); }
     function calcBossBonus(n) { return n * 50; }
     function addDarkCoins(amount) { const n = Math.max(0, Math.floor(amount) || 0); if (!CU || n <= 0) return 0; CU.darkCoins = (CU.darkCoins || 0) + n; CU.lifetimeCoinsEarned = (CU.lifetimeCoinsEarned || 0) + n; return n; }
+    function addGems(amount) { const n = Math.max(0, Math.floor(amount) || 0); if (!CU || n <= 0) return 0; CU.gems = (CU.gems || 0) + n; CU.lifetimeGemsEarned = (CU.lifetimeGemsEarned || 0) + n; return n; }
 
-    function spendDC(amount) { if (!CU || CU.darkCoins < amount) return false; CU.darkCoins -= amount; saveUser(); updateDCDisplays(); return true; }
-    function updateDCDisplays() { const dc = CU?.darkCoins || 0; const life = CU?.lifetimeCoinsEarned || 0;['nav-dc', 'wc-val', 'shop-bal', 'my-dc', 'a-dc'].forEach(id => { const el = document.getElementById(id); if (el) el.textContent = dc; }); const lifeEl = document.getElementById('a-life'); if (lifeEl) lifeEl.textContent = life; }
+    function spendDC(amount) { if (!CU || CU.darkCoins < amount) return false; CU.darkCoins -= amount; saveUser(); updateCurrencyDisplays(); return true; }
+    function spendGems(amount) { if (!CU || CU.gems < amount) return false; CU.gems -= amount; saveUser(); updateCurrencyDisplays(); return true; }
+    function updateCurrencyDisplays() { const dc = CU?.darkCoins || 0; const life = CU?.lifetimeCoinsEarned || 0; const gems = CU?.gems || 0; const lifeG = CU?.lifetimeGemsEarned || 0; ['nav-dc', 'wc-val', 'shop-bal', 'my-dc', 'a-dc'].forEach(id => { const el = document.getElementById(id); if (el) el.textContent = dc; }); ['nav-gems','wc-gems','a-gems','a-life-gems'].forEach(id => { const el = document.getElementById(id); if (el) el.textContent = id === 'a-life-gems' ? lifeG : gems; }); const lifeEl = document.getElementById('a-life'); if (lifeEl) lifeEl.textContent = life; }
+    function updateDCDisplays() { updateCurrencyDisplays(); }
 
     /* ════ IDLE ════ */
     const IDLE_RATE = 5 * 60 * 1000, BASE_IDLE_CAP = 144; let idleIv = null;
@@ -4885,7 +4902,7 @@
     function getEvoLevel(type, lvl) { return lvl >= 10 ? 2 : lvl >= 5 ? 1 : 0; }
     function getEvoData(type, evoLvl) { return evoLvl === 2 ? EVO[type]?.evo2 : evoLvl === 1 ? EVO[type]?.evo1 : null; }
 
-    /* ════ SHOP — CHANGE 4: base costs doubled, +30% per level ════
+    /* ════ SHOP — CHANGE 4: base costs doubled, +10% per level ════
        HP: 80→160 | DMG: 100→200 | SPD: 70→140
        Spells: 160→320 each
        Boosts: 120→240 | 160→320 | 140→280 | 180→360
@@ -4898,7 +4915,7 @@
         { stat: 'spd', label: 'SPD +8%', baseCost: 140, max: 100 }
       ];
     });
-    function getUpgradeCost(base, lvl) { return Math.round(base * Math.pow(1.3, lvl)); }
+    function getUpgradeCost(base, lvl) { return Math.round(base * Math.pow(1.1, lvl)); }
 
     const SHOP_SPELLS = [
       { id: 'meteor_cd', name: 'Meteor Mastery', emoji: '☄️', desc: 'Reduce Meteor cooldown by 500ms', baseVal: 3500, reduce: 500, baseCost: 320, max: 15 },
@@ -4983,7 +5000,9 @@
       document.getElementById('a-games').textContent = CU.gamesPlayed || 0;
       document.getElementById('a-kills').textContent = CU.totalKills || 0;
       document.getElementById('a-dc').textContent = CU.darkCoins || 0;
+      document.getElementById('a-gems').textContent = CU.gems || 0;
       document.getElementById('a-life').textContent = CU.lifetimeCoinsEarned || 0;
+      document.getElementById('a-life-gems').textContent = CU.lifetimeGemsEarned || 0;
       document.getElementById('a-streak').textContent = CU.streak?.count || 0;
       document.getElementById('a-bosses').textContent = CU.bossesSlain || 0;
       document.getElementById('sett-nm').textContent = CU.name;
