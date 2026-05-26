@@ -4147,7 +4147,8 @@
       </div>
       <div class="hrgt">
         <div class="dc-pill">🪙<span id="nav-dc">0</span></div>
-      <div class="dc-pill" style="background:linear-gradient(135deg,var(--gem),var(--gem2));">💎<span id="nav-gems">0</span></div>
+        <div class="dc-pill" style="background:linear-gradient(135deg,var(--gem),var(--gem2));">💎<span
+            id="nav-gems">0</span></div>
         <div class="nico" onclick="openLB()">🏆</div>
         <div class="nico" onclick="openShop()">🛒</div>
         <div class="nico" onclick="openSett()">⚙️</div>
@@ -4733,7 +4734,7 @@
 
     function spendDC(amount) { if (!CU || CU.darkCoins < amount) return false; CU.darkCoins -= amount; saveUser(); updateCurrencyDisplays(); return true; }
     function spendGems(amount) { if (!CU || CU.gems < amount) return false; CU.gems -= amount; saveUser(); updateCurrencyDisplays(); return true; }
-    function updateCurrencyDisplays() { const dc = CU?.darkCoins || 0; const life = CU?.lifetimeCoinsEarned || 0; const gems = CU?.gems || 0; const lifeG = CU?.lifetimeGemsEarned || 0; ['nav-dc', 'wc-val', 'shop-bal', 'my-dc', 'a-dc'].forEach(id => { const el = document.getElementById(id); if (el) el.textContent = dc; }); ['nav-gems','wc-gems','a-gems','a-life-gems'].forEach(id => { const el = document.getElementById(id); if (el) el.textContent = id === 'a-life-gems' ? lifeG : gems; }); const lifeEl = document.getElementById('a-life'); if (lifeEl) lifeEl.textContent = life; }
+    function updateCurrencyDisplays() { const dc = CU?.darkCoins || 0; const life = CU?.lifetimeCoinsEarned || 0; const gems = CU?.gems || 0; const lifeG = CU?.lifetimeGemsEarned || 0;['nav-dc', 'wc-val', 'shop-bal', 'my-dc', 'a-dc'].forEach(id => { const el = document.getElementById(id); if (el) el.textContent = dc; });['nav-gems', 'wc-gems', 'a-gems', 'a-life-gems'].forEach(id => { const el = document.getElementById(id); if (el) el.textContent = id === 'a-life-gems' ? lifeG : gems; }); const lifeEl = document.getElementById('a-life'); if (lifeEl) lifeEl.textContent = life; }
     function updateDCDisplays() { updateCurrencyDisplays(); }
 
     /* ════ IDLE ════ */
@@ -4853,11 +4854,11 @@
     /* ════ UNIT DEFINITIONS (8 units) ════ */
     const ALL_UNITS = {
       imp: { emoji: '😈', img: 'characters/villains/the_imp.png', cost: 15, hp: 40, dmg: 3, spd: 1.8, rad: 14, col: '#a8e6cf', trait: 'Frenzy', tier: 'common', abilityName: 'Double Strike: 25% to hit twice' },
-      orc: { emoji: '👹', img: 'characters/villains/the_orc.png', cost: 30, hp: 120, dmg: 6, spd: 0.9, rad: 20, col: '#dcedc1', trait: 'Berserk', tier: 'common', abilityName: '<30% HP: +50% DMG & faster regen' },
+      orc: { emoji: '👹', img: 'characters/villains/the_orc.png', cost: 30, hp: 120, dmg: 6, spd: 0.9, rad: 26, col: '#dcedc1', trait: 'Berserk', tier: 'common', abilityName: '<30% HP: +50% DMG & faster regen' },
       golem: { emoji: '🪨', img: 'characters/villains/the_golem.png', cost: 60, hp: 300, dmg: 8, spd: 0.5, rad: 28, col: '#a0897a', trait: 'Thorns', tier: 'rare', abilityName: 'Reflects 30% damage back' },
       wraith: { emoji: '👻', img: 'characters/villains/the_wraith.png', cost: 80, hp: 60, dmg: 15, spd: 2.5, rad: 18, col: '#80deea', trait: 'Phase', tier: 'rare', abilityName: '40% evasion + phases through allies' },
       dragon: { emoji: '🐉', img: 'characters/villains/the_dragon.png', cost: 150, hp: 500, dmg: 40, spd: 1.0, rad: 35, col: '#ff8a80', trait: 'Burn Aura', tier: 'epic', abilityName: 'Burns ALL nearby foes (max 3 on field!)' },
-      vampire: { emoji: '🧛', img: 'characters/villains/the_vampire.png', cost: 70, hp: 80, dmg: 12, spd: 1.6, rad: 16, col: '#ce93d8', trait: 'Life Drain', tier: 'rare', abilityName: 'Steals 20% of damage dealt as HP' },
+      vampire: { emoji: '🧛', img: 'characters/villains/the_vampire.png', cost: 70, hp: 80, dmg: 12, spd: 1.6, rad: 24, col: '#ce93d8', trait: 'Life Drain', tier: 'rare', abilityName: 'Steals 20% of damage dealt as HP' },
       necromancer: { emoji: '💀', cost: 110, hp: 90, dmg: 10, spd: 0.8, rad: 22, col: '#80cbc4', trait: 'Soul Harvest', tier: 'epic', abilityName: 'Raises fallen enemies as zombies' },
       berserker: { emoji: '⚡', cost: 90, hp: 150, dmg: 20, spd: 1.4, rad: 24, col: '#ffcc02', trait: 'Rage Stack', tier: 'legend', abilityName: 'DMG +10% per kill this match' },
     };
