@@ -1959,6 +1959,78 @@
       margin-top: 6px
     }
 
+    .evo-card {
+      background: linear-gradient(135deg, rgba(20, 10, 30, .85), rgba(30, 10, 25, .75));
+      border: 1.5px solid rgba(155, 0, 255, .2);
+      border-radius: 16px;
+      padding: 16px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      box-shadow: 0 10px 24px rgba(0, 0, 0, .18);
+      transition: .22s;
+    }
+
+    .evo-card:hover {
+      border-color: rgba(155, 0, 255, .35);
+      transform: translateY(-4px);
+    }
+
+    .evo-head {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .evo-face {
+      font-size: 1.8rem;
+      width: 46px;
+      height: 46px;
+      border-radius: 14px;
+      display: grid;
+      place-items: center;
+      background: rgba(255, 255, 255, .08);
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .08);
+    }
+
+    .evo-name {
+      font-family: var(--ft);
+      font-size: .82rem;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 1.2px;
+      color: #fff;
+    }
+
+    .evo-stage {
+      font-size: .65rem;
+      color: rgba(255, 255, 255, .6);
+      line-height: 1.4;
+    }
+
+    .evo-bar {
+      width: 100%;
+      height: 8px;
+      background: rgba(255, 255, 255, .08);
+      border-radius: 999px;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, .05);
+    }
+
+    .evo-fill {
+      height: 100%;
+      width: 0;
+      background: linear-gradient(90deg, rgba(155, 0, 255, .9), var(--gold));
+      box-shadow: 0 0 10px rgba(155, 0, 255, .35), 0 0 14px rgba(255, 215, 0, .18);
+      transition: width .4s ease;
+    }
+
+    .evo-meta {
+      font-size: .66rem;
+      color: rgba(255, 255, 255, .55);
+      line-height: 1.4;
+    }
+
     .uup-upbtn {
       width: 100%;
       padding: 9px 8px;
@@ -4248,6 +4320,7 @@
       <div class="stabs">
         <button class="stab on" id="stab-units" onclick="shopTab('units')">⚔ UNITS</button>
         <button class="stab" id="stab-spells" onclick="shopTab('spells')">✨ SPELLS</button>
+        <button class="stab" id="stab-evolution" onclick="shopTab('evolution')">🧬 EVOLUTION</button>
         <button class="stab" id="stab-boosts" onclick="shopTab('boosts')">⚡ BOOSTS</button>
       </div>
       <div id="shop-units">
@@ -4257,6 +4330,10 @@
       <div id="shop-spells" style="display:none">
         <div class="ssec-t">Spell Upgrades</div>
         <div class="spl-grid" id="spl-grid"></div>
+      </div>
+      <div id="shop-evolution" style="display:none">
+        <div class="ssec-t">Evolution Progress — Unlock stages by upgrading characters</div>
+        <div class="uup-grid" id="evo-grid"></div>
       </div>
       <div id="shop-boosts" style="display:none">
         <div class="ssec-t">Passive Boosts — Battle Power, Idle Earnings & Idle Storage</div>
@@ -4849,17 +4926,19 @@
 
     /* ════ EVOLUTION ════ */
     const EVO = {
-      imp: { evo1: { lvl: 5, name: 'Shadow Imp', emoji: '👿', dmgBonus: 1.5, hpBonus: 1.4 }, evo2: { lvl: 10, name: 'Void Demon', emoji: '😈🔥', dmgBonus: 2.2, hpBonus: 1.8 } },
-      orc: { evo1: { lvl: 5, name: 'Warchief', emoji: '👺', dmgBonus: 1.5, hpBonus: 1.5 }, evo2: { lvl: 10, name: 'Lich Orc', emoji: '💪', dmgBonus: 2.0, hpBonus: 2.2 } },
-      golem: { evo1: { lvl: 5, name: 'Iron Golem', emoji: '🗿', dmgBonus: 1.3, hpBonus: 1.8 }, evo2: { lvl: 10, name: 'Obsidian Titan', emoji: '🏔️', dmgBonus: 1.8, hpBonus: 2.8 } },
-      wraith: { evo1: { lvl: 5, name: 'Banshee', emoji: '👁️', dmgBonus: 1.8, hpBonus: 1.3 }, evo2: { lvl: 10, name: 'Void Wraith', emoji: '🌀', dmgBonus: 2.5, hpBonus: 1.6 } },
-      dragon: { evo1: { lvl: 5, name: 'Elder Dragon', emoji: '🔥', dmgBonus: 1.4, hpBonus: 1.5 }, evo2: { lvl: 10, name: 'Inferno Lord', emoji: '🌋', dmgBonus: 2.0, hpBonus: 2.0 } },
-      vampire: { evo1: { lvl: 5, name: 'Vampire Lord', emoji: '🩸', dmgBonus: 1.6, hpBonus: 1.5 }, evo2: { lvl: 10, name: 'Blood God', emoji: '🦇', dmgBonus: 2.2, hpBonus: 1.8 } },
-      necromancer: { evo1: { lvl: 5, name: 'Lich', emoji: '💀✨', dmgBonus: 1.5, hpBonus: 1.4 }, evo2: { lvl: 10, name: 'Death Lord', emoji: '⚰️', dmgBonus: 2.0, hpBonus: 1.6 } },
-      berserker: { evo1: { lvl: 5, name: 'Blood Berserker', emoji: '⚡🩸', dmgBonus: 1.6, hpBonus: 1.3 }, evo2: { lvl: 10, name: 'Chaos God', emoji: '🌪️', dmgBonus: 2.4, hpBonus: 1.5 } },
+      imp: { evo1: { name: 'Shadow Imp', emoji: '👿', dmgBonus: 1.5, hpBonus: 1.4 }, evo2: { name: 'Void Demon', emoji: '😈🔥', dmgBonus: 2.2, hpBonus: 1.8 }, evo3: { name: 'Abyss Warden', emoji: '🕯️', dmgBonus: 2.8, hpBonus: 2.3 }, evo4: { name: 'Nether King', emoji: '👑', dmgBonus: 3.6, hpBonus: 2.9 } },
+      orc: { evo1: { name: 'Warchief', emoji: '👺', dmgBonus: 1.5, hpBonus: 1.5 }, evo2: { name: 'Lich Orc', emoji: '💪', dmgBonus: 2.0, hpBonus: 2.2 }, evo3: { name: 'Frenzy Warlord', emoji: '🩸', dmgBonus: 2.7, hpBonus: 2.6 }, evo4: { name: 'War Tyrant', emoji: '⚔️', dmgBonus: 3.5, hpBonus: 3.1 } },
+      golem: { evo1: { name: 'Iron Golem', emoji: '🗿', dmgBonus: 1.3, hpBonus: 1.8 }, evo2: { name: 'Obsidian Titan', emoji: '🏔️', dmgBonus: 1.8, hpBonus: 2.8 }, evo3: { name: 'Earth Colossus', emoji: '🌋', dmgBonus: 2.4, hpBonus: 3.4 }, evo4: { name: 'Worldbreaker', emoji: '🌎', dmgBonus: 3.2, hpBonus: 4.0 } },
+      wraith: { evo1: { name: 'Banshee', emoji: '👁️', dmgBonus: 1.8, hpBonus: 1.3 }, evo2: { name: 'Void Wraith', emoji: '🌀', dmgBonus: 2.5, hpBonus: 1.6 }, evo3: { name: 'Ethereal Reaper', emoji: '🔮', dmgBonus: 3.0, hpBonus: 1.9 }, evo4: { name: 'Spectral Sovereign', emoji: '👻', dmgBonus: 3.7, hpBonus: 2.4 } },
+      dragon: { evo1: { name: 'Elder Dragon', emoji: '🔥', dmgBonus: 1.4, hpBonus: 1.5 }, evo2: { name: 'Inferno Lord', emoji: '🌋', dmgBonus: 2.0, hpBonus: 2.0 }, evo3: { name: 'Celestial Drake', emoji: '✨', dmgBonus: 2.7, hpBonus: 2.5 }, evo4: { name: 'Wyrm of Ruin', emoji: '🌟', dmgBonus: 3.6, hpBonus: 3.2 } },
+      vampire: { evo1: { name: 'Vampire Lord', emoji: '🩸', dmgBonus: 1.6, hpBonus: 1.5 }, evo2: { name: 'Blood God', emoji: '🦇', dmgBonus: 2.2, hpBonus: 1.8 }, evo3: { name: 'Night Stalker', emoji: '🌙', dmgBonus: 2.9, hpBonus: 2.3 }, evo4: { name: 'Crimson Sovereign', emoji: '👑', dmgBonus: 3.8, hpBonus: 2.9 } },
+      necromancer: { evo1: { name: 'Lich', emoji: '💀✨', dmgBonus: 1.5, hpBonus: 1.4 }, evo2: { name: 'Death Lord', emoji: '⚰️', dmgBonus: 2.0, hpBonus: 1.6 }, evo3: { name: 'Bone Sovereign', emoji: '☠️', dmgBonus: 2.7, hpBonus: 2.1 }, evo4: { name: 'Necro Archon', emoji: '⚡', dmgBonus: 3.5, hpBonus: 2.6 } },
+      berserker: { evo1: { name: 'Blood Berserker', emoji: '⚡🩸', dmgBonus: 1.6, hpBonus: 1.3 }, evo2: { name: 'Chaos God', emoji: '🌪️', dmgBonus: 2.4, hpBonus: 1.5 }, evo3: { name: 'Rage Overlord', emoji: '🔥', dmgBonus: 3.0, hpBonus: 1.8 }, evo4: { name: 'Titan of Fury', emoji: '💥', dmgBonus: 3.9, hpBonus: 2.5 } },
     };
-    function getEvoLevel(type, lvl) { return lvl >= 10 ? 2 : lvl >= 5 ? 1 : 0; }
-    function getEvoData(type, evoLvl) { return evoLvl === 2 ? EVO[type]?.evo2 : evoLvl === 1 ? EVO[type]?.evo1 : null; }
+    function getEvoProgress(type) { return Math.min(100, getUL(type + '_hp') + getUL(type + '_dmg') + getUL(type + '_spd')); }
+    function getEvoLevel(type, lvl) { const total = getEvoProgress(type); return total >= 100 ? 4 : total >= 75 ? 3 : total >= 50 ? 2 : total >= 25 ? 1 : 0; }
+    function getEvoThreshold(stage) { return [0, 25, 50, 75, 100][stage] || 100; }
+    function getEvoData(type, evoLvl) { return evoLvl === 4 ? EVO[type]?.evo4 : evoLvl === 3 ? EVO[type]?.evo3 : evoLvl === 2 ? EVO[type]?.evo2 : evoLvl === 1 ? EVO[type]?.evo1 : null; }
 
     /* ════ SHOP — CHANGE 4: base costs doubled, +10% per level ════
        HP: 80→160 | DMG: 100→200 | SPD: 70→140
@@ -4996,8 +5075,8 @@
 
     /* ════ SHOP BUILD ════ */
     let curShopTab = 'units';
-    function shopTab(t) { curShopTab = t;['units', 'spells', 'boosts'].forEach(s => { document.getElementById('stab-' + s).classList.toggle('on', s === t); document.getElementById('shop-' + s).style.display = s === t ? '' : 'none'; }); }
-    function buildShop() { updateDCDisplays(); buildUnitUpgrades(); buildSpellUpgrades(); buildBoosts(); }
+    function shopTab(t) { curShopTab = t;['units', 'spells', 'evolution', 'boosts'].forEach(s => { document.getElementById('stab-' + s).classList.toggle('on', s === t); document.getElementById('shop-' + s).style.display = s === t ? '' : 'none'; }); }
+    function buildShop() { updateDCDisplays(); buildUnitUpgrades(); buildSpellUpgrades(); buildBoosts(); buildEvolution(); }
 
     function buildUnitUpgrades() {
       const grid = document.getElementById('uup-grid'); grid.innerHTML = '';
@@ -5007,8 +5086,15 @@
         const maxUpg = SHOP_UNIT_UPGRADES[unit][0].max;
         const effHp = Math.floor(u.hp * (1 + hpL * .15)), effDmg = Math.floor(u.dmg * (1 + dmgL * .15)), effSpd = (u.spd * (1 + spdL * .08)).toFixed(1);
         const prgPct = ((hpL + dmgL + spdL) / (maxUpg * 3)) * 100;
-        const evoLvl = getEvoLevel(unit, PROG[unit]?.lvl || 1);
-        const evoInfo = evoLvl > 0 ? `<div class="evo-unlock">✨ ${getEvoData(unit, evoLvl)?.name || ''} Evolved!</div>` : `<div class="evo-unlock" style="opacity:.4">✨ Evolves at Lv.5</div>`;
+        const evoLvl = getEvoLevel(unit);
+        const evoName = evoLvl > 0 ? getEvoData(unit, evoLvl)?.name : 'No evolution yet';
+        const nextStage = Math.min(4, evoLvl + 1);
+        const nextThreshold = getEvoThreshold(nextStage);
+        const evoInfo = `<div class="evo-unlock" style="opacity:${evoLvl > 0 ? 1 : .85}">` +
+          (evoLvl > 0 ? `✨ ${evoName} (Stage ${evoLvl})` : '✨ No evolution yet') +
+          `</div><div class="evo-unlock" style="font-size:.75rem;color:rgba(255,255,255,.65);margin-top:2px">` +
+          (evoLvl < 4 ? `Next stage ${nextStage} at ${nextThreshold} total upgrades` : 'Max evolution reached') +
+          `</div>`;
         card.innerHTML = `<div class="uup-emoji">${unitFace(unit)}</div><div class="uup-name" style="color:${u.col}">${unit.toUpperCase()}</div><div class="uup-ability">${u.abilityName}</div><div class="uup-lvlbar"><div class="uup-lvlbar-fill" style="width:${prgPct}%"></div></div><div class="uup-lvl">HP Lv.${hpL}/${maxUpg} · DMG Lv.${dmgL}/${maxUpg} · SPD Lv.${spdL}/10</div><div class="uup-stats">❤️ <span>${effHp}</span> ⚔️ <span>${effDmg}</span> 💨 <span>${effSpd}</span></div>${evoInfo}<div class="uup-upgrow" id="upgrow-${unit}"></div>`;
         grid.appendChild(card);
         const row = document.getElementById('upgrow-' + unit);
@@ -5051,6 +5137,22 @@
         const card = document.createElement('div'); card.className = 'bst-card';
         const nextText = maxed ? 'MAXED' : boostStatText(b, lvl + 1);
         card.innerHTML = `<div class="bst-ico">${b.emoji}</div><div class="bst-name">${b.name}</div><div class="bst-desc">${b.desc}</div><div class="bst-prog"><div class="bst-prog-fill" style="width:${(lvl / b.max) * 100}%"></div></div><div class="bst-stat"><span>${boostStatText(b, lvl)}</span>${maxed ? '' : `<span>→ ${nextText}</span>`}</div><div style="font-size:.6rem;color:rgba(255,255,255,.35);margin-bottom:3px">Lv.${lvl}/${b.max}</div><button class="bst-buy${maxed ? ' owned' : ''}" ${maxed || !canAfford ? 'disabled' : ''} onclick="buyBoost('${b.id}',${b.baseCost},${b.max})">${maxed ? '✓ MAX' : (canAfford ? cost + '🪙 BUY' : 'Low')}</button>`;
+        grid.appendChild(card);
+      });
+    }
+    function buildEvolution() {
+      const grid = document.getElementById('evo-grid'); if (!grid) return;
+      grid.innerHTML = '';
+      Object.entries(ALL_UNITS).forEach(([unit, u]) => {
+        const progress = getEvoProgress(unit);
+        const evoLvl = getEvoLevel(unit);
+        const evoData = evoLvl > 0 ? getEvoData(unit, evoLvl) : null;
+        const nextStage = evoLvl < 4 ? evoLvl + 1 : 4;
+        const nextThreshold = getEvoThreshold(nextStage);
+        const status = evoLvl > 0 ? `Stage ${evoLvl}: ${evoData?.name || 'Evolved'}` : 'Stage 0: Not evolved';
+        const subtitle = evoLvl < 4 ? `Next stage ${nextStage} at ${nextThreshold} upgrades` : 'Max stage reached';
+        const card = document.createElement('div'); card.className = 'evo-card';
+        card.innerHTML = `<div class="evo-head"><span class="evo-face">${unitFace(unit)}</span><div><div class="evo-name">${unit.toUpperCase()}</div><div class="evo-stage">${status}</div></div></div><div class="evo-bar"><div class="evo-fill" style="width:${progress}%"></div></div><div class="evo-meta">${progress}/100 upgrade points · ${subtitle}</div>`;
         grid.appendChild(card);
       });
     }
@@ -5235,7 +5337,7 @@
       const scaledCost = Math.floor(st.cost * (1 + sameCount * .2));
       if (gold < scaledCost) { toast(`💰 Need ${scaledCost}g`); return; }
       gold -= scaledCost;
-      const oy = 0, evoLvl = getEvoLevel(selU, PROG[selU]?.lvl || 1);
+      const oy = 0, evoLvl = getEvoLevel(selU);
       minions.push({ x, y: y + oy, type: selU, ...st, maxHp: st.hp, flash: 0, enraged: Date.now() < rageT, freezeT: 0, evoLvl, berserkerKills: 0, lifedrainAmt: selU === 'vampire' ? Math.floor(st.dmg * .2) : 0, necroTimer: 0 });
       if (CF.ptcl) burstp(x, y + oy, 6, ALL_UNITS[selU].col);
       if (CU) { CU.unitUsage = CU.unitUsage || {}; CU.unitUsage[selU] = (CU.unitUsage[selU] || 0) + 1; saveUser(); }
@@ -5543,8 +5645,10 @@
       activeDeck.forEach(t => {
         const u = ALL_UNITS[t], el = document.createElement('div'); el.className = 'uc'; el.id = 'uc-' + t;
         el.setAttribute('role', 'button'); el.onclick = () => { selUnit(t); vib(12); };
-        const anyUpg = getUL(t + '_hp') + getUL(t + '_dmg') + getUL(t + '_spd') > 0, evoLvl = getEvoLevel(t, PROG[t]?.lvl || 1);
-        el.innerHTML = `${anyUpg ? '<div class="uc-boost">🛒</div>' : ''}${evoLvl > 0 ? `<div class="uc-evo">${['', '✨', '👑'][evoLvl]}</div>` : ''}<div class="ucav" style="background:${u.col}12;border-color:${u.col}28">${unitFace(t)}<div class="ulvl" id="ul-${t}">${PROG[t]?.lvl || 1}</div></div><div class="ucn">${t}</div><div class="ucc"><div class="ucd"></div>${u.cost}</div><div class="uct">${u.trait}</div><div class="xpbg"><div class="xpf" id="xpf-${t}"></div></div><div class="uc-cnt" id="cnt-${t}" style="position:absolute;top:-4px;right:-4px;background:rgba(0,0,0,.8);border:1px solid rgba(255,255,255,.18);border-radius:8px;font-size:7px;font-weight:900;padding:1px 4px;color:#fff;display:none"></div>`;
+        const anyUpg = getUL(t + '_hp') + getUL(t + '_dmg') + getUL(t + '_spd') > 0;
+        const evoLvl = getEvoLevel(t);
+        const evoIcons = ['', '✨', '👑', '🔥', '🌟'];
+        el.innerHTML = `${anyUpg ? '<div class="uc-boost">🛒</div>' : ''}${evoLvl > 0 ? `<div class="uc-evo">${evoIcons[evoLvl]}</div>` : ''}<div class="ucav" style="background:${u.col}12;border-color:${u.col}28">${unitFace(t)}<div class="ulvl" id="ul-${t}">${PROG[t]?.lvl || 1}</div></div><div class="ucn">${t}</div><div class="ucc"><div class="ucd"></div>${u.cost}</div><div class="uct">${u.trait}</div><div class="xpbg"><div class="xpf" id="xpf-${t}"></div></div><div class="uc-cnt" id="cnt-${t}" style="position:absolute;top:-4px;right:-4px;background:rgba(0,0,0,.8);border:1px solid rgba(255,255,255,.18);border-radius:8px;font-size:7px;font-weight:900;padding:1px 4px;color:#fff;display:none"></div>`;
         row.appendChild(el);
       });
       if (activeDeck.length > 0) selUnit(activeDeck[0]);
