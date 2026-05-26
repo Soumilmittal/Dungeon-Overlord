@@ -95,7 +95,10 @@
     #pre .pbg {
       position: absolute;
       inset: 0;
-      background: linear-gradient(180deg, rgba(4, 2, 10, .85) 0%, rgba(8, 3, 25, .78) 40%, rgba(5, 2, 12, .95) 100%), url('images/pre_loaderimg.jpg') center/cover no-repeat;
+      background-image: linear-gradient(180deg, rgba(4, 2, 10, .85) 0%, rgba(8, 3, 25, .78) 40%, rgba(5, 2, 12, .95) 100%), url('images/pre_loaderimg.jpg');
+      background-size: cover, contain;
+      background-position: center center;
+      background-repeat: no-repeat, no-repeat;
       background-blend-mode: overlay;
       filter: saturate(1.05) brightness(.95);
       animation: bgB 12s ease-in-out infinite
