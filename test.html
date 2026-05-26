@@ -87,52 +87,20 @@
     /* ── PRELOADER ── */
     #pre {
       z-index: 999;
-      background: #06000e;
+      background: #04020b;
       overflow: hidden;
-      color: #fff
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center
     }
 
     #pre .pbg {
       position: absolute;
       inset: 0;
-      background-image: linear-gradient(180deg, rgba(4, 2, 10, .85) 0%, rgba(8, 3, 25, .78) 40%, rgba(5, 2, 12, .95) 100%), url('images/pre_loaderimg.jpg');
-      background-size: cover, contain;
-      background-position: center center;
-      background-repeat: no-repeat, no-repeat;
-      background-blend-mode: overlay;
-      filter: saturate(1.05) brightness(.95);
-      animation: bgB 12s ease-in-out infinite
-    }
-
-    @keyframes bgB {
-
-      0%,
-      100% {
-        filter: brightness(.85) saturate(1.1)
-      }
-
-      50% {
-        filter: brightness(1.05) saturate(1.35)
-      }
-    }
-
-    .emb {
-      position: absolute;
-      border-radius: 50%;
-      pointer-events: none;
-      animation: rE linear infinite
-    }
-
-    @keyframes rE {
-      0% {
-        transform: translateY(110vh) translateX(0) scale(1);
-        opacity: 1
-      }
-
-      100% {
-        transform: translateY(-30px) translateX(var(--d)) scale(.15);
-        opacity: 0
-      }
+      background: url('images/pre_loaderimg.jpg') center top/contain no-repeat;
+      background-color: #04020b;
+      filter: saturate(1.05) brightness(1);
     }
 
     #pre .pc {
@@ -141,124 +109,92 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: 30px 32px 32px;
+      justify-content: center;
+      gap: 14px;
+      width: min(90vw, 360px);
+      padding: 18px 20px;
       text-align: center;
-      background: rgba(5, 3, 14, .72);
+      background: rgba(1, 1, 6, .45);
       border: 1px solid rgba(255, 255, 255, .08);
-      border-radius: 26px;
-      box-shadow: 0 26px 90px rgba(0, 0, 0, .45);
-      backdrop-filter: blur(18px);
-      min-width: min(420px, 92vw);
-      max-width: 560px
+      border-radius: 20px;
+      box-shadow: 0 18px 60px rgba(0, 0, 0, .35);
+      backdrop-filter: blur(12px);
+      margin: auto;
     }
 
     .psw {
-      font-size: clamp(3rem, 8vw, 5rem);
-      animation: swH 3s ease-in-out infinite;
-      margin-bottom: 14px;
-      background: linear-gradient(135deg, #ffe09c, #ffd35b, #d9b24b);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      text-shadow: 0 0 28px rgba(255, 192, 95, .4)
-    }
-
-    @keyframes swH {
-
-      0%,
-      100% {
-        transform: rotate(-6deg) scale(1)
-      }
-
-      50% {
-        transform: rotate(6deg) scale(1.05)
-      }
+      font-size: clamp(2.2rem, 7vw, 3.6rem);
+      margin: 0;
+      font-weight: 700;
+      letter-spacing: 1px;
+      color: #ffe9a6;
+      text-shadow: 0 0 18px rgba(255, 210, 120, .3);
     }
 
     .plo {
       font-family: var(--fd);
-      font-size: clamp(1.1rem, 4.2vw, 2rem);
-      color: rgba(255, 235, 180, .95);
-      letter-spacing: 2.2px;
+      font-size: 1rem;
+      color: rgba(255, 255, 255, .78);
+      letter-spacing: 2px;
       text-transform: uppercase;
-      margin-bottom: 12px;
-      text-shadow: 0 0 20px rgba(255, 190, 110, .16);
-      animation: loF 3.5s ease-in-out infinite alternate
-    }
-
-    @keyframes loF {
-      from {
-        text-shadow: 0 0 18px rgba(255, 215, 140, .25)
-      }
-
-      to {
-        text-shadow: 0 0 48px rgba(255, 215, 140, .48), 0 0 90px rgba(255, 140, 70, .22)
-      }
-    }
-
-    .pve {
-      font-family: var(--ft);
-      font-size: .7rem;
-      color: rgba(255, 255, 255, .75);
-      letter-spacing: 4px;
-      margin: 6px 0 24px;
-      text-transform: uppercase
+      margin: 0;
     }
 
     .ppc {
       font-family: var(--ft);
-      font-size: 1.1rem;
-      color: rgba(255, 242, 200, .98);
-      margin-bottom: 10px
+      font-size: 1rem;
+      color: rgba(255, 240, 210, .9);
+      margin: 0;
     }
 
     .ptr {
-      width: min(340px, 82vw);
+      width: 100%;
       height: 10px;
-      background: rgba(255, 255, 255, .08);
-      border-radius: 6px;
+      background: rgba(255, 255, 255, .1);
+      border-radius: 999px;
       overflow: hidden;
       border: 1px solid rgba(255, 255, 255, .12);
-      box-shadow: inset 0 0 20px rgba(255, 255, 255, .06)
     }
 
     .pfi {
       height: 100%;
       width: 0;
-      background: linear-gradient(90deg, #aa1a31, #ff6d2d, #ffcb47);
-      border-radius: 6px;
+      background: linear-gradient(90deg, #ffbf56, #ff6d2d);
+      border-radius: 999px;
       transition: width .22s ease;
-      box-shadow: 0 0 18px rgba(255, 120, 35, .45)
+      box-shadow: 0 0 14px rgba(255, 130, 45, .45);
     }
 
     .pmg {
-      font-size: .75rem;
-      color: rgba(255, 255, 255, .72);
-      letter-spacing: 1.2px;
-      margin-top: 10px;
-      min-height: 1.4em
+      font-size: .72rem;
+      color: rgba(255, 255, 255, .75);
+      letter-spacing: 1px;
+      margin: 0;
     }
 
     .pti {
-      margin-top: 22px;
-      width: min(340px, 88vw);
-      background: rgba(255, 255, 255, .05);
-      border: 1px solid rgba(255, 255, 255, .12);
-      border-radius: 16px;
-      padding: 14px 18px;
-      font-size: .78rem;
-      color: rgba(255, 255, 255, .88);
-      line-height: 1.6;
+      margin-top: 8px;
+      width: 100%;
+      background: rgba(255, 255, 255, .06);
+      border: 1px solid rgba(255, 255, 255, .1);
+      border-radius: 14px;
+      padding: 10px 12px;
+      font-size: .72rem;
+      color: rgba(255, 255, 255, .82);
+      line-height: 1.4;
       text-align: center;
-      box-shadow: 0 0 32px rgba(0, 0, 0, .18)
     }
 
     .pde {
       position: absolute;
-      bottom: calc(var(--sb)+16px);
+      bottom: 14px;
+      width: 100%;
+      text-align: center;
       font-size: .55rem;
-      color: rgba(255, 255, 255, .14);
-      letter-spacing: 2.5px;
-      font-family: var(--ft)
+      color: rgba(255, 255, 255, .18);
+      letter-spacing: 2px;
+      font-family: var(--ft);
+      pointer-events: none;
     }
 
     /* ── AUTH ── */
