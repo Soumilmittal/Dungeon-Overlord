@@ -5516,7 +5516,7 @@ else if (t === 'shadow') {           // ✅ now a proper branch of the outer if/
 }
 updateHUD();
 }                                    // ✅ closes actSpell properly
-function castMeteor(x, y) { ... }    // ✅ now a top-level function
+function castMeteor(x, y) {}          // ✅ now a top-level function
 function setCD(t, ms) { const btn = document.getElementById('sb-' + t); btn.classList.add('cd'); let r = Math.ceil(ms / 1000); const iv = setInterval(() => { r--; if (r <= 0) { clearInterval(iv); btn.classList.remove('cd'); btn.style.opacity = '1'; } }, 1000); }
 
       /* UNIT SELECT */
