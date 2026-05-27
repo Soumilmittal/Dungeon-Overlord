@@ -7,7 +7,7 @@
     content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="theme-color" content="#06000e">
-  <title>Dungeon Overlord V2.8.8</title>
+  <title>Dungeon Overlord V2.8.9</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
@@ -17,6 +17,8 @@
     :root {
       --gold: #ffd700;
       --gold2: #b8860b;
+      --gem: #8f5cff;
+      --gem2: #b998ff;
       --red: #e82020;
       --red2: #7a0000;
       --blue: #00c8ff;
@@ -85,46 +87,20 @@
     /* ── PRELOADER ── */
     #pre {
       z-index: 999;
-      background: #000;
-      overflow: hidden
+      background: #04020b;
+      overflow: hidden;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center
     }
 
     #pre .pbg {
       position: absolute;
       inset: 0;
-      background: linear-gradient(to bottom, rgba(0, 0, 0, .5) 0%, rgba(6, 0, 18, .85) 60%, #06000e 100%), url('https://images.unsplash.com/photo-1578662996442-48f60103fc96?q=80&w=1080&auto=format&fit=crop') center/cover no-repeat;
-      animation: bgB 8s ease-in-out infinite
-    }
-
-    @keyframes bgB {
-
-      0%,
-      100% {
-        filter: brightness(.8) saturate(1.1)
-      }
-
-      50% {
-        filter: brightness(1.1) saturate(1.4)
-      }
-    }
-
-    .emb {
-      position: absolute;
-      border-radius: 50%;
-      pointer-events: none;
-      animation: rE linear infinite
-    }
-
-    @keyframes rE {
-      0% {
-        transform: translateY(110vh) translateX(0) scale(1);
-        opacity: 1
-      }
-
-      100% {
-        transform: translateY(-30px) translateX(var(--d)) scale(.15);
-        opacity: 0
-      }
+      background: url('images/pre_loaderimg.jpg') center top/contain no-repeat;
+      background-color: #04020b;
+      filter: saturate(1.05) brightness(1);
     }
 
     #pre .pc {
@@ -133,108 +109,92 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: 24px;
-      text-align: center
+      justify-content: center;
+      gap: 14px;
+      width: min(90vw, 360px);
+      padding: 18px 20px;
+      text-align: center;
+      background: rgba(1, 1, 6, .45);
+      border: 1px solid rgba(255, 255, 255, .08);
+      border-radius: 20px;
+      box-shadow: 0 18px 60px rgba(0, 0, 0, .35);
+      backdrop-filter: blur(12px);
+      margin: auto;
     }
 
     .psw {
-      font-size: clamp(3rem, 8vw, 5rem);
-      animation: swH 3s ease-in-out infinite;
-      margin-bottom: 14px;
-      filter: drop-shadow(0 0 22px rgba(255, 160, 0, .6))
-    }
-
-    @keyframes swH {
-
-      0%,
-      100% {
-        transform: rotate(-10deg) scale(1)
-      }
-
-      50% {
-        transform: rotate(10deg) scale(1.1)
-      }
+      font-size: clamp(2.2rem, 7vw, 3.6rem);
+      margin: 0;
+      font-weight: 700;
+      letter-spacing: 1px;
+      color: #ffe9a6;
+      text-shadow: 0 0 18px rgba(255, 210, 120, .3);
     }
 
     .plo {
       font-family: var(--fd);
-      font-size: clamp(1.3rem, 4.5vw, 2.4rem);
-      color: var(--gold);
+      font-size: 1rem;
+      color: rgba(255, 255, 255, .78);
       letter-spacing: 2px;
-      animation: loF 2.5s ease-in-out infinite alternate
-    }
-
-    @keyframes loF {
-      from {
-        text-shadow: 0 0 15px rgba(255, 180, 0, .4)
-      }
-
-      to {
-        text-shadow: 0 0 50px rgba(255, 180, 0, .9), 0 0 90px rgba(255, 80, 0, .5)
-      }
-    }
-
-    .pve {
-      font-family: var(--ft);
-      font-size: .65rem;
-      color: rgba(255, 215, 0, .3);
-      letter-spacing: 5px;
-      margin: 4px 0 24px
+      text-transform: uppercase;
+      margin: 0;
     }
 
     .ppc {
       font-family: var(--ft);
-      font-size: 1.1rem;
-      color: var(--gold);
-      margin-bottom: 6px
+      font-size: 1rem;
+      color: rgba(255, 240, 210, .9);
+      margin: 0;
     }
 
     .ptr {
-      width: min(280px, 76vw);
-      height: 6px;
-      background: rgba(255, 255, 255, .06);
-      border-radius: 4px;
+      width: 100%;
+      height: 10px;
+      background: rgba(255, 255, 255, .1);
+      border-radius: 999px;
       overflow: hidden;
-      border: 1px solid rgba(255, 215, 0, .1)
+      border: 1px solid rgba(255, 255, 255, .12);
     }
 
     .pfi {
       height: 100%;
       width: 0;
-      background: linear-gradient(90deg, #880000, #ff5500, #ffd700);
-      border-radius: 4px;
+      background: linear-gradient(90deg, #ffbf56, #ff6d2d);
+      border-radius: 999px;
       transition: width .22s ease;
-      box-shadow: 0 0 12px rgba(255, 100, 0, .6)
+      box-shadow: 0 0 14px rgba(255, 130, 45, .45);
     }
 
     .pmg {
-      font-size: .68rem;
-      color: rgba(255, 255, 255, .3);
-      letter-spacing: 1.5px;
-      margin-top: 8px;
-      min-height: 1.2em
+      font-size: .72rem;
+      color: rgba(255, 255, 255, .75);
+      letter-spacing: 1px;
+      margin: 0;
     }
 
     .pti {
-      margin-top: 18px;
-      width: min(270px, 78vw);
-      background: rgba(255, 215, 0, .04);
-      border: 1px solid rgba(255, 215, 0, .1);
-      border-radius: 10px;
-      padding: 10px 14px;
+      margin-top: 8px;
+      width: 100%;
+      background: rgba(255, 255, 255, .06);
+      border: 1px solid rgba(255, 255, 255, .1);
+      border-radius: 14px;
+      padding: 10px 12px;
       font-size: .72rem;
-      color: rgba(255, 215, 0, .5);
-      line-height: 1.55;
-      text-align: center
+      color: rgba(255, 255, 255, .82);
+      line-height: 1.4;
+      text-align: center;
     }
 
     .pde {
       position: absolute;
-      bottom: calc(var(--sb)+12px);
+      bottom: 14px;
+      width: 100%;
+      text-align: center;
       font-size: .55rem;
-      color: rgba(255, 255, 255, .08);
+      color: rgba(255, 255, 255, .18);
       letter-spacing: 2px;
-      font-family: var(--ft)
+      font-family: var(--ft);
+      pointer-events: none;
     }
 
     /* ── AUTH ── */
@@ -1201,6 +1161,117 @@
       width: 100%
     }
 
+    .spell-title,
+    .spell-roster-title {
+      font-size: .62rem;
+      letter-spacing: 3px;
+      color: #333;
+      text-transform: uppercase;
+      margin: 14px 0 10px;
+      font-family: var(--ft)
+    }
+
+    .spell-slots {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      margin-bottom: 12px;
+      width: 100%
+    }
+
+    .spell-slot {
+      width: 82px;
+      min-height: 80px;
+      background: rgba(255, 255, 255, .03);
+      border: 2px dashed rgba(255, 255, 255, .12);
+      border-radius: 14px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      cursor: pointer;
+      transition: .14s;
+      position: relative;
+      padding: 8px;
+      text-align: center;
+      color: #fff;
+      flex-shrink: 0
+    }
+
+    .spell-slot.filled {
+      border-style: solid;
+      border-color: rgba(155, 0, 255, .4);
+      background: rgba(155, 0, 255, .06)
+    }
+
+    .spell-slot .ss-emoji {
+      font-size: 1.3rem;
+      margin-bottom: 4px
+    }
+
+    .spell-slot .ss-name {
+      font-size: .58rem;
+      line-height: 1.2;
+      color: #fff;
+      letter-spacing: .5px;
+      margin-bottom: 6px;
+      font-weight: 700;
+    }
+
+    .spell-roster-grid {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 8px;
+    }
+
+    .spell-card {
+      background: var(--card-bg);
+      border: 1.5px solid var(--card-border);
+      border-radius: 14px;
+      padding: 10px 8px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      transition: all .15s;
+      min-height: 110px;
+      text-align: center;
+      overflow: hidden;
+    }
+
+    .spell-card.selected {
+      border-color: rgba(255, 215, 0, .45);
+      background: rgba(255, 215, 0, .06);
+      box-shadow: 0 0 12px rgba(255, 215, 0, .12);
+    }
+
+    .spell-card .sp-emoji {
+      font-size: 1.6rem;
+    }
+
+    .spell-card .sp-name {
+      font-size: .66rem;
+      font-weight: 900;
+      letter-spacing: .6px;
+      line-height: 1.2;
+      color: #fff;
+    }
+
+    .spell-card .sp-desc {
+      font-size: .58rem;
+      color: rgba(255, 255, 255, .55);
+      line-height: 1.35;
+      min-height: 36px;
+    }
+
+    .spell-card .sp-cost {
+      font-size: .62rem;
+      color: rgba(255, 215, 0, .85);
+      font-weight: 700;
+    }
+
     .deck-slot {
       width: 52px;
       height: 64px;
@@ -1301,30 +1372,29 @@
     }
 
     .deck-unit-img {
-      width: 32px;
-      height: 32px;
+      width: 48px;
+      height: 48px;
       object-fit: contain
     }
 
     .ru-emoji {
-      font-size: 1.8rem
+      font-size: 2.2rem
     }
 
     .ru-emoji .unit-img {
-      width: 42px;
-      height: 42px;
+      width: 80px;
+      height: 80px;
       margin: 0 auto
     }
 
     .uup-emoji .unit-img {
-      width: 54px;
-      height: 54px;
-      margin: 0 auto
+      width: 92px;
+      height: 92px;
     }
 
     .ucav .unit-img {
-      width: 36px;
-      height: 36px
+      width: 60px;
+      height: 60px
     }
 
     .ucav:has(.unit-img) {
@@ -1998,6 +2068,78 @@
       flex-direction: column;
       gap: 6px;
       margin-top: 6px
+    }
+
+    .evo-card {
+      background: linear-gradient(135deg, rgba(20, 10, 30, .85), rgba(30, 10, 25, .75));
+      border: 1.5px solid rgba(155, 0, 255, .2);
+      border-radius: 16px;
+      padding: 16px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      box-shadow: 0 10px 24px rgba(0, 0, 0, .18);
+      transition: .22s;
+    }
+
+    .evo-card:hover {
+      border-color: rgba(155, 0, 255, .35);
+      transform: translateY(-4px);
+    }
+
+    .evo-head {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .evo-face {
+      font-size: 1.8rem;
+      width: 46px;
+      height: 46px;
+      border-radius: 14px;
+      display: grid;
+      place-items: center;
+      background: rgba(255, 255, 255, .08);
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .08);
+    }
+
+    .evo-name {
+      font-family: var(--ft);
+      font-size: .82rem;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 1.2px;
+      color: #fff;
+    }
+
+    .evo-stage {
+      font-size: .65rem;
+      color: rgba(255, 255, 255, .6);
+      line-height: 1.4;
+    }
+
+    .evo-bar {
+      width: 100%;
+      height: 8px;
+      background: rgba(255, 255, 255, .08);
+      border-radius: 999px;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, .05);
+    }
+
+    .evo-fill {
+      height: 100%;
+      width: 0;
+      background: linear-gradient(90deg, rgba(155, 0, 255, .9), var(--gold));
+      box-shadow: 0 0 10px rgba(155, 0, 255, .35), 0 0 14px rgba(255, 215, 0, .18);
+      transition: width .4s ease;
+    }
+
+    .evo-meta {
+      font-size: .66rem;
+      color: rgba(255, 255, 255, .55);
+      line-height: 1.4;
     }
 
     .uup-upbtn {
@@ -3200,13 +3342,13 @@
     }
 
     .ucav {
-      width: 38px;
-      height: 38px;
+      width: 64px;
+      height: 64px;
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 1.5rem;
+      font-size: 2rem;
       margin-bottom: 3px;
       border: 2px solid rgba(255, 255, 255, .1);
       position: relative
@@ -4060,7 +4202,7 @@
     <div class="pc">
       <div class="psw">⚔️</div>
       <div class="plo">DUNGEON OVERLORD</div>
-      <div class="pve">V 2 . 8 . 8 · BY SOUMIL MITTAL</div>
+      <div class="pve">V 2 . 8 . 9 · BY SOUMIL MITTAL</div>
       <div class="ppc" id="ppct">0%</div>
       <div class="ptr">
         <div class="pfi" id="pfill"></div>
@@ -4075,7 +4217,7 @@
   <div class="scr off" id="auth">
     <div class="acard">
       <div class="alo">⚔ DUNGEON OVERLORD</div>
-      <div class="asu">V2.8.8 · By Soumil Mittal</div>
+      <div class="asu">V2.8.9 · By Soumil Mittal</div>
       <div class="atbs">
         <button class="atb on" id="tab-su" onclick="switchTab('su')">SIGN UP</button>
         <button class="atb" id="tab-li" onclick="switchTab('li')">SIGN IN</button>
@@ -4117,7 +4259,7 @@
           <button class="redeem-btn" onclick="doRedeem()">REDEEM</button>
         </div>
       </div>
-      <div class="adev">DEVELOPED BY SOUMIL MITTAL · DUNGEON OVERLORD V2.8.8 · 2026</div>
+      <div class="adev">DEVELOPED BY SOUMIL MITTAL · DUNGEON OVERLORD V2.8.9 · 2026</div>
     </div>
   </div>
 
@@ -4146,6 +4288,8 @@
       </div>
       <div class="hrgt">
         <div class="dc-pill">🪙<span id="nav-dc">0</span></div>
+        <div class="dc-pill" style="background:linear-gradient(135deg,var(--gem),var(--gem2));">💎<span
+            id="nav-gems">0</span></div>
         <div class="nico" onclick="openLB()">🏆</div>
         <div class="nico" onclick="openShop()">🛒</div>
         <div class="nico" onclick="openSett()">⚙️</div>
@@ -4156,12 +4300,13 @@
       <div class="hban">
         <div class="hban-ey">You are the Darkness</div>
         <h1 class="hban-t">DUNGEON<br>OVERLORD</h1>
-        <div class="hban-sub">V 2 . 8 . 8 · SOUMIL MITTAL</div>
+        <div class="hban-sub">V 2 . 8 . 9 · SOUMIL MITTAL</div>
       </div>
       <div class="wallet-card">
         <div>
           <div class="wc-lbl">Dark Coin Wallet</div>
           <div class="wc-val">🪙 <span id="wc-val">0</span></div>
+          <div class="wc-val" style="margin-top:8px">💎 <span id="wc-gems">0</span></div>
           <div class="wc-note">Earn from battles · Spend in Shop</div>
         </div>
         <div style="font-size:2.4rem;opacity:.25">🏦</div>
@@ -4243,11 +4388,15 @@
         <div class="db-title">🃏 DECK BUILDER</div>
         <div class="db-info" id="db-count-txt">0/5 chosen</div>
       </div>
-      <div class="db-note">Choose exactly 5 units. Duplicates cost +20% each. Max 3 dragons.</div>
+      <div class="db-note">Choose exactly 5 units and 3 spells. Duplicates cost +20% each. Max 3 dragons.</div>
       <div
         style="font-size:.6rem;letter-spacing:3px;color:#2a2a2a;text-transform:uppercase;margin-bottom:8px;font-family:var(--ft)">
         Your Deck</div>
       <div class="deck-slots" id="deck-slots"></div>
+      <div class="spell-title">Spell Loadout — choose 3</div>
+      <div class="spell-slots" id="spell-slots"></div>
+      <div class="spell-roster-title">Spell Roster — tap to add or remove</div>
+      <div class="spell-roster-grid" id="spell-roster-grid"></div>
       <div class="roster-title">All Units — Tap to Add</div>
       <div class="roster-grid" id="roster-grid"></div>
       <button class="db-confirm disabled" id="db-go-btn" onclick="startFromDeck()">⚔ ENTER THE DUNGEON</button>
@@ -4286,15 +4435,20 @@
       <div class="stabs">
         <button class="stab on" id="stab-units" onclick="shopTab('units')">⚔ UNITS</button>
         <button class="stab" id="stab-spells" onclick="shopTab('spells')">✨ SPELLS</button>
+        <button class="stab" id="stab-evolution" onclick="shopTab('evolution')">🧬 EVOLUTION</button>
         <button class="stab" id="stab-boosts" onclick="shopTab('boosts')">⚡ BOOSTS</button>
       </div>
       <div id="shop-units">
-        <div class="ssec-t">Upgrade Minions — Up to 15 Levels Each (cost +30% per level)</div>
+        <div class="ssec-t">Upgrade Minions — Up to 15 Levels Each (cost +10% per level)</div>
         <div class="uup-grid" id="uup-grid"></div>
       </div>
       <div id="shop-spells" style="display:none">
         <div class="ssec-t">Spell Upgrades</div>
         <div class="spl-grid" id="spl-grid"></div>
+      </div>
+      <div id="shop-evolution" style="display:none">
+        <div class="ssec-t">Evolution Progress — Unlock stages by upgrading characters</div>
+        <div class="uup-grid" id="evo-grid"></div>
       </div>
       <div id="shop-boosts" style="display:none">
         <div class="ssec-t">Passive Boosts — Battle Power, Idle Earnings & Idle Storage</div>
@@ -4310,7 +4464,7 @@
         <div class="bck" onclick="closeSett()">←</div>
         <div class="set-title-wrap">
           <div class="stit">SETTINGS</div>
-          <div class="stsub">V2.8.8 CONTROL PANEL</div>
+          <div class="stsub">V2.8.9 CONTROL PANEL</div>
         </div>
       </div>
       <div class="ssec2">
@@ -4338,9 +4492,19 @@
             <div class="asb">🪙 wallet</div>
           </div>
           <div class="ac">
+            <div class="alb">Gems</div>
+            <div class="avl" id="a-gems">0</div>
+            <div class="asb">💎 wallet</div>
+          </div>
+          <div class="ac">
             <div class="alb">Lifetime Earnings</div>
             <div class="avl" id="a-life">0</div>
             <div class="asb">🪙 earned</div>
+          </div>
+          <div class="ac">
+            <div class="alb">Lifetime Gems</div>
+            <div class="avl" id="a-life-gems">0</div>
+            <div class="asb">💎 earned</div>
           </div>
           <div class="ac">
             <div class="alb">Streak</div>
@@ -4424,7 +4588,7 @@
         <div class="crdcard">
           <div class="crn">Soumil Mittal</div>
           <div class="crr">GAME DEVELOPER & DESIGNER</div>
-          <div class="crv">DUNGEON OVERLORD V2.8.8 · 2026</div>
+          <div class="crv">DUNGEON OVERLORD V2.8.9 · 2026</div>
         </div>
       </div>
     </div>
@@ -4450,6 +4614,8 @@
         <button class="spb spm" id="sb-meteor" onclick="actSpell('meteor')">☄️ METEOR</button>
         <button class="spb spf" id="sb-freeze" onclick="actSpell('freeze')">❄️ FREEZE</button>
         <button class="spb spr" id="sb-rage" onclick="actSpell('rage')">🔥 RAGE</button>
+        <button class="spb spl" id="sb-lightning" onclick="actSpell('lightning')">⚡ LIGHTNING</button>
+        <button class="spb ss" id="sb-shadow" onclick="actSpell('shadow')">🌑 SHADOW</button>
       </div>
       <div class="speed-row">
         <button class="spd-btn on" id="spd-1" onclick="setSpeed(1)">1×</button>
@@ -4550,7 +4716,7 @@
       <button class="rw-btn-play" onclick="startFromDeck()">⚔ PLAY AGAIN</button>
       <button class="rw-btn-home" onclick="quitHome()">🏠 Home</button>
     </div>
-    <div class="rw-dev">DUNGEON OVERLORD V2.8.8 · SOUMIL MITTAL</div>
+    <div class="rw-dev">DUNGEON OVERLORD V2.8.9 · SOUMIL MITTAL</div>
   </div>
 
   <!-- STREAK MODAL -->
@@ -4610,9 +4776,10 @@
 
     function ensureUser(u) {
       if (!u) return u;
-      const nums = { darkCoins: 0, lifetimeCoinsEarned: 0, totalGold: 0, totalKills: 0, gamesPlayed: 0, bestWave: 0, bossesSlain: 0 };
+      const nums = { darkCoins: 0, lifetimeCoinsEarned: 0, gems: 0, lifetimeGemsEarned: 0, totalGold: 0, totalKills: 0, gamesPlayed: 0, bestWave: 0, bossesSlain: 0 };
       Object.entries(nums).forEach(([k, d]) => { if (typeof u[k] !== 'number' || isNaN(u[k])) u[k] = d; });
       if ((u.lifetimeCoinsEarned || 0) < (u.darkCoins || 0)) u.lifetimeCoinsEarned = u.darkCoins || 0;
+      if ((u.lifetimeGemsEarned || 0) < (u.gems || 0)) u.lifetimeGemsEarned = u.gems || 0;
       if (!u.shopUpgrades || typeof u.shopUpgrades !== 'object') u.shopUpgrades = {};
       if (!u.unitUsage || typeof u.unitUsage !== 'object') u.unitUsage = {};
       if (!Array.isArray(u.sessionDays)) u.sessionDays = [];
@@ -4688,7 +4855,7 @@
       document.getElementById('em-bd').textContent = welcomeText(name);
       document.getElementById('emodal').classList.add('on');
     }
-    function welcomeText(n) { return `Subject: Your Throne Awaits, ${n}\n\nOverlord ${n},\n\nThe dungeon awakens. Eight servants answer your call:\n\n😈 Imp — Double Strike: 25% to hit twice\n👹 Orc — Berserk: +50% DMG below 30% HP\n🪨 Golem — Thorns: reflects 30% damage\n👻 Wraith — Phase: 40% evasion\n🐉 Dragon — Burn Aura: scorches nearby foes\n🧛 Vampire — Life Drain: steals 20% DMG as HP\n💀 Necromancer — Soul Harvest: raises fallen foes\n⚡ Berserker — Rage Stack: stronger each kill\n\nV2.8.8 UPDATES:\n• ⚡ Divine Heroes: Holy Knights & Celestial Archers throw projectiles!\n• 🎁 Infinite Redeem: SM30 can be redeemed unlimited times\n• 💰 Mid-exit auto-save: coins & records saved anytime!\n• 🖼 Wave backgrounds: dungeon evolves each wave range\n• ⏩ Speed Control: play at 1×, 2×, or 3× speed!\n• 🛒 Extended Upgrades: Spells & Boosts up to level 15\n\nDefend the gate. Let no hero pass.\n\n— The Dungeon, eternal and dark\n\nDungeon Overlord V2.8.8 · Developed by Soumil Mittal · 2026`; }
+    function welcomeText(n) { return `Subject: Your Throne Awaits, ${n}\n\nOverlord ${n},\n\nThe dungeon awakens. Eight servants answer your call:\n\n😈 Imp — Double Strike: 25% to hit twice\n👹 Orc — Berserk: +50% DMG below 30% HP\n🪨 Golem — Thorns: reflects 30% damage\n👻 Wraith — Phase: 40% evasion\n🐉 Dragon — Burn Aura: scorches nearby foes\n🧛 Vampire — Life Drain: steals 20% DMG as HP\n💀 Necromancer — Soul Harvest: raises fallen foes\n⚡ Berserker — Rage Stack: stronger each kill\n\nV2.8.9 UPDATES:\n• ⚡ Divine Heroes: Holy Knights & Celestial Archers throw projectiles!\n• 🎁 Infinite Redeem: SM30 can be redeemed unlimited times\n• 💰 Mid-exit auto-save: coins & records saved anytime!\n• 🖼 Wave backgrounds: dungeon evolves each wave range\n• ⏩ Speed Control: play at 1×, 2×, or 3× speed!\n• 🛒 Extended Upgrades: Spells & Boosts up to level 15\n\nDefend the gate. Let no hero pass.\n\n— The Dungeon, eternal and dark\n\nDungeon Overlord V2.8.9 · Developed by Soumil Mittal · 2026`; }
     function closeEmail() {
       document.getElementById('emodal').classList.remove('on');
       if (CU && !CU.welcomeBonusGiven) { CU.welcomeBonusGiven = true; addDarkCoins(100); saveUser(); toast('🎁 +100 🪙 Welcome Bonus!'); }
@@ -4703,7 +4870,7 @@
     function closeSett() { show('sett', false); }
     function openLB() { buildLB(); show('lb', true); }
     function closeLB() { show('lb', false); }
-    function openDeckBuilder() { currentDeck = [...(CU?.deck || ['imp', 'orc', 'golem', 'wraith', 'dragon'])]; buildDeckUI(); show('deck-builder', true); }
+    function openDeckBuilder() { currentDeck = [...(CU?.deck || ['imp', 'orc', 'golem', 'wraith', 'dragon'])]; currentSpellLoadout = [...(CU?.spellLoadout || ['meteor', 'freeze', 'rage'])]; buildDeckUI(); show('deck-builder', true); }
     function closeDeckBuilder() { show('deck-builder', false); }
     function goToShopFromReward() { show('reward-screen', false); openShop(); }
     function goToDeckFromReward() { show('reward-screen', false); openDeckBuilder(); }
@@ -4715,9 +4882,12 @@
     function calcBaseCoins(k, w) { return Math.max(1, k * w); }
     function calcBossBonus(n) { return n * 50; }
     function addDarkCoins(amount) { const n = Math.max(0, Math.floor(amount) || 0); if (!CU || n <= 0) return 0; CU.darkCoins = (CU.darkCoins || 0) + n; CU.lifetimeCoinsEarned = (CU.lifetimeCoinsEarned || 0) + n; return n; }
+    function addGems(amount) { const n = Math.max(0, Math.floor(amount) || 0); if (!CU || n <= 0) return 0; CU.gems = (CU.gems || 0) + n; CU.lifetimeGemsEarned = (CU.lifetimeGemsEarned || 0) + n; return n; }
 
-    function spendDC(amount) { if (!CU || CU.darkCoins < amount) return false; CU.darkCoins -= amount; saveUser(); updateDCDisplays(); return true; }
-    function updateDCDisplays() { const dc = CU?.darkCoins || 0; const life = CU?.lifetimeCoinsEarned || 0;['nav-dc', 'wc-val', 'shop-bal', 'my-dc', 'a-dc'].forEach(id => { const el = document.getElementById(id); if (el) el.textContent = dc; }); const lifeEl = document.getElementById('a-life'); if (lifeEl) lifeEl.textContent = life; }
+    function spendDC(amount) { if (!CU || CU.darkCoins < amount) return false; CU.darkCoins -= amount; saveUser(); updateCurrencyDisplays(); return true; }
+    function spendGems(amount) { if (!CU || CU.gems < amount) return false; CU.gems -= amount; saveUser(); updateCurrencyDisplays(); return true; }
+    function updateCurrencyDisplays() { const dc = CU?.darkCoins || 0; const life = CU?.lifetimeCoinsEarned || 0; const gems = CU?.gems || 0; const lifeG = CU?.lifetimeGemsEarned || 0;['nav-dc', 'wc-val', 'shop-bal', 'my-dc', 'a-dc'].forEach(id => { const el = document.getElementById(id); if (el) el.textContent = dc; });['nav-gems', 'wc-gems', 'a-gems', 'a-life-gems'].forEach(id => { const el = document.getElementById(id); if (el) el.textContent = id === 'a-life-gems' ? lifeG : gems; }); const lifeEl = document.getElementById('a-life'); if (lifeEl) lifeEl.textContent = life; }
+    function updateDCDisplays() { updateCurrencyDisplays(); }
 
     /* ════ IDLE ════ */
     const IDLE_RATE = 5 * 60 * 1000, BASE_IDLE_CAP = 144; let idleIv = null;
@@ -4836,11 +5006,11 @@
     /* ════ UNIT DEFINITIONS (8 units) ════ */
     const ALL_UNITS = {
       imp: { emoji: '😈', img: 'characters/villains/the_imp.png', cost: 15, hp: 40, dmg: 3, spd: 1.8, rad: 14, col: '#a8e6cf', trait: 'Frenzy', tier: 'common', abilityName: 'Double Strike: 25% to hit twice' },
-      orc: { emoji: '👹', img: 'characters/villains/the_orc.png', cost: 30, hp: 120, dmg: 6, spd: 0.9, rad: 20, col: '#dcedc1', trait: 'Berserk', tier: 'common', abilityName: '<30% HP: +50% DMG & faster regen' },
+      orc: { emoji: '👹', img: 'characters/villains/the_orc.png', cost: 30, hp: 120, dmg: 6, spd: 0.9, rad: 26, col: '#dcedc1', trait: 'Berserk', tier: 'common', abilityName: '<30% HP: +50% DMG & faster regen' },
       golem: { emoji: '🪨', img: 'characters/villains/the_golem.png', cost: 60, hp: 300, dmg: 8, spd: 0.5, rad: 28, col: '#a0897a', trait: 'Thorns', tier: 'rare', abilityName: 'Reflects 30% damage back' },
       wraith: { emoji: '👻', img: 'characters/villains/the_wraith.png', cost: 80, hp: 60, dmg: 15, spd: 2.5, rad: 18, col: '#80deea', trait: 'Phase', tier: 'rare', abilityName: '40% evasion + phases through allies' },
       dragon: { emoji: '🐉', img: 'characters/villains/the_dragon.png', cost: 150, hp: 500, dmg: 40, spd: 1.0, rad: 35, col: '#ff8a80', trait: 'Burn Aura', tier: 'epic', abilityName: 'Burns ALL nearby foes (max 3 on field!)' },
-      vampire: { emoji: '🧛', img: 'characters/villains/the_vampire.png', cost: 70, hp: 80, dmg: 12, spd: 1.6, rad: 16, col: '#ce93d8', trait: 'Life Drain', tier: 'rare', abilityName: 'Steals 20% of damage dealt as HP' },
+      vampire: { emoji: '🧛', img: 'characters/villains/the_vampire.png', cost: 70, hp: 80, dmg: 12, spd: 1.6, rad: 24, col: '#ce93d8', trait: 'Life Drain', tier: 'rare', abilityName: 'Steals 20% of damage dealt as HP' },
       necromancer: { emoji: '💀', cost: 110, hp: 90, dmg: 10, spd: 0.8, rad: 22, col: '#80cbc4', trait: 'Soul Harvest', tier: 'epic', abilityName: 'Raises fallen enemies as zombies' },
       berserker: { emoji: '⚡', cost: 90, hp: 150, dmg: 20, spd: 1.4, rad: 24, col: '#ffcc02', trait: 'Rage Stack', tier: 'legend', abilityName: 'DMG +10% per kill this match' },
     };
@@ -4873,19 +5043,21 @@
 
     /* ════ EVOLUTION ════ */
     const EVO = {
-      imp: { evo1: { lvl: 5, name: 'Shadow Imp', emoji: '👿', dmgBonus: 1.5, hpBonus: 1.4 }, evo2: { lvl: 10, name: 'Void Demon', emoji: '😈🔥', dmgBonus: 2.2, hpBonus: 1.8 } },
-      orc: { evo1: { lvl: 5, name: 'Warchief', emoji: '👺', dmgBonus: 1.5, hpBonus: 1.5 }, evo2: { lvl: 10, name: 'Lich Orc', emoji: '💪', dmgBonus: 2.0, hpBonus: 2.2 } },
-      golem: { evo1: { lvl: 5, name: 'Iron Golem', emoji: '🗿', dmgBonus: 1.3, hpBonus: 1.8 }, evo2: { lvl: 10, name: 'Obsidian Titan', emoji: '🏔️', dmgBonus: 1.8, hpBonus: 2.8 } },
-      wraith: { evo1: { lvl: 5, name: 'Banshee', emoji: '👁️', dmgBonus: 1.8, hpBonus: 1.3 }, evo2: { lvl: 10, name: 'Void Wraith', emoji: '🌀', dmgBonus: 2.5, hpBonus: 1.6 } },
-      dragon: { evo1: { lvl: 5, name: 'Elder Dragon', emoji: '🔥', dmgBonus: 1.4, hpBonus: 1.5 }, evo2: { lvl: 10, name: 'Inferno Lord', emoji: '🌋', dmgBonus: 2.0, hpBonus: 2.0 } },
-      vampire: { evo1: { lvl: 5, name: 'Vampire Lord', emoji: '🩸', dmgBonus: 1.6, hpBonus: 1.5 }, evo2: { lvl: 10, name: 'Blood God', emoji: '🦇', dmgBonus: 2.2, hpBonus: 1.8 } },
-      necromancer: { evo1: { lvl: 5, name: 'Lich', emoji: '💀✨', dmgBonus: 1.5, hpBonus: 1.4 }, evo2: { lvl: 10, name: 'Death Lord', emoji: '⚰️', dmgBonus: 2.0, hpBonus: 1.6 } },
-      berserker: { evo1: { lvl: 5, name: 'Blood Berserker', emoji: '⚡🩸', dmgBonus: 1.6, hpBonus: 1.3 }, evo2: { lvl: 10, name: 'Chaos God', emoji: '🌪️', dmgBonus: 2.4, hpBonus: 1.5 } },
+      imp: { evo1: { name: 'Shadow Imp', emoji: '👿', dmgBonus: 1.5, hpBonus: 1.4 }, evo2: { name: 'Void Demon', emoji: '😈🔥', dmgBonus: 2.2, hpBonus: 1.8 }, evo3: { name: 'Abyss Warden', emoji: '🕯️', dmgBonus: 2.8, hpBonus: 2.3 }, evo4: { name: 'Nether King', emoji: '👑', dmgBonus: 3.6, hpBonus: 2.9 } },
+      orc: { evo1: { name: 'Warchief', emoji: '👺', dmgBonus: 1.5, hpBonus: 1.5 }, evo2: { name: 'Lich Orc', emoji: '💪', dmgBonus: 2.0, hpBonus: 2.2 }, evo3: { name: 'Frenzy Warlord', emoji: '🩸', dmgBonus: 2.7, hpBonus: 2.6 }, evo4: { name: 'War Tyrant', emoji: '⚔️', dmgBonus: 3.5, hpBonus: 3.1 } },
+      golem: { evo1: { name: 'Iron Golem', emoji: '🗿', dmgBonus: 1.3, hpBonus: 1.8 }, evo2: { name: 'Obsidian Titan', emoji: '🏔️', dmgBonus: 1.8, hpBonus: 2.8 }, evo3: { name: 'Earth Colossus', emoji: '🌋', dmgBonus: 2.4, hpBonus: 3.4 }, evo4: { name: 'Worldbreaker', emoji: '🌎', dmgBonus: 3.2, hpBonus: 4.0 } },
+      wraith: { evo1: { name: 'Banshee', emoji: '👁️', dmgBonus: 1.8, hpBonus: 1.3 }, evo2: { name: 'Void Wraith', emoji: '🌀', dmgBonus: 2.5, hpBonus: 1.6 }, evo3: { name: 'Ethereal Reaper', emoji: '🔮', dmgBonus: 3.0, hpBonus: 1.9 }, evo4: { name: 'Spectral Sovereign', emoji: '👻', dmgBonus: 3.7, hpBonus: 2.4 } },
+      dragon: { evo1: { name: 'Elder Dragon', emoji: '🔥', dmgBonus: 1.4, hpBonus: 1.5 }, evo2: { name: 'Inferno Lord', emoji: '🌋', dmgBonus: 2.0, hpBonus: 2.0 }, evo3: { name: 'Celestial Drake', emoji: '✨', dmgBonus: 2.7, hpBonus: 2.5 }, evo4: { name: 'Wyrm of Ruin', emoji: '🌟', dmgBonus: 3.6, hpBonus: 3.2 } },
+      vampire: { evo1: { name: 'Vampire Lord', emoji: '🩸', dmgBonus: 1.6, hpBonus: 1.5 }, evo2: { name: 'Blood God', emoji: '🦇', dmgBonus: 2.2, hpBonus: 1.8 }, evo3: { name: 'Night Stalker', emoji: '🌙', dmgBonus: 2.9, hpBonus: 2.3 }, evo4: { name: 'Crimson Sovereign', emoji: '👑', dmgBonus: 3.8, hpBonus: 2.9 } },
+      necromancer: { evo1: { name: 'Lich', emoji: '💀✨', dmgBonus: 1.5, hpBonus: 1.4 }, evo2: { name: 'Death Lord', emoji: '⚰️', dmgBonus: 2.0, hpBonus: 1.6 }, evo3: { name: 'Bone Sovereign', emoji: '☠️', dmgBonus: 2.7, hpBonus: 2.1 }, evo4: { name: 'Necro Archon', emoji: '⚡', dmgBonus: 3.5, hpBonus: 2.6 } },
+      berserker: { evo1: { name: 'Blood Berserker', emoji: '⚡🩸', dmgBonus: 1.6, hpBonus: 1.3 }, evo2: { name: 'Chaos God', emoji: '🌪️', dmgBonus: 2.4, hpBonus: 1.5 }, evo3: { name: 'Rage Overlord', emoji: '🔥', dmgBonus: 3.0, hpBonus: 1.8 }, evo4: { name: 'Titan of Fury', emoji: '💥', dmgBonus: 3.9, hpBonus: 2.5 } },
     };
-    function getEvoLevel(type, lvl) { return lvl >= 10 ? 2 : lvl >= 5 ? 1 : 0; }
-    function getEvoData(type, evoLvl) { return evoLvl === 2 ? EVO[type]?.evo2 : evoLvl === 1 ? EVO[type]?.evo1 : null; }
+    function getEvoProgress(type) { return Math.min(100, getUL(type + '_hp') + getUL(type + '_dmg') + getUL(type + '_spd')); }
+    function getEvoLevel(type, lvl) { const total = getEvoProgress(type); return total >= 100 ? 4 : total >= 75 ? 3 : total >= 50 ? 2 : total >= 25 ? 1 : 0; }
+    function getEvoThreshold(stage) { return [0, 25, 50, 75, 100][stage] || 100; }
+    function getEvoData(type, evoLvl) { return evoLvl === 4 ? EVO[type]?.evo4 : evoLvl === 3 ? EVO[type]?.evo3 : evoLvl === 2 ? EVO[type]?.evo2 : evoLvl === 1 ? EVO[type]?.evo1 : null; }
 
-    /* ════ SHOP — CHANGE 4: base costs doubled, +30% per level ════
+    /* ════ SHOP — CHANGE 4: base costs doubled, +10% per level ════
        HP: 80→160 | DMG: 100→200 | SPD: 70→140
        Spells: 160→320 each
        Boosts: 120→240 | 160→320 | 140→280 | 180→360
@@ -4898,12 +5070,14 @@
         { stat: 'spd', label: 'SPD +8%', baseCost: 140, max: 100 }
       ];
     });
-    function getUpgradeCost(base, lvl) { return Math.round(base * Math.pow(1.3, lvl)); }
+    function getUpgradeCost(base, lvl) { return Math.round(base * Math.pow(1.1, lvl)); }
 
     const SHOP_SPELLS = [
       { id: 'meteor_cd', name: 'Meteor Mastery', emoji: '☄️', desc: 'Reduce Meteor cooldown by 500ms', baseVal: 3500, reduce: 500, baseCost: 320, max: 15 },
       { id: 'freeze_cd', name: 'Glacial Mastery', emoji: '❄️', desc: 'Reduce Freeze cooldown by 600ms', baseVal: 5000, reduce: 600, baseCost: 320, max: 15 },
       { id: 'rage_cd', name: 'Rage Mastery', emoji: '🔥', desc: 'Reduce Rage cooldown by 700ms', baseVal: 6000, reduce: 700, baseCost: 320, max: 15 },
+      { id: 'lightning_cd', name: 'Lightning Mastery', emoji: '⚡', desc: 'Reduce Lightning cooldown by 520ms', baseVal: 4200, reduce: 520, baseCost: 320, max: 15 },
+      { id: 'shadow_cd', name: 'Shadow Mastery', emoji: '🌑', desc: 'Reduce Shadow cooldown by 480ms', baseVal: 3800, reduce: 480, baseCost: 320, max: 15 },
     ];
     const SHOP_BOOSTS = [
       { id: 'idlemult', emoji: '💤', name: 'Idle Engine', desc: 'Increase idle earnings: 1.0x, 1.2x, 1.4x...', baseCost: 180, max: 10, stat: 'idleMult' },
@@ -4917,12 +5091,56 @@
     function setUL(key, lvl) { if (!CU) return; CU.shopUpgrades = CU.shopUpgrades || {}; CU.shopUpgrades[key] = lvl; saveUser(); }
 
     /* ════ DECK BUILDER ════ */
-    let currentDeck = []; const DECK_SIZE = 5, MAX_DRAGONS = 3;
+    let currentDeck = [];
+    let currentSpellLoadout = [];
+    let activeSpellLoadout = [];
+    const DECK_SIZE = 5, SPELL_LOADOUT_SIZE = 3, MAX_DRAGONS = 3;
 
     function buildDeckUI() {
-      renderDeckSlots(); renderRoster();
-      document.getElementById('db-count-txt').textContent = `${currentDeck.length}/${DECK_SIZE} chosen`;
-      document.getElementById('db-go-btn').classList.toggle('disabled', currentDeck.length !== DECK_SIZE);
+      renderDeckSlots(); renderSpellLoadoutUI(); renderRoster();
+      document.getElementById('db-count-txt').textContent = `${currentDeck.length}/${DECK_SIZE} units · ${currentSpellLoadout.length}/${SPELL_LOADOUT_SIZE} spells`;
+      document.getElementById('db-go-btn').classList.toggle('disabled', currentDeck.length !== DECK_SIZE || currentSpellLoadout.length !== SPELL_LOADOUT_SIZE);
+    }
+    function renderSpellLoadoutUI() {
+      renderSpellSlots(); renderSpellRoster();
+    }
+    function renderSpellSlots() {
+      const wrap = document.getElementById('spell-slots'); if (!wrap) return; wrap.innerHTML = '';
+      for (let i = 0; i < SPELL_LOADOUT_SIZE; i++) {
+        const slot = document.createElement('div'); slot.className = 'spell-slot';
+        if (i < currentSpellLoadout.length) {
+          const spellId = currentSpellLoadout[i];
+          const spell = SHOP_SPELLS.find(s => s.id === spellId);
+          slot.classList.add('filled');
+          slot.innerHTML = `<div class="ss-emoji">${spell?.emoji || ''}</div><div class="ss-name">${spell?.name || spellId}</div><div class="ds-x" onclick="removeSpellSlot(${i})">✕</div>`;
+        } else {
+          slot.innerHTML = '<span style="font-size:1.2rem;opacity:.25">+</span>';
+        }
+        wrap.appendChild(slot);
+      }
+    }
+    function renderSpellRoster() {
+      const grid = document.getElementById('spell-roster-grid'); if (!grid) return; grid.innerHTML = '';
+      SHOP_SPELLS.forEach(sp => {
+        const card = document.createElement('div'); card.className = 'spell-card' + (currentSpellLoadout.includes(sp.id) ? ' selected' : '');
+        card.innerHTML = `<div class="sp-emoji">${sp.emoji}</div><div class="sp-name">${sp.name}</div><div class="sp-desc">${sp.desc}</div><div class="sp-cost">${sp.baseCost}🪙</div>`;
+        card.onclick = () => addToSpellLoadout(sp.id);
+        grid.appendChild(card);
+      });
+    }
+    function addToSpellLoadout(spellId) {
+      if (currentSpellLoadout.includes(spellId)) { currentSpellLoadout = currentSpellLoadout.filter(s => s !== spellId); buildDeckUI(); return; }
+      if (currentSpellLoadout.length >= SPELL_LOADOUT_SIZE) { toast('Spell loadout full!'); return; }
+      currentSpellLoadout.push(spellId);
+      buildDeckUI(); vib(12);
+    }
+    function removeSpellSlot(i) { currentSpellLoadout.splice(i, 1); buildDeckUI(); }
+    function startFromDeck() {
+      if (currentDeck.length !== DECK_SIZE) { toast('Choose exactly 5 units!'); return; }
+      if (currentSpellLoadout.length !== SPELL_LOADOUT_SIZE) { toast('Choose exactly 3 spells!'); return; }
+      if (CU) { CU.deck = [...currentDeck]; CU.spellLoadout = [...currentSpellLoadout]; saveUser(); }
+      ['deck-builder', 'reward-screen', 'home'].forEach(id => show(id, false));
+      document.getElementById('gw').classList.add('on'); startGame();
     }
     function renderDeckSlots() {
       const wrap = document.getElementById('deck-slots'); wrap.innerHTML = '';
@@ -4953,13 +5171,6 @@
       });
     }
 
-    function startFromDeck() {
-      if (currentDeck.length !== DECK_SIZE) { toast('Choose exactly 5 units!'); return; }
-      if (CU) { CU.deck = [...currentDeck]; saveUser(); }
-      ['deck-builder', 'reward-screen', 'home'].forEach(id => show(id, false));
-      document.getElementById('gw').classList.add('on'); startGame();
-    }
-
     /* ════ HOME / SETTINGS ════ */
     function refreshHome() {
       if (!CU) return;
@@ -4983,7 +5194,9 @@
       document.getElementById('a-games').textContent = CU.gamesPlayed || 0;
       document.getElementById('a-kills').textContent = CU.totalKills || 0;
       document.getElementById('a-dc').textContent = CU.darkCoins || 0;
+      document.getElementById('a-gems').textContent = CU.gems || 0;
       document.getElementById('a-life').textContent = CU.lifetimeCoinsEarned || 0;
+      document.getElementById('a-life-gems').textContent = CU.lifetimeGemsEarned || 0;
       document.getElementById('a-streak').textContent = CU.streak?.count || 0;
       document.getElementById('a-bosses').textContent = CU.bossesSlain || 0;
       document.getElementById('sett-nm').textContent = CU.name;
@@ -5018,8 +5231,8 @@
 
     /* ════ SHOP BUILD ════ */
     let curShopTab = 'units';
-    function shopTab(t) { curShopTab = t;['units', 'spells', 'boosts'].forEach(s => { document.getElementById('stab-' + s).classList.toggle('on', s === t); document.getElementById('shop-' + s).style.display = s === t ? '' : 'none'; }); }
-    function buildShop() { updateDCDisplays(); buildUnitUpgrades(); buildSpellUpgrades(); buildBoosts(); }
+    function shopTab(t) { curShopTab = t;['units', 'spells', 'evolution', 'boosts'].forEach(s => { document.getElementById('stab-' + s).classList.toggle('on', s === t); document.getElementById('shop-' + s).style.display = s === t ? '' : 'none'; }); }
+    function buildShop() { updateDCDisplays(); buildUnitUpgrades(); buildSpellUpgrades(); buildBoosts(); buildEvolution(); }
 
     function buildUnitUpgrades() {
       const grid = document.getElementById('uup-grid'); grid.innerHTML = '';
@@ -5029,8 +5242,15 @@
         const maxUpg = SHOP_UNIT_UPGRADES[unit][0].max;
         const effHp = Math.floor(u.hp * (1 + hpL * .15)), effDmg = Math.floor(u.dmg * (1 + dmgL * .15)), effSpd = (u.spd * (1 + spdL * .08)).toFixed(1);
         const prgPct = ((hpL + dmgL + spdL) / (maxUpg * 3)) * 100;
-        const evoLvl = getEvoLevel(unit, PROG[unit]?.lvl || 1);
-        const evoInfo = evoLvl > 0 ? `<div class="evo-unlock">✨ ${getEvoData(unit, evoLvl)?.name || ''} Evolved!</div>` : `<div class="evo-unlock" style="opacity:.4">✨ Evolves at Lv.5</div>`;
+        const evoLvl = getEvoLevel(unit);
+        const evoName = evoLvl > 0 ? getEvoData(unit, evoLvl)?.name : 'No evolution yet';
+        const nextStage = Math.min(4, evoLvl + 1);
+        const nextThreshold = getEvoThreshold(nextStage);
+        const evoInfo = `<div class="evo-unlock" style="opacity:${evoLvl > 0 ? 1 : .85}">` +
+          (evoLvl > 0 ? `✨ ${evoName} (Stage ${evoLvl})` : '✨ No evolution yet') +
+          `</div><div class="evo-unlock" style="font-size:.75rem;color:rgba(255,255,255,.65);margin-top:2px">` +
+          (evoLvl < 4 ? `Next stage ${nextStage} at ${nextThreshold} total upgrades` : 'Max evolution reached') +
+          `</div>`;
         card.innerHTML = `<div class="uup-emoji">${unitFace(unit)}</div><div class="uup-name" style="color:${u.col}">${unit.toUpperCase()}</div><div class="uup-ability">${u.abilityName}</div><div class="uup-lvlbar"><div class="uup-lvlbar-fill" style="width:${prgPct}%"></div></div><div class="uup-lvl">HP Lv.${hpL}/${maxUpg} · DMG Lv.${dmgL}/${maxUpg} · SPD Lv.${spdL}/10</div><div class="uup-stats">❤️ <span>${effHp}</span> ⚔️ <span>${effDmg}</span> 💨 <span>${effSpd}</span></div>${evoInfo}<div class="uup-upgrow" id="upgrow-${unit}"></div>`;
         grid.appendChild(card);
         const row = document.getElementById('upgrow-' + unit);
@@ -5076,12 +5296,28 @@
         grid.appendChild(card);
       });
     }
+    function buildEvolution() {
+      const grid = document.getElementById('evo-grid'); if (!grid) return;
+      grid.innerHTML = '';
+      Object.entries(ALL_UNITS).forEach(([unit, u]) => {
+        const progress = getEvoProgress(unit);
+        const evoLvl = getEvoLevel(unit);
+        const evoData = evoLvl > 0 ? getEvoData(unit, evoLvl) : null;
+        const nextStage = evoLvl < 4 ? evoLvl + 1 : 4;
+        const nextThreshold = getEvoThreshold(nextStage);
+        const status = evoLvl > 0 ? `Stage ${evoLvl}: ${evoData?.name || 'Evolved'}` : 'Stage 0: Not evolved';
+        const subtitle = evoLvl < 4 ? `Next stage ${nextStage} at ${nextThreshold} upgrades` : 'Max stage reached';
+        const card = document.createElement('div'); card.className = 'evo-card';
+        card.innerHTML = `<div class="evo-head"><span class="evo-face">${unitFace(unit)}</span><div><div class="evo-name">${unit.toUpperCase()}</div><div class="evo-stage">${status}</div></div></div><div class="evo-bar"><div class="evo-fill" style="width:${progress}%"></div></div><div class="evo-meta">${progress}/100 upgrade points · ${subtitle}</div>`;
+        grid.appendChild(card);
+      });
+    }
     function buyBoost(id, baseCost, max) { const lvl = getUL(id); if (lvl >= max) { toast('Already maxed!'); return; } const cost = getUpgradeCost(baseCost, lvl); if (!spendDC(cost)) { toast('❌ Not enough coins!'); return; } setUL(id, lvl + 1); toast(id.startsWith('idle') ? '✅ Idle boost upgraded!' : '✅ Boost active next match!'); vib(30); buildBoosts(); updateIdleUI(); }
     /* ════ TOAST ════ */
     function toast(msg) { const t = document.createElement('div'); t.className = 'toast'; t.textContent = msg; document.body.appendChild(t); setTimeout(() => t.remove(), 3100); }
 
     /* ════ PRELOADER ════ */
-    const TIPS = ['💡 Freeze spell — allies still attack frozen enemies!', '💡 Dragon Burn Aura: max 3 on field at once', '💡 Units evolve at level 5 & 10!', '💡 Boss spawns 4 assistants at 50% HP (5 after wave 25)', '💡 V2.8.8: Divine Heroes throw projectiles!', '💡 Vampire steals 20% of damage as HP', '💡 Berserker grows stronger each kill', '💡 Necromancer raises fallen enemies as zombies', '💡 Shop upgrades cost +30% more each level', '💡 Speed Control: play at 1×, 2×, or 3×!', '💡 SM30 code: redeemable unlimited times!'];
+    const TIPS = ['💡 Freeze spell — allies still attack frozen enemies!', '💡 Dragon Burn Aura: max 3 on field at once', '💡 Units evolve at level 5 & 10!', '💡 Boss spawns 4 assistants at 50% HP (5 after wave 25)', '💡 V2.8.9: Divine Heroes throw projectiles!', '💡 Vampire steals 20% of damage as HP', '💡 Berserker grows stronger each kill', '💡 Necromancer raises fallen enemies as zombies', '💡 Shop upgrades cost +30% more each level', '💡 Speed Control: play at 1×, 2×, or 3×!', '💡 SM30 code: redeemable unlimited times!'];
     const MSGS = ['Awakening the dungeon…', 'Summoning warriors…', 'Forging spell crystals…', 'Building the shop…', 'Arranging leaderboard…', 'Opening the dark gate…', 'Darkness rises…'];
 
     function spawnEmbers() { const w = document.getElementById('embers'); for (let i = 0; i < 22; i++) { const e = document.createElement('div'); e.className = 'emb'; const d = (Math.random() - .5) * 130; e.style.cssText = `left:${Math.random() * 100}%;bottom:0;--d:${d}px;width:${Math.random() * 3 + 1}px;height:${Math.random() * 3 + 1}px;background:hsl(${20 + Math.random() * 20},100%,${50 + Math.random() * 20}%);animation-duration:${3 + Math.random() * 5}s;animation-delay:${Math.random() * 5}s;opacity:${Math.random() * .7 + .2}`; w.appendChild(e); } }
@@ -5108,7 +5344,7 @@
     function finishLoad() { show('pre', false); if (CU) { show('home', true); afterLogin(); } else show('auth', true); }
 
     /* ══════════════════════════════════════════════════
-       GAME ENGINE — V2.8.8
+       GAME ENGINE — V2.8.9
     ══════════════════════════════════════════════════ */
     const gc = document.getElementById('gc'), ctx = gc.getContext('2d');
     let W, H, pathY, pathH;
@@ -5135,9 +5371,21 @@
       return BG_IMGS[endWave] || null;
     }
     const HERO_BASE = { hp: 150, dmg: 8, spd: .55, rad: 24 };
-    const SPELLS_DEF = { meteor: { mana: 30, baseCd: 3500 }, freeze: { mana: 20, baseCd: 5000 }, rage: { mana: 25, baseCd: 6000 } };
-    let SPELLS = { meteor: { mana: 30, cd: 3500, until: 0 }, freeze: { mana: 20, cd: 5000, until: 0 }, rage: { mana: 25, cd: 6000, until: 0 } };
-    function refreshSpellCDs() { const idMap = { meteor: 'meteor_cd', freeze: 'freeze_cd', rage: 'rage_cd' }; Object.entries(SPELLS_DEF).forEach(([k, def]) => { const lvl = getUL(idMap[k]); const red = SHOP_SPELLS.find(s => s.id === idMap[k])?.reduce || 0; SPELLS[k].cd = def.baseCd - (lvl * red); SPELLS[k].mana = def.mana; }); }
+    const SPELLS_DEF = {
+      meteor: { mana: 30, baseCd: 3500 },
+      freeze: { mana: 20, baseCd: 5000 },
+      rage: { mana: 25, baseCd: 6000 },
+      lightning: { mana: 22, baseCd: 4200 },
+      shadow: { mana: 18, baseCd: 3800 }
+    };
+    let SPELLS = {
+      meteor: { mana: 30, cd: 3500, until: 0 },
+      freeze: { mana: 20, cd: 5000, until: 0 },
+      rage: { mana: 25, cd: 6000, until: 0 },
+      lightning: { mana: 22, cd: 4200, until: 0 },
+      shadow: { mana: 18, cd: 3800, until: 0 }
+    };
+    function refreshSpellCDs() { const idMap = { meteor: 'meteor_cd', freeze: 'freeze_cd', rage: 'rage_cd', lightning: 'lightning_cd', shadow: 'shadow_cd' }; Object.entries(SPELLS_DEF).forEach(([k, def]) => { const lvl = getUL(idMap[k]); const red = SHOP_SPELLS.find(s => s.id === idMap[k])?.reduce || 0; SPELLS[k].cd = def.baseCd - (lvl * red); SPELLS[k].mana = def.mana; }); }
 
     const PROG = {};
     Object.keys(ALL_UNITS).forEach(k => PROG[k] = { lvl: 1, xp: 0, max: 100 });
@@ -5146,7 +5394,7 @@
     let GA = false, paused = false;
     let gold, mana, souls, wave, combo, comboT, kills, goldE;
     let minions, heroes, particles, meteors, zombies, projectiles;
-    let freezeT = 0, rageT = 0, selU = 'imp', actSpl = null;
+    let freezeT = 0, rageT = 0, shadowT = 0, selU = 'imp', actSpl = null;
     let gT = 0, mT = 0, sT = 0, hT = 0, lastTs = 0;
     let goldIncomeBonus = 0, startGoldBonus = 0, manaSpeedBonus = 0, comboMult = 1;
     let matchBossesKilled = 0;
@@ -5240,9 +5488,35 @@
       if (t === 'freeze') { mana -= sp.mana; sp.until = Date.now() + sp.cd; freezeT = Date.now() + 3000; heroes.forEach(h => h.freezeT = freezeT); toast('❄️ Enemies frozen! Allies keep fighting!'); setCD('freeze', sp.cd); burstp(W / 2, pathY, 30, 'rgba(0,170,255,0.7)'); vib([30, 20, 30]); }
       else if (t === 'rage') { mana -= sp.mana; sp.until = Date.now() + sp.cd; rageT = Date.now() + 5000; toast('🔥 RAGE! DMG ×2!'); setCD('rage', sp.cd); burstp(W / 2, pathY, 30, 'rgba(255,90,0,.7)'); vib([30, 20, 30, 20, 30]); }
       else if (t === 'meteor') { if (actSpl === 'meteor') { actSpl = null; gc.style.cursor = 'default'; document.getElementById('sb-meteor').classList.remove('asp'); return; } mana -= sp.mana; sp.until = Date.now() + sp.cd; actSpl = 'meteor'; gc.style.cursor = 'crosshair'; document.getElementById('sb-meteor').classList.add('asp'); toast('☄️ Tap the battlefield!'); }
+      else if (t === 'lightning') {
+        mana -= sp.mana; sp.until = Date.now() + sp.cd;
+        toast('⚡ Lightning strikes the field!');
+        setCD('lightning', sp.cd);
+        const targets = minions.filter(m => !m.dead);
+        if (targets.length > 0) {
+          for (let i = 0; i < 5; i++) {
+            const target = targets[Math.floor(Math.random() * targets.length)];
+            if (!target) continue;
+            const startX = Math.random() * W * 0.5 + W * 0.25;
+            const startY = Math.random() * pathH + pathY - pathH * .5;
+            const vx = (target.x - startX) / 20;
+            const vy = (target.y - startY) / 20;
+            projectiles.push({ x: startX, y: startY, vx, vy, r: 6, life: 120, emoji: '⚡', col: '#7cfc00', dmg: 12 });
+          }
+        }
+      }
+      else if (t === 'shadow') {           // ✅ now a proper branch of the outer if/else chain
+        mana -= sp.mana;
+        sp.until = Date.now() + sp.cd;
+        shadowT = Date.now() + 5000;
+        toast('🌑 Shadow Veil: enemies weaken!');
+        setCD('shadow', sp.cd);
+        burstp(W / 2, pathY, 36, 'rgba(120,0,255,0.5)');
+        vib([20, 40, 20]);
+      }
       updateHUD();
-    }
-    function castMeteor(x, y) { actSpl = null; gc.style.cursor = 'default'; document.getElementById('sb-meteor').classList.remove('asp'); setCD('meteor', SPELLS.meteor.cd); meteors.push({ x, y, r: 0, maxR: 90, life: 28 }); if (CF.shake) doShake(); vib([50, 30, 80]); }
+    }                                    // ✅ closes actSpell properly
+    function castMeteor(x, y) { }          // ✅ now a top-level function
     function setCD(t, ms) { const btn = document.getElementById('sb-' + t); btn.classList.add('cd'); let r = Math.ceil(ms / 1000); const iv = setInterval(() => { r--; if (r <= 0) { clearInterval(iv); btn.classList.remove('cd'); btn.style.opacity = '1'; } }, 1000); }
 
     /* UNIT SELECT */
@@ -5257,7 +5531,7 @@
       const scaledCost = Math.floor(st.cost * (1 + sameCount * .2));
       if (gold < scaledCost) { toast(`💰 Need ${scaledCost}g`); return; }
       gold -= scaledCost;
-      const oy = 0, evoLvl = getEvoLevel(selU, PROG[selU]?.lvl || 1);
+      const oy = 0, evoLvl = getEvoLevel(selU);
       minions.push({ x, y: y + oy, type: selU, ...st, maxHp: st.hp, flash: 0, enraged: Date.now() < rageT, freezeT: 0, evoLvl, berserkerKills: 0, lifedrainAmt: selU === 'vampire' ? Math.floor(st.dmg * .2) : 0, necroTimer: 0 });
       if (CF.ptcl) burstp(x, y + oy, 6, ALL_UNITS[selU].col);
       if (CU) { CU.unitUsage = CU.unitUsage || {}; CU.unitUsage[selU] = (CU.unitUsage[selU] || 0) + 1; saveUser(); }
@@ -5364,6 +5638,7 @@
             busy = true; const rm = now < rageT ? 2 : 1;
             if (Math.random() < .06 * gameSpeed) {
               let dmgM = m.dmg * rm;
+              if (Date.now() < shadowT) dmgM = Math.floor(dmgM * 0.65);
               if (m.type === 'berserker') dmgM = Math.floor(dmgM * (1 + m.berserkerKills * .1));
               if (m.type === 'orc' && m.hp / m.maxHp < .3) dmgM = Math.floor(dmgM * 1.5);
               if (!frozen) { h.hp -= Math.floor(dmgM); if (CF.ptcl) burstp(h.x, h.y, 2, ALL_UNITS[m.type].col); if (CF.dmg) flt(Math.floor(dmgM), h.x, h.y - 44, '#fff', 12); }
@@ -5555,7 +5830,25 @@
         const cc = el.querySelector('.ucc'); if (cc) cc.innerHTML = `<div class="ucd"></div>${scaledCost}${sameCount > 0 ? ` <span style="font-size:.5rem;color:#888">×${sameCount + 1}</span>` : ''}`;
         const cnt = document.getElementById('cnt-' + t); if (cnt) { cnt.textContent = sameCount > 0 ? sameCount : ''; cnt.style.display = sameCount > 0 ? 'flex' : 'none'; }
       });
-      Object.entries(SPELLS).forEach(([t, sp]) => { const b = document.getElementById('sb-' + t); if (!b || b.classList.contains('cd')) return; b.style.opacity = mana >= sp.mana ? '1' : '.3'; });
+      Object.entries(SPELLS).forEach(([t, sp]) => {
+        const b = document.getElementById('sb-' + t);
+        if (!b) return;
+        const selected = activeSpellLoadout.includes(t);
+        b.style.display = selected ? '' : 'none';
+        if (!selected || b.classList.contains('cd')) return;
+        b.style.opacity = mana >= sp.mana ? '1' : '.3';
+      });
+    }
+
+    function loadActiveSpellLoadout() {
+      activeSpellLoadout = (CU?.spellLoadout || ['meteor', 'freeze', 'rage']).filter(id => SPELLS[id]);
+      if (activeSpellLoadout.length < SPELL_LOADOUT_SIZE) {
+        activeSpellLoadout = SHOP_SPELLS.slice(0, SPELL_LOADOUT_SIZE).map(s => s.id);
+      }
+      document.querySelectorAll('.spb').forEach(b => {
+        const key = b.id.replace('sb-', '');
+        b.style.display = activeSpellLoadout.includes(key) ? '' : 'none';
+      });
     }
 
     function buildDeck() {
@@ -5565,8 +5858,10 @@
       activeDeck.forEach(t => {
         const u = ALL_UNITS[t], el = document.createElement('div'); el.className = 'uc'; el.id = 'uc-' + t;
         el.setAttribute('role', 'button'); el.onclick = () => { selUnit(t); vib(12); };
-        const anyUpg = getUL(t + '_hp') + getUL(t + '_dmg') + getUL(t + '_spd') > 0, evoLvl = getEvoLevel(t, PROG[t]?.lvl || 1);
-        el.innerHTML = `${anyUpg ? '<div class="uc-boost">🛒</div>' : ''}${evoLvl > 0 ? `<div class="uc-evo">${['', '✨', '👑'][evoLvl]}</div>` : ''}<div class="ucav" style="background:${u.col}12;border-color:${u.col}28">${unitFace(t)}<div class="ulvl" id="ul-${t}">${PROG[t]?.lvl || 1}</div></div><div class="ucn">${t}</div><div class="ucc"><div class="ucd"></div>${u.cost}</div><div class="uct">${u.trait}</div><div class="xpbg"><div class="xpf" id="xpf-${t}"></div></div><div class="uc-cnt" id="cnt-${t}" style="position:absolute;top:-4px;right:-4px;background:rgba(0,0,0,.8);border:1px solid rgba(255,255,255,.18);border-radius:8px;font-size:7px;font-weight:900;padding:1px 4px;color:#fff;display:none"></div>`;
+        const anyUpg = getUL(t + '_hp') + getUL(t + '_dmg') + getUL(t + '_spd') > 0;
+        const evoLvl = getEvoLevel(t);
+        const evoIcons = ['', '✨', '👑', '🔥', '🌟'];
+        el.innerHTML = `${anyUpg ? '<div class="uc-boost">🛒</div>' : ''}${evoLvl > 0 ? `<div class="uc-evo">${evoIcons[evoLvl]}</div>` : ''}<div class="ucav" style="background:${u.col}12;border-color:${u.col}28">${unitFace(t)}<div class="ulvl" id="ul-${t}">${PROG[t]?.lvl || 1}</div></div><div class="ucn">${t}</div><div class="ucc"><div class="ucd"></div>${u.cost}</div><div class="uct">${u.trait}</div><div class="xpbg"><div class="xpf" id="xpf-${t}"></div></div><div class="uc-cnt" id="cnt-${t}" style="position:absolute;top:-4px;right:-4px;background:rgba(0,0,0,.8);border:1px solid rgba(255,255,255,.18);border-radius:8px;font-size:7px;font-weight:900;padding:1px 4px;color:#fff;display:none"></div>`;
         row.appendChild(el);
       });
       if (activeDeck.length > 0) selUnit(activeDeck[0]);
@@ -5579,13 +5874,14 @@
       const sg = 80 + startGoldBonus;
       gold = sg; mana = 50; souls = 0; wave = 1; combo = 0; comboT = 0; kills = 0; goldE = sg;
       minions = []; heroes = []; particles = []; meteors = []; zombies = []; projectiles = [];
-      freezeT = 0; rageT = 0; actSpl = null; gT = 0; mT = 0; sT = 0; hT = 0; matchBossesKilled = 0; waveStartTime = Date.now();
+      freezeT = 0; rageT = 0; shadowT = 0; actSpl = null; gT = 0; mT = 0; sT = 0; hT = 0; matchBossesKilled = 0; waveStartTime = Date.now();
 
-      // V2.8.8: Reset partial-credit trackers for new session
+      // V2.8.9: Reset partial-credit trackers for new session
       partialCoinsAwarded = 0;
       killsCreditedToStats = false;
 
       Object.values(SPELLS).forEach(s => s.until = 0);
+      loadActiveSpellLoadout();
       document.querySelectorAll('.spb').forEach(b => { b.classList.remove('asp', 'cd'); b.style.opacity = '1'; });
       gc.style.cursor = 'default';
       gameSpeed = 1; setSpeed(1);
@@ -5596,7 +5892,7 @@
       GA = true; paused = false; document.getElementById('pov').classList.remove('on');
       document.getElementById('gw').classList.add('on');
       lastTs = performance.now(); requestAnimationFrame(loop);
-      startAutoSave(); // V2.8.8: start mid-exit auto-save (no double-count)
+      startAutoSave(); // V2.8.9: start mid-exit auto-save (no double-count)
       if (CU) { CU.gamesPlayed = (CU.gamesPlayed || 0) + 1; CU.sessionDays = CU.sessionDays || []; CU.sessionDays.push(Date.now()); if (CU.sessionDays.length > 60) CU.sessionDays = CU.sessionDays.slice(-60); saveUser(); }
     }
 
@@ -5664,7 +5960,7 @@
       try { const users = LS.g('do_users') || {}; users[CU.email] = CU; LS.s('do_users', users); LS.s('do_current', CU.email); } catch (e) { console.warn('saveUser failed:', e); }
     }
 
-    // V2.8.8: Save on tab hide / minimize — credit delta only, no double-count
+    // V2.8.9: Save on tab hide / minimize — credit delta only, no double-count
     document.addEventListener('visibilitychange', () => {
       if (document.hidden) {
         if (GA && CU && kills > 0) {
@@ -5676,7 +5972,7 @@
       }
     });
 
-    // V2.8.8: Save on browser close — commit everything
+    // V2.8.9: Save on browser close — commit everything
     window.addEventListener('beforeunload', () => {
       if (GA && CU && kills > 0) {
         creditPartialCoins(true); // include kills/gold stats on close
