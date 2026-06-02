@@ -3148,15 +3148,16 @@
       top: 0;
       left: 0;
       right: 0;
-      padding: calc(var(--st)+8px) 10px 8px;
+      padding: calc(var(--st)+8px) 8px 6px;
       display: flex;
       justify-content: space-between;
-      align-items: center;
+      align-items: flex-start;
       flex-wrap: wrap;
-      gap: 4px;
+      gap: 6px;
       background: linear-gradient(to bottom, rgba(0, 0, 0, .92), transparent);
       z-index: 10;
-      pointer-events: none
+      pointer-events: none;
+      overflow: hidden;
     }
 
     .hres {
@@ -3214,32 +3215,47 @@
 
     .hspells {
       display: flex;
-      gap: 4px;
+      gap: 3px;
       pointer-events: auto;
       flex-wrap: wrap;
-      justify-content: flex-end
+      justify-content: flex-end;
+      align-items: center;
+      flex-shrink: 1;
+      min-width: 0;
     }
 
     .spb {
       background: rgba(0, 0, 0, .62);
       border: 2px solid;
-      padding: 5px 8px;
-      border-radius: 9px;
+      padding: 4px 6px;
+      border-radius: 8px;
       font-family: var(--ft);
-      font-size: .55rem;
+      font-size: .5rem;
       cursor: pointer;
       transition: .14s;
       text-transform: uppercase;
-      letter-spacing: .3px;
+      letter-spacing: .2px;
       font-weight: 700;
-      white-space: nowrap;
-      min-height: 38px;
-      min-width: 64px;
+      white-space: normal;
+      min-height: 36px;
+      min-width: 52px;
       display: flex;
+      flex-direction: column;
       align-items: center;
       justify-content: center;
-      gap: 3px;
-      pointer-events: auto
+      gap: 2px;
+      pointer-events: auto;
+      flex-shrink: 1;
+    }
+
+    @media (min-width: 640px) {
+      .spb {
+        padding: 5px 8px;
+        font-size: .55rem;
+        min-height: 38px;
+        min-width: 64px;
+        gap: 3px;
+      }
     }
 
     .spb:active {
@@ -6125,7 +6141,7 @@
     function loadActiveSpellLoadout() {
       activeSpellLoadout = (CU?.spellLoadout || ['meteor', 'freeze', 'rage']).filter(id => SPELLS[id]);
       if (activeSpellLoadout.length < SPELL_LOADOUT_SIZE) {
-        activeSpellLoadout = SHOP_SPELLS.slice(0, SPELL_LOADOUT_SIZE).map(s => s.id);
+        activeSpellLoadout = ['meteor', 'freeze', 'rage', 'lightning', 'shadow'].slice(0, SPELL_LOADOUT_SIZE);
       }
       document.querySelectorAll('.spb').forEach(b => {
         const key = b.id.replace('sb-', '');
