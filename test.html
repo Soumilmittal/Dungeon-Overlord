@@ -5313,6 +5313,13 @@
       { id: 'lightning_cd', name: 'Lightning Mastery', emoji: '⚡', desc: 'Reduce Lightning cooldown by 520ms', baseVal: 4200, reduce: 520, baseCost: 320, max: 15 },
       { id: 'shadow_cd', name: 'Shadow Mastery', emoji: '🌑', desc: 'Reduce Shadow cooldown by 480ms', baseVal: 3800, reduce: 480, baseCost: 320, max: 15 },
     ];
+    const SPELL_ROSTER = [
+      { id: 'meteor', emoji: '☄️', name: 'Meteor', desc: 'Tap battlefield to summon meteors (30 mana)' },
+      { id: 'freeze', emoji: '❄️', name: 'Freeze', desc: 'Freeze all enemies for 3 seconds (20 mana)' },
+      { id: 'rage', emoji: '🔥', name: 'Rage', desc: 'Double ally damage for 5 seconds (25 mana)' },
+      { id: 'lightning', emoji: '⚡', name: 'Lightning', desc: '5 strikes hit random enemies (22 mana)' },
+      { id: 'shadow', emoji: '🌑', name: 'Shadow Veil', desc: 'Weaken enemies for 5 seconds (18 mana)' },
+    ];
     const SHOP_BOOSTS = [
       { id: 'idlemult', emoji: '💤', name: 'Idle Engine', desc: 'Increase idle earnings: 1.0x, 1.2x, 1.4x...', baseCost: 180, max: 10, stat: 'idleMult' },
       { id: 'idlecap', emoji: '📦', name: 'Vault Expansion', desc: 'Increase idle storage limit by +72 coins', baseCost: 220, max: 10, stat: 'idleCap' },
@@ -5344,7 +5351,7 @@
         const slot = document.createElement('div'); slot.className = 'spell-slot';
         if (i < currentSpellLoadout.length) {
           const spellId = currentSpellLoadout[i];
-          const spell = SHOP_SPELLS.find(s => s.id === spellId);
+          const spell = SPELL_ROSTER.find(s => s.id === spellId);
           slot.classList.add('filled');
           slot.innerHTML = `<div class="ss-emoji">${spell?.emoji || ''}</div><div class="ss-name">${spell?.name || spellId}</div><div class="ds-x" onclick="removeSpellSlot(${i})">✕</div>`;
         } else {
@@ -5355,9 +5362,9 @@
     }
     function renderSpellRoster() {
       const grid = document.getElementById('spell-roster-grid'); if (!grid) return; grid.innerHTML = '';
-      SHOP_SPELLS.forEach(sp => {
+      SPELL_ROSTER.forEach(sp => {
         const card = document.createElement('div'); card.className = 'spell-card' + (currentSpellLoadout.includes(sp.id) ? ' selected' : '');
-        card.innerHTML = `<div class="sp-emoji">${sp.emoji}</div><div class="sp-name">${sp.name}</div><div class="sp-desc">${sp.desc}</div><div class="sp-cost">${sp.baseCost}🪙</div>`;
+        card.innerHTML = `<div class="sp-emoji">${sp.emoji}</div><div class="sp-name">${sp.name}</div><div class="sp-desc">${sp.desc}</div>`;
         card.onclick = () => addToSpellLoadout(sp.id);
         grid.appendChild(card);
       });
