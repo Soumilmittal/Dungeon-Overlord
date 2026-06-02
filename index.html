@@ -1909,6 +1909,27 @@
       padding-right: 6px
     }
 
+    #quests {
+      z-index: 170;
+      background:
+        radial-gradient(circle at 22% 12%, rgba(255, 215, 0, .14), transparent 28%),
+        radial-gradient(circle at 82% 18%, rgba(155, 0, 255, .18), transparent 30%),
+        linear-gradient(180deg, rgba(8, 5, 16, .96), rgba(15, 6, 18, .98));
+      backdrop-filter: blur(10px);
+    }
+
+    #quests::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, .5);
+      pointer-events: none;
+    }
+
+    #quests .quest-inner {
+      position: relative;
+      z-index: 1;
+    }
     /* ── QUEST STYLES ── */
     .quest-inner {
       width: min(600px, 100%);
@@ -2294,7 +2315,7 @@
       width: 100%;
       height: 100%;
       border-radius: 12px;
-      object-fit: cover;
+      object-fit: contain;
     }
 
     .evo-name {
@@ -3122,6 +3143,61 @@
       }
     }
 
+    .avatar-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(44px, 1fr));
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .avatar-choice {
+      height: 46px;
+      border: 1px solid rgba(255, 215, 0, .18);
+      border-radius: 12px;
+      background: linear-gradient(135deg, rgba(255, 255, 255, .08), rgba(255, 255, 255, .03));
+      color: #fff;
+      font-size: 1.35rem;
+      cursor: pointer;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, .08);
+      transition: .18s;
+    }
+
+    .avatar-choice.on {
+      border-color: rgba(255, 215, 0, .75);
+      background: linear-gradient(135deg, rgba(255, 215, 0, .24), rgba(155, 0, 255, .16));
+      box-shadow: 0 0 18px rgba(255, 215, 0, .16), inset 0 1px 0 rgba(255, 255, 255, .16);
+    }
+
+    @media (max-width: 560px) {
+      #evo-grid.uup-grid {
+        grid-template-columns: 1fr;
+        max-height: none;
+        padding-right: 0;
+      }
+
+      .evo-card {
+        min-height: 0;
+        padding: 12px;
+        border-radius: 12px;
+        gap: 8px;
+      }
+
+      .evo-face {
+        width: 58px;
+        height: 58px;
+        font-size: 1.8rem;
+        margin-bottom: 0;
+      }
+
+      .evo-name {
+        font-size: .74rem;
+      }
+
+      .evo-stage,
+      .evo-meta {
+        font-size: .62rem;
+      }
+    }
     /* ── GAME HUD ── */
     #gw {
       position: fixed;
@@ -4496,11 +4572,11 @@
         <div class="hnm" id="nav-nm">Overlord</div>
       </div>
       <div class="hrgt">
-        <div class="nico" onclick="openLB()">🏆</div>
+        <div class="dc-pill">🪙<span id="nav-dc">0</span></div>
+        <div class="dc-pill">💎<span id="nav-gems">0</span></div>
         <div class="nico" onclick="openShop()">🛒</div>
         <div class="nico" onclick="openSett()">⚙️</div>
         <div class="nico" onclick="openQuests()">📜</div>
-        <div class="nico" onclick="doLogout()">🚪</div>
       </div>
     </div>
     <div class="hbdy">
@@ -4672,7 +4748,7 @@
         <div class="quest-title">📜 DAILY QUESTS</div>
       </div>
       <div class="quest-info">
-        <div class="quest-reward-pool">Earn up to 10,000 🪙 daily</div>
+        <div class="quest-reward-pool">Earn up to 10,000 🪙 and 10 💎 daily</div>
       </div>
       <div class="quest-list" id="quest-list"></div>
       <div class="quest-footer">
@@ -4799,6 +4875,10 @@
           <div class="alb">Signed in as</div>
           <div style="font-size:1rem;font-weight:700;margin-top:3px" id="sett-nm">—</div>
           <div style="font-size:.65rem;color:#2a2a2a;margin-top:2px" id="sett-em">—</div>
+        </div>
+        <div class="ac s2" style="margin-bottom:9px">
+          <div class="alb">Choose Avatar</div>
+          <div class="avatar-grid" id="avatar-grid"></div>
         </div>
         <div class="togrow" style="cursor:pointer" onclick="doLogout()">
           <div>
@@ -5008,6 +5088,9 @@
       if (!u.unitUsage || typeof u.unitUsage !== 'object') u.unitUsage = {};
       if (!Array.isArray(u.sessionDays)) u.sessionDays = [];
       if (!Array.isArray(u.usedCodes)) u.usedCodes = [];
+      if (typeof u.avatar !== 'string' || !u.avatar) u.avatar = '👑';
+      if (!u.dailyGemCap || typeof u.dailyGemCap !== 'object') u.dailyGemCap = { date: todayStr(), questSpin: 0 };
+      else { if (typeof u.dailyGemCap.date !== 'string') u.dailyGemCap.date = todayStr(); if (typeof u.dailyGemCap.questSpin !== 'number' || isNaN(u.dailyGemCap.questSpin)) u.dailyGemCap.questSpin = 0; if (u.dailyGemCap.date !== todayStr()) { u.dailyGemCap.date = todayStr(); u.dailyGemCap.questSpin = 0; } }
       const valid = ['imp', 'orc', 'golem', 'wraith', 'dragon', 'vampire', 'necromancer', 'berserker'];
       if (!Array.isArray(u.deck) || u.deck.length === 0 || !u.deck.every(t => valid.includes(t))) u.deck = ['imp', 'orc', 'golem', 'wraith', 'dragon'];
       if (!u.dailySpin || typeof u.dailySpin !== 'object') u.dailySpin = { lastSpinDate: '', totalSpins: 0 };
@@ -5117,6 +5200,39 @@
     function calcBossBonus(n) { return n * 50; }
     function addDarkCoins(amount) { const n = Math.max(0, Math.floor(amount) || 0); if (!CU || n <= 0) return 0; CU.darkCoins = (CU.darkCoins || 0) + n; CU.lifetimeCoinsEarned = (CU.lifetimeCoinsEarned || 0) + n; return n; }
     function addGems(amount) { const n = Math.max(0, Math.floor(amount) || 0); if (!CU || n <= 0) return 0; CU.gems = (CU.gems || 0) + n; CU.lifetimeGemsEarned = (CU.lifetimeGemsEarned || 0) + n; return n; }
+    function resetDailyGemCap() {
+      if (!CU) return;
+      CU.dailyGemCap = CU.dailyGemCap && typeof CU.dailyGemCap === 'object' ? CU.dailyGemCap : { date: todayStr(), questSpin: 0 };
+      if (CU.dailyGemCap.date !== todayStr()) { CU.dailyGemCap.date = todayStr(); CU.dailyGemCap.questSpin = 0; }
+    }
+    function addQuestSpinGems(amount) {
+      resetDailyGemCap();
+      const requested = Math.max(0, Math.floor(amount) || 0);
+      const remaining = Math.max(0, 10 - (CU?.dailyGemCap?.questSpin || 0));
+      const granted = Math.min(requested, remaining);
+      if (granted > 0) { addGems(granted); CU.dailyGemCap.questSpin = (CU.dailyGemCap.questSpin || 0) + granted; }
+      return granted;
+    }
+    const PROFILE_AVATARS = ['👑', '😈', '🧙', '🦇', '🔥', '💀', '⚔️', '🐉', '🛡️', '🌙', '💎', '⭐'];
+    function buildAvatarPicker() {
+      const grid = document.getElementById('avatar-grid');
+      if (!grid || !CU) return;
+      grid.innerHTML = '';
+      PROFILE_AVATARS.forEach(avatar => {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'avatar-choice' + (CU.avatar === avatar ? ' on' : '');
+        btn.textContent = avatar;
+        btn.onclick = () => setProfileAvatar(avatar);
+        grid.appendChild(btn);
+      });
+    }
+    function setProfileAvatar(avatar) {
+      if (!CU || !PROFILE_AVATARS.includes(avatar)) return;
+      CU.avatar = avatar;
+      saveUser(); refreshHome(); fillSett();
+      toast('✅ Avatar updated!');
+    }
 
     function spendDC(amount) { if (!CU || CU.darkCoins < amount) return false; CU.darkCoins -= amount; saveUser(); updateCurrencyDisplays(); return true; }
     function spendGems(amount) { if (!CU || CU.gems < amount) return false; CU.gems -= amount; saveUser(); updateCurrencyDisplays(); return true; }
@@ -5165,14 +5281,14 @@
     }
     /* ════ DAILY SPIN ════ */
     const SPIN_REWARDS = [
-      { coin: 100, label: '100 🪙' },
-      { coin: 250, label: '250 🪙' },
-      { coin: 500, label: '500 🪙' },
-      { coin: 750, label: '750 🪙' },
-      { coin: 1000, label: '1,000 🪙' },
-      { coin: 1500, label: '1,500 🪙' },
-      { coin: 2500, label: '2,500 🪙' },
-      { coin: 5000, label: '5,000 🪙' }
+      { coin: 100, gems: 0, label: '100 🪙' },
+      { coin: 250, gems: 1, label: '250 🪙 + 1 💎' },
+      { coin: 500, gems: 0, label: '500 🪙' },
+      { coin: 750, gems: 2, label: '750 🪙 + 2 💎' },
+      { coin: 1000, gems: 0, label: '1,000 🪙' },
+      { coin: 1500, gems: 3, label: '1,500 🪙 + 3 💎' },
+      { coin: 2500, gems: 0, label: '2,500 🪙' },
+      { coin: 5000, gems: 5, label: '5,000 🪙 + 5 💎' }
     ];
     let spinBusy = false, spinRotation = 0;
     function canSpinToday() { return CU && CU.dailySpin?.lastSpinDate !== todayStr(); }
@@ -5198,16 +5314,18 @@
       if (wheel) wheel.style.transform = `rotate(${spinRotation}deg)`;
       setTimeout(() => {
         addDarkCoins(reward.coin);
+        const gemWin = addQuestSpinGems(reward.gems || 0);
         CU.dailySpin.lastSpinDate = todayStr();
         CU.dailySpin.totalSpins = (CU.dailySpin.totalSpins || 0) + 1;
         saveUser(); updateDCDisplays(); refreshHome();
-        if (result) result.textContent = `You won ${reward.label}!`;
-        toast(`🎡 Daily Spin: +${reward.coin.toLocaleString()} 🪙`); vib([40, 30, 80, 30, 120]);
+        const gemText = gemWin > 0 ? ` +${gemWin} 💎` : '';
+        if (result) result.textContent = `You won ${reward.coin.toLocaleString()} 🪙${gemText}!`;
+        toast(`🎡 Daily Spin: +${reward.coin.toLocaleString()} 🪙${gemText}`); vib([40, 30, 80, 30, 120]);
         spinBusy = false; updateSpinUI();
       }, 3100);
     }
     /* ════ STREAK ════ */
-    const STREAK_REWARDS = [{ d: 1, coin: 10, emoji: '🪙' }, { d: 2, coin: 20, emoji: '💰' }, { d: 3, coin: 35, emoji: '💎' }, { d: 4, coin: 50, emoji: '⭐' }, { d: 5, coin: 75, emoji: '🎁' }, { d: 6, coin: 100, emoji: '👑' }, { d: 7, coin: 200, emoji: '🏆' }];
+    const STREAK_REWARDS = [{ d: 1, coin: 10, gems: 1, emoji: '🪙' }, { d: 2, coin: 20, gems: 1, emoji: '💰' }, { d: 3, coin: 35, gems: 2, emoji: '💎' }, { d: 4, coin: 50, gems: 2, emoji: '⭐' }, { d: 5, coin: 75, gems: 3, emoji: '🎁' }, { d: 6, coin: 100, gems: 4, emoji: '👑' }, { d: 7, coin: 200, gems: 5, emoji: '🏆' }];
     function todayStr() { return new Date().toDateString(); }
     function yesterdayStr() { return new Date(Date.now() - 86400000).toDateString(); }
     function canClaimStreakToday() { return CU && CU.streak.lastClaimDate !== todayStr(); }
@@ -5219,8 +5337,8 @@
       else nc = 1;
       const slot = ((nc - 1) % 7 + 7) % 7, rew = STREAK_REWARDS[slot];
       CU.streak.count = nc; CU.streak.lastClaimDate = todayStr(); CU.streak.totalDaysClaimed = (CU.streak.totalDaysClaimed || 0) + 1;
-      addDarkCoins(rew.coin); saveUser();
-      document.getElementById('sr-ico').textContent = rew.emoji; document.getElementById('sr-tt').textContent = `DAY ${nc} REWARD!`; document.getElementById('sr-sub').textContent = `${nc}-day streak!`; document.getElementById('sr-val').textContent = `+${rew.coin} 🪙`; document.getElementById('sr-strk').textContent = nc;
+      addDarkCoins(rew.coin); addGems(rew.gems || 0); saveUser();
+      document.getElementById('sr-ico').textContent = rew.emoji; document.getElementById('sr-tt').textContent = `DAY ${nc} REWARD!`; document.getElementById('sr-sub').textContent = `${nc}-day streak!`; document.getElementById('sr-val').textContent = `+${rew.coin} 🪙${rew.gems ? ` +${rew.gems} 💎` : ''}`; document.getElementById('sr-strk').textContent = nc;
       document.getElementById('streak-modal').classList.add('on'); vib([40, 30, 80]); refreshHome();
     }
     function closeStreakModal() { document.getElementById('streak-modal').classList.remove('on'); }
@@ -5415,7 +5533,7 @@
     /* ════ HOME / SETTINGS ════ */
     function refreshHome() {
       if (!CU) return;
-      document.getElementById('nav-av').textContent = CU.name[0].toUpperCase();
+      document.getElementById('nav-av').textContent = CU.avatar || CU.name[0].toUpperCase();
       document.getElementById('nav-nm').textContent = CU.name;
       const users = LS.g('do_users') || {};
       const reg = Object.keys(users).length;
@@ -5442,6 +5560,7 @@
       document.getElementById('a-bosses').textContent = CU.bossesSlain || 0;
       document.getElementById('sett-nm').textContent = CU.name;
       document.getElementById('sett-em').textContent = CU.email;
+      buildAvatarPicker();
       const users = LS.g('do_users') || {}; const reg = Object.keys(users).length;
       document.getElementById('a-reg').textContent = reg;
       document.getElementById('a-reg-sub').textContent = reg + ' account' + (reg === 1 ? '' : 's') + ' here';
@@ -5465,7 +5584,7 @@
         if (CU && u.email === CU.email) row.classList.add('me');
         const val = lbCurTab === 'wave' ? u.bestWave || 0 : lbCurTab === 'kills' ? u.totalKills || 0 : u.darkCoins || 0;
         const medal = rank === 1 ? '🥇' : rank === 2 ? '🥈' : rank === 3 ? '🥉' : '#' + rank;
-        row.innerHTML = `<div class="lb-rank">${medal}</div><div class="lb-av">${(u.name || '?')[0].toUpperCase()}</div><div class="lb-mid"><div class="lb-nm">${u.name}${CU && u.email === CU.email ? ' <span style="color:var(--gold);font-size:.62rem">(You)</span>' : ''}</div><div class="lb-sub">${u.gamesPlayed || 0} games · ${u.bossesSlain || 0}💀</div></div><div><div class="lb-val">${val}</div><div class="lb-val-sub">${lbCurTab === 'coins' ? '🪙' : lbCurTab === 'kills' ? 'KILLS' : 'WAVE'}</div></div>`;
+        row.innerHTML = `<div class="lb-rank">${medal}</div><div class="lb-av">${u.avatar || (u.name || '?')[0].toUpperCase()}</div><div class="lb-mid"><div class="lb-nm">${u.name}${CU && u.email === CU.email ? ' <span style="color:var(--gold);font-size:.62rem">(You)</span>' : ''}</div><div class="lb-sub">${u.gamesPlayed || 0} games · ${u.bossesSlain || 0}💀</div></div><div><div class="lb-val">${val}</div><div class="lb-val-sub">${lbCurTab === 'coins' ? '🪙' : lbCurTab === 'kills' ? 'KILLS' : 'WAVE'}</div></div>`;
         list.appendChild(row);
       });
     }
@@ -5477,11 +5596,11 @@
 
     /* ════ DAILY QUESTS ════ */
     const DAILY_QUESTS = [
-      { id: 'daily_login', name: 'Daily Login', emoji: '🌅', desc: 'Log in to the realm', progress: () => (CU?.questsToday?.daily_login ? 1 : 0), max: 1, reward: 1000 },
-      { id: 'play_matches', name: 'Play 3 Matches', emoji: '⚔️', desc: 'Complete 3 battles', progress: () => CU?.questsToday?.play_matches || 0, max: 3, reward: 2000 },
-      { id: 'win_rounds', name: 'Win 10 Rounds', emoji: '🏆', desc: 'Reach wave 10 in total', progress: () => CU?.questsToday?.win_rounds || 0, max: 10, reward: 3000 },
-      { id: 'earn_coins', name: 'Earn 5000 Coins', emoji: '🪙', desc: 'Earn coins from battles', progress: () => CU?.questsToday?.earn_coins || 0, max: 5000, reward: 2000 },
-      { id: 'defeat_enemies', name: 'Defeat 50 Enemies', emoji: '💀', desc: 'Defeat enemies in battles', progress: () => CU?.questsToday?.defeat_enemies || 0, max: 50, reward: 2000 }
+      { id: 'daily_login', name: 'Daily Login', emoji: '🌅', desc: 'Log in to the realm', progress: () => (CU?.questsToday?.daily_login ? 1 : 0), max: 1, reward: 1000, gems: 1 },
+      { id: 'play_matches', name: 'Play 3 Matches', emoji: '⚔️', desc: 'Complete 3 battles', progress: () => CU?.questsToday?.play_matches || 0, max: 3, reward: 2000, gems: 2 },
+      { id: 'win_rounds', name: 'Win 10 Rounds', emoji: '🏆', desc: 'Reach wave 10 in total', progress: () => CU?.questsToday?.win_rounds || 0, max: 10, reward: 3000, gems: 2 },
+      { id: 'earn_coins', name: 'Earn 5000 Coins', emoji: '🪙', desc: 'Earn coins from battles', progress: () => CU?.questsToday?.earn_coins || 0, max: 5000, reward: 2000, gems: 2 },
+      { id: 'defeat_enemies', name: 'Defeat 50 Enemies', emoji: '💀', desc: 'Defeat enemies in battles', progress: () => CU?.questsToday?.defeat_enemies || 0, max: 50, reward: 2000, gems: 3 }
     ];
 
     function buildQuests() {
@@ -5489,7 +5608,7 @@
       if (!container) return;
       container.innerHTML = '';
       const now = Date.now(), lastReset = CU?.questsLastReset || 0, daysPassed = Math.floor((now - lastReset) / (24 * 60 * 60 * 1000));
-      if (daysPassed >= 1) { CU.questsToday = {}; CU.questsLastReset = now; saveUser(); }
+      if (daysPassed >= 1) { CU.questsToday = {}; CU.questsClaimed = {}; CU.questsLastReset = now; saveUser(); }
       DAILY_QUESTS.forEach(quest => {
         const prog = quest.progress(), completed = prog >= quest.max, claimedToday = CU?.questsClaimed?.[quest.id];
         const card = document.createElement('div');
@@ -5503,27 +5622,29 @@
             ${completed && !claimedToday ? '<div class="quest-progress" style="color:#00ff00">✓ Ready to claim!</div>' : completed && claimedToday ? '<div class="quest-progress" style="color:#888">Claimed today</div>' : '<div class="quest-progress">${progText}</div>'}
           </div>
           <div class="quest-reward">
-            <div class="quest-reward-amt">${quest.reward}</div>
-            <div class="quest-reward-label">🪙</div>
+            <div class="quest-reward-amt">${quest.reward.toLocaleString()}</div>
+            <div class="quest-reward-label">🪙${quest.gems ? ' +' + quest.gems + '💎' : ''}</div>
           </div>
         `;
         if (completed && !claimedToday) {
           card.style.cursor = 'pointer';
-          card.onclick = () => claimQuest(quest.id, quest.reward);
+          card.onclick = () => claimQuest(quest.id, quest.reward, quest.gems || 0);
         }
         container.appendChild(card);
       });
       updateQuestResetTime();
     }
 
-    function claimQuest(questId, reward) {
+    function claimQuest(questId, reward, gemReward = 0) {
       if (!CU) return;
       CU.questsClaimed = CU.questsClaimed || {};
       if (CU.questsClaimed[questId]) { toast('✓ Already claimed!'); return; }
       CU.questsClaimed[questId] = true;
       addDarkCoins(reward);
-      saveUser();
-      toast(`🎉 +${reward} 🪙 Quest Complete!`);
+      const gemsWon = addQuestSpinGems(gemReward);
+      saveUser(); updateDCDisplays(); refreshHome();
+      const gemText = gemsWon > 0 ? ` +${gemsWon} 💎` : '';
+      toast(`🎉 +${reward} 🪙${gemText} Quest Complete!`);
       buildQuests();
     }
 
@@ -5711,6 +5832,15 @@
     */
     let partialCoinsAwarded = 0; // coins credited so far this session (not including kills stat)
     let killsCreditedToStats = false; // ensure kills/gold added to stats only once
+    let waveGemsAwarded = false;
+    function getWaveGemReward() { return Math.floor(Math.max(0, wave) / 100); }
+    function awardWaveGemsOnce() {
+      if (!CU || waveGemsAwarded) return 0;
+      const gems = getWaveGemReward();
+      if (gems > 0) addGems(gems);
+      waveGemsAwarded = true;
+      return gems;
+    }
 
     function getSessionEarnings() {
       return calcBaseCoins(kills, Math.max(1, wave - 1)) + calcBossBonus(matchBossesKilled);
@@ -5732,6 +5862,7 @@
         CU.totalGold = (CU.totalGold || 0) + Math.floor(goldE);
         killsCreditedToStats = true;
       }
+      if (includeStats) awardWaveGemsOnce();
       saveUser();
       return delta;
     }
@@ -6184,6 +6315,7 @@
       // V2.9: Reset partial-credit trackers for new session
       partialCoinsAwarded = 0;
       killsCreditedToStats = false;
+      waveGemsAwarded = false;
 
       // Track quest: Play matches
       if (CU) {
@@ -6215,11 +6347,13 @@
       const base = calcBaseCoins(kills, wave);
       const bossB = calcBossBonus(matchBossesKilled);
       const sessionTotal = base + bossB;
+      let waveGemReward = 0;
 
       // Credit only the coins not yet awarded via auto-save
       const remaining = Math.max(0, sessionTotal - partialCoinsAwarded);
       if (CU) {
         if (remaining > 0) addDarkCoins(remaining);
+        waveGemReward = awardWaveGemsOnce();
         CU.bestWave = Math.max(CU.bestWave || 0, wave);
         if (!killsCreditedToStats) {
           CU.totalKills = (CU.totalKills || 0) + kills;
@@ -6238,7 +6372,7 @@
       }
 
       document.getElementById('gw').classList.remove('on');
-      document.getElementById('rw-sub').textContent = wave > 1 ? `You reached Wave ${wave}!` : 'The heroes overwhelmed you…';
+      document.getElementById('rw-sub').textContent = wave > 1 ? 'You reached Wave ' + wave + '!' + (waveGemReward > 0 ? ' +' + waveGemReward + ' 💎 milestone' : '') : 'The heroes overwhelmed you…';
       document.getElementById('rw-kills').textContent = kills;
       document.getElementById('rw-waves').textContent = wave;
       document.getElementById('rw-formula-result').textContent = base + ' 🪙';
