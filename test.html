@@ -7,7 +7,7 @@
     content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="theme-color" content="#06000e">
-  <title>Dungeon Overlord V2.8.8</title>
+  <title>Dungeon Overlord V2.9</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
@@ -1907,6 +1907,154 @@
       overflow-y: auto;
       -webkit-overflow-scrolling: touch;
       padding-right: 6px
+    }
+
+    /* ── QUEST STYLES ── */
+    .quest-inner {
+      width: min(600px, 100%);
+      margin: 0 auto;
+      padding: calc(var(--st)+8px) 14px calc(var(--sb)+40px);
+      position: relative;
+      z-index: 1
+    }
+
+    .quest-hdr {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 18px 16px;
+      position: sticky;
+      top: 0;
+      background: linear-gradient(135deg, rgba(20, 8, 40, .96), rgba(15, 5, 25, .94));
+      z-index: 15;
+      border-bottom: 2px solid rgba(100, 0, 255, .18);
+      border-radius: 0 0 14px 14px;
+      backdrop-filter: blur(12px);
+      box-shadow: 0 8px 32px rgba(100, 50, 255, .12), 0 0 0 1px rgba(100, 0, 255, .1);
+      margin-bottom: 16px
+    }
+
+    .quest-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #fff;
+      font-family: var(--ft);
+      letter-spacing: 1px;
+      flex: 1;
+      text-transform: uppercase
+    }
+
+    .quest-info {
+      text-align: center;
+      margin: 14px 0 20px;
+      padding: 10px;
+      background: rgba(100, 0, 255, .08);
+      border-radius: 10px;
+      border: 1px solid rgba(100, 0, 255, .2)
+    }
+
+    .quest-reward-pool {
+      font-size: .9rem;
+      color: #ffd700;
+      font-weight: 600;
+      letter-spacing: .5px
+    }
+
+    .quest-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-bottom: 20px
+    }
+
+    .quest-card {
+      background: linear-gradient(135deg, rgba(20, 10, 30, .85), rgba(30, 10, 25, .75));
+      border: 1.5px solid rgba(100, 0, 255, .25);
+      border-radius: 14px;
+      padding: 14px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      position: relative;
+      overflow: hidden;
+      transition: .22s;
+      cursor: pointer
+    }
+
+    .quest-card:hover {
+      border-color: rgba(100, 0, 255, .45);
+      transform: translateX(4px);
+      box-shadow: 0 8px 20px rgba(100, 0, 255, .15)
+    }
+
+    .quest-card.completed {
+      opacity: .6;
+      border-color: rgba(0, 200, 0, .3)
+    }
+
+    .quest-emoji {
+      font-size: 1.8rem;
+      flex-shrink: 0
+    }
+
+    .quest-mid {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 4px
+    }
+
+    .quest-name {
+      font-size: .85rem;
+      font-weight: 600;
+      color: #fff;
+      font-family: var(--ft)
+    }
+
+    .quest-desc {
+      font-size: .7rem;
+      color: rgba(255, 255, 255, .65)
+    }
+
+    .quest-progress {
+      font-size: .65rem;
+      color: rgba(255, 215, 0, .75);
+      margin-top: 2px
+    }
+
+    .quest-reward {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      flex-shrink: 0
+    }
+
+    .quest-reward-amt {
+      font-size: .8rem;
+      font-weight: 700;
+      color: var(--gold);
+      font-family: var(--ft)
+    }
+
+    .quest-reward-label {
+      font-size: .55rem;
+      color: rgba(255, 215, 0, .6);
+      letter-spacing: .5px
+    }
+
+    .quest-footer {
+      text-align: center;
+      padding: 12px;
+      background: rgba(100, 0, 255, .05);
+      border-radius: 10px;
+      border: 1px solid rgba(100, 0, 255, .15)
+    }
+
+    .quest-reset-txt {
+      font-size: .75rem;
+      color: rgba(255, 255, 255, .6);
+      letter-spacing: .5px
     }
 
     @keyframes gridFadeIn {
@@ -4217,7 +4365,7 @@
   <div class="scr off" id="auth">
     <div class="acard">
       <div class="alo">⚔ DUNGEON OVERLORD</div>
-      <div class="asu">V2.8.8 · By Soumil Mittal</div>
+      <div class="asu">V2.9 · By Soumil Mittal</div>
       <div class="atbs">
         <button class="atb on" id="tab-su" onclick="switchTab('su')">SIGN UP</button>
         <button class="atb" id="tab-li" onclick="switchTab('li')">SIGN IN</button>
@@ -4259,7 +4407,7 @@
           <button class="redeem-btn" onclick="doRedeem()">REDEEM</button>
         </div>
       </div>
-      <div class="adev">DEVELOPED BY SOUMIL MITTAL · DUNGEON OVERLORD V2.8.8 · 2026</div>
+      <div class="adev">DEVELOPED BY SOUMIL MITTAL · DUNGEON OVERLORD V2.9 · 2026</div>
     </div>
   </div>
 
@@ -4354,7 +4502,10 @@
         <div class="hfeat">💀 Bosses</div>
         <div class="hfeat">⚡ Spells</div>
         <div class="hfeat">🏆 Leaderboard</div>
-        <div class="hfeat">⏩ Speed Control</div>
+        <div class="hfeat">📜 Daily Quests</div>
+      </div>
+      <div style="display:flex;justify-content:center;margin:16px 0">
+        <button class="btnp" onclick="openQuests()" style="background:linear-gradient(135deg,#6a00ff,#b000ff);max-width:300px">📜 DAILY QUESTS — Earn up to 10K 🪙</button>
       </div>
       <div class="hmyst">
         <div class="shd">Your Record</div>
@@ -4457,6 +4608,23 @@
     </div>
   </div>
 
+  <!-- DAILY QUESTS -->
+  <div class="scr scr-scroll off" id="quests">
+    <div class="quest-inner">
+      <div class="quest-hdr">
+        <div class="bck" onclick="closeQuests()">←</div>
+        <div class="quest-title">📜 DAILY QUESTS</div>
+      </div>
+      <div class="quest-info">
+        <div class="quest-reward-pool">Earn up to 10,000 🪙 daily</div>
+      </div>
+      <div class="quest-list" id="quest-list"></div>
+      <div class="quest-footer">
+        <div class="quest-reset-txt" id="quest-reset-txt">Resets in: --:--:--</div>
+      </div>
+    </div>
+  </div>
+
   <!-- SETTINGS -->
   <div class="scr scr-scroll off" id="sett">
     <div class="seti">
@@ -4464,7 +4632,7 @@
         <div class="bck" onclick="closeSett()">←</div>
         <div class="set-title-wrap">
           <div class="stit">SETTINGS</div>
-          <div class="stsub">V2.8.8 CONTROL PANEL</div>
+          <div class="stsub">V2.9 CONTROL PANEL</div>
         </div>
       </div>
       <div class="ssec2">
@@ -4588,7 +4756,7 @@
         <div class="crdcard">
           <div class="crn">Soumil Mittal</div>
           <div class="crr">GAME DEVELOPER & DESIGNER</div>
-          <div class="crv">DUNGEON OVERLORD V2.8.8 · 2026</div>
+          <div class="crv">DUNGEON OVERLORD V2.9 · 2026</div>
         </div>
       </div>
     </div>
@@ -4716,7 +4884,7 @@
       <button class="rw-btn-play" onclick="startFromDeck()">⚔ PLAY AGAIN</button>
       <button class="rw-btn-home" onclick="quitHome()">🏠 Home</button>
     </div>
-    <div class="rw-dev">DUNGEON OVERLORD V2.8.8 · SOUMIL MITTAL</div>
+    <div class="rw-dev">DUNGEON OVERLORD V2.9 · SOUMIL MITTAL</div>
   </div>
 
   <!-- STREAK MODAL -->
@@ -4845,7 +5013,7 @@
       if (GA) quitHome();
       if (idleIv) { clearInterval(idleIv); idleIv = null; }
       CU = null; LS.d('do_current');
-      ['sett', 'home', 'shop', 'lb', 'deck-builder'].forEach(id => show(id, false));
+      ['sett', 'home', 'shop', 'lb', 'deck-builder', 'quests'].forEach(id => show(id, false));
       show('auth', true); switchTab('su'); toast('👋 Logged out!');
     }
 
@@ -4855,7 +5023,7 @@
       document.getElementById('em-bd').textContent = welcomeText(name);
       document.getElementById('emodal').classList.add('on');
     }
-    function welcomeText(n) { return `Subject: Your Throne Awaits, ${n}\n\nOverlord ${n},\n\nThe dungeon awakens. Eight servants answer your call:\n\n😈 Imp — Double Strike: 25% to hit twice\n👹 Orc — Berserk: +50% DMG below 30% HP\n🪨 Golem — Thorns: reflects 30% damage\n👻 Wraith — Phase: 40% evasion\n🐉 Dragon — Burn Aura: scorches nearby foes\n🧛 Vampire — Life Drain: steals 20% DMG as HP\n💀 Necromancer — Soul Harvest: raises fallen foes\n⚡ Berserker — Rage Stack: stronger each kill\n\nV2.8.8 UPDATES:\n• ⚡ Divine Heroes: Holy Knights & Celestial Archers throw projectiles!\n• 🎁 Infinite Redeem: SM30 can be redeemed unlimited times\n• 💰 Mid-exit auto-save: coins & records saved anytime!\n• 🖼 Wave backgrounds: dungeon evolves each wave range\n• ⏩ Speed Control: play at 1×, 2×, or 3× speed!\n• 🛒 Extended Upgrades: Spells & Boosts up to level 15\n\nDefend the gate. Let no hero pass.\n\n— The Dungeon, eternal and dark\n\nDungeon Overlord V2.8.8 · Developed by Soumil Mittal · 2026`; }
+    function welcomeText(n) { return `Subject: Your Throne Awaits, ${n}\n\nOverlord ${n},\n\nThe dungeon awakens. Eight servants answer your call:\n\n😈 Imp — Double Strike: 25% to hit twice\n👹 Orc — Berserk: +50% DMG below 30% HP\n🪨 Golem — Thorns: reflects 30% damage\n👻 Wraith — Phase: 40% evasion\n🐉 Dragon — Burn Aura: scorches nearby foes\n🧛 Vampire — Life Drain: steals 20% DMG as HP\n💀 Necromancer — Soul Harvest: raises fallen foes\n⚡ Berserker — Rage Stack: stronger each kill\n\nV2.9 UPDATES:\n• ⚡ Divine Heroes: Holy Knights & Celestial Archers throw projectiles!\n• 🎁 Infinite Redeem: SM30 can be redeemed unlimited times\n• 💰 Mid-exit auto-save: coins & records saved anytime!\n• 🖼 Wave backgrounds: dungeon evolves each wave range\n• ⏩ Speed Control: play at 1×, 2×, or 3× speed!\n• 🛒 Extended Upgrades: Spells & Boosts up to level 15\n• 📋 Daily Quests: Complete quests and earn up to 10,000 coins!\n\nDefend the gate. Let no hero pass.\n\n— The Dungeon, eternal and dark\n\nDungeon Overlord V2.9 · Developed by Soumil Mittal · 2026`; }
     function closeEmail() {
       document.getElementById('emodal').classList.remove('on');
       if (CU && !CU.welcomeBonusGiven) { CU.welcomeBonusGiven = true; addDarkCoins(100); saveUser(); toast('🎁 +100 🪙 Welcome Bonus!'); }
@@ -4872,11 +5040,21 @@
     function closeLB() { show('lb', false); }
     function openDeckBuilder() { currentDeck = [...(CU?.deck || ['imp', 'orc', 'golem', 'wraith', 'dragon'])]; currentSpellLoadout = [...(CU?.spellLoadout || ['meteor', 'freeze', 'rage'])]; buildDeckUI(); show('deck-builder', true); }
     function closeDeckBuilder() { show('deck-builder', false); }
+    function openQuests() { buildQuests(); show('quests', true); }
+    function closeQuests() { show('quests', false); }
     function goToShopFromReward() { show('reward-screen', false); openShop(); }
     function goToDeckFromReward() { show('reward-screen', false); openDeckBuilder(); }
 
     /* ════ AFTER LOGIN ════ */
-    function afterLogin() { catchUpIdle(); startIdleTicker(); refreshHome(); setTimeout(() => { if (canClaimStreakToday()) toast('🔥 Daily streak reward ready!'); }, 900); }
+    function afterLogin() {
+      // Mark daily login quest
+      if (CU) {
+        CU.questsToday = CU.questsToday || {};
+        CU.questsToday.daily_login = true;
+        saveUser();
+      }
+      catchUpIdle(); startIdleTicker(); refreshHome(); setTimeout(() => { if (canClaimStreakToday()) toast('🔥 Daily streak reward ready!'); }, 900);
+    }
 
     /* ════ ECONOMY ════ */
     function calcBaseCoins(k, w) { return Math.max(1, k * w); }
@@ -5010,9 +5188,9 @@
       golem: { emoji: '🪨', img: 'characters/villains/the_golem.png', cost: 60, hp: 300, dmg: 8, spd: 0.5, rad: 28, col: '#a0897a', trait: 'Thorns', tier: 'rare', abilityName: 'Reflects 30% damage back' },
       wraith: { emoji: '👻', img: 'characters/villains/the_wraith.png', cost: 80, hp: 60, dmg: 15, spd: 2.5, rad: 18, col: '#80deea', trait: 'Phase', tier: 'rare', abilityName: '40% evasion + phases through allies' },
       dragon: { emoji: '🐉', img: 'characters/villains/the_dragon.png', cost: 150, hp: 500, dmg: 40, spd: 1.0, rad: 35, col: '#ff8a80', trait: 'Burn Aura', tier: 'epic', abilityName: 'Burns ALL nearby foes (max 3 on field!)' },
-      vampire: { emoji: '🧛', img: 'characters/villains/the_vampire.png', cost: 70, hp: 80, dmg: 12, spd: 1.6, rad: 24, col: '#ce93d8', trait: 'Life Drain', tier: 'rare', abilityName: 'Steals 20% of damage dealt as HP' },
-      necromancer: { emoji: '💀', cost: 110, hp: 90, dmg: 10, spd: 0.8, rad: 22, col: '#80cbc4', trait: 'Soul Harvest', tier: 'epic', abilityName: 'Raises fallen enemies as zombies' },
-      berserker: { emoji: '⚡', cost: 90, hp: 150, dmg: 20, spd: 1.4, rad: 24, col: '#ffcc02', trait: 'Rage Stack', tier: 'legend', abilityName: 'DMG +10% per kill this match' },
+      vampire: { emoji: '🧛', img: 'characters/villains/the_vampire.png', cost: 70, hp: 80, dmg: 12, spd: 1.6, rad: 30, col: '#ce93d8', trait: 'Life Drain', tier: 'rare', abilityName: 'Steals 20% of damage dealt as HP' },
+      necromancer: { emoji: '💀', img: 'characters/villains/the_necromancer.png', cost: 110, hp: 90, dmg: 10, spd: 0.8, rad: 22, col: '#80cbc4', trait: 'Soul Harvest', tier: 'epic', abilityName: 'Raises fallen enemies as zombies' },
+      berserker: { emoji: '⚡', img: 'characters/villains/the_berserker.png', cost: 90, hp: 150, dmg: 20, spd: 1.4, rad: 24, col: '#ffcc02', trait: 'Rage Stack', tier: 'legend', abilityName: 'DMG +10% per kill this match' },
     };
 
     function makeCharImg(src) { const img = new Image(); img.failed = false; img.src = src; img.onerror = () => { img.failed = true; }; return img; }
@@ -5234,6 +5412,70 @@
     function shopTab(t) { curShopTab = t;['units', 'spells', 'evolution', 'boosts'].forEach(s => { document.getElementById('stab-' + s).classList.toggle('on', s === t); document.getElementById('shop-' + s).style.display = s === t ? '' : 'none'; }); }
     function buildShop() { updateDCDisplays(); buildUnitUpgrades(); buildSpellUpgrades(); buildBoosts(); buildEvolution(); }
 
+    /* ════ DAILY QUESTS ════ */
+    const DAILY_QUESTS = [
+      { id: 'daily_login', name: 'Daily Login', emoji: '🌅', desc: 'Log in to the realm', progress: () => (CU?.questsToday?.daily_login ? 1 : 0), max: 1, reward: 1000 },
+      { id: 'play_matches', name: 'Play 3 Matches', emoji: '⚔️', desc: 'Complete 3 battles', progress: () => CU?.questsToday?.play_matches || 0, max: 3, reward: 2000 },
+      { id: 'win_rounds', name: 'Win 10 Rounds', emoji: '🏆', desc: 'Reach wave 10 in total', progress: () => CU?.questsToday?.win_rounds || 0, max: 10, reward: 3000 },
+      { id: 'earn_coins', name: 'Earn 5000 Coins', emoji: '🪙', desc: 'Earn coins from battles', progress: () => CU?.questsToday?.earn_coins || 0, max: 5000, reward: 2000 },
+      { id: 'defeat_enemies', name: 'Defeat 50 Enemies', emoji: '💀', desc: 'Defeat enemies in battles', progress: () => CU?.questsToday?.defeat_enemies || 0, max: 50, reward: 2000 }
+    ];
+
+    function buildQuests() {
+      const container = document.getElementById('quest-list');
+      if (!container) return;
+      container.innerHTML = '';
+      const now = Date.now(), lastReset = CU?.questsLastReset || 0, daysPassed = Math.floor((now - lastReset) / (24 * 60 * 60 * 1000));
+      if (daysPassed >= 1) { CU.questsToday = {}; CU.questsLastReset = now; saveUser(); }
+      DAILY_QUESTS.forEach(quest => {
+        const prog = quest.progress(), completed = prog >= quest.max, claimedToday = CU?.questsClaimed?.[quest.id];
+        const card = document.createElement('div');
+        card.className = `quest-card ${completed ? 'completed' : ''}`;
+        const progText = quest.max >= 100 ? `${prog} / ${quest.max}` : `${prog} / ${quest.max}`;
+        card.innerHTML = `
+          <div class="quest-emoji">${quest.emoji}</div>
+          <div class="quest-mid">
+            <div class="quest-name">${quest.name}</div>
+            <div class="quest-desc">${quest.desc}</div>
+            ${completed && !claimedToday ? '<div class="quest-progress" style="color:#00ff00">✓ Ready to claim!</div>' : completed && claimedToday ? '<div class="quest-progress" style="color:#888">Claimed today</div>' : '<div class="quest-progress">${progText}</div>'}
+          </div>
+          <div class="quest-reward">
+            <div class="quest-reward-amt">${quest.reward}</div>
+            <div class="quest-reward-label">🪙</div>
+          </div>
+        `;
+        if (completed && !claimedToday) {
+          card.style.cursor = 'pointer';
+          card.onclick = () => claimQuest(quest.id, quest.reward);
+        }
+        container.appendChild(card);
+      });
+      updateQuestResetTime();
+    }
+
+    function claimQuest(questId, reward) {
+      if (!CU) return;
+      CU.questsClaimed = CU.questsClaimed || {};
+      if (CU.questsClaimed[questId]) { toast('✓ Already claimed!'); return; }
+      CU.questsClaimed[questId] = true;
+      addDarkCoins(reward);
+      saveUser();
+      toast(`🎉 +${reward} 🪙 Quest Complete!`);
+      buildQuests();
+    }
+
+    function updateQuestResetTime() {
+      const el = document.getElementById('quest-reset-txt');
+      if (!el) return;
+      const now = Date.now(), lastReset = CU?.questsLastReset || now;
+      const nextReset = lastReset + (24 * 60 * 60 * 1000);
+      const diff = Math.max(0, nextReset - now);
+      const hours = Math.floor(diff / (60 * 60 * 1000));
+      const mins = Math.floor((diff % (60 * 60 * 1000)) / (60 * 1000));
+      const secs = Math.floor((diff % (60 * 1000)) / 1000);
+      el.textContent = `Resets in: ${hours.toString().padStart(2, '0')}:${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+    }
+
     function buildUnitUpgrades() {
       const grid = document.getElementById('uup-grid'); grid.innerHTML = '';
       Object.entries(ALL_UNITS).forEach(([unit, u]) => {
@@ -5317,7 +5559,7 @@
     function toast(msg) { const t = document.createElement('div'); t.className = 'toast'; t.textContent = msg; document.body.appendChild(t); setTimeout(() => t.remove(), 3100); }
 
     /* ════ PRELOADER ════ */
-    const TIPS = ['💡 Freeze spell — allies still attack frozen enemies!', '💡 Dragon Burn Aura: max 3 on field at once', '💡 Units evolve at level 5 & 10!', '💡 Boss spawns 4 assistants at 50% HP (5 after wave 25)', '💡 V2.8.8: Divine Heroes throw projectiles!', '💡 Vampire steals 20% of damage as HP', '💡 Berserker grows stronger each kill', '💡 Necromancer raises fallen enemies as zombies', '💡 Shop upgrades cost +30% more each level', '💡 Speed Control: play at 1×, 2×, or 3×!', '💡 SM30 code: redeemable unlimited times!'];
+    const TIPS = ['💡 Freeze spell — allies still attack frozen enemies!', '💡 Dragon Burn Aura: max 3 on field at once', '💡 Units evolve at level 5 & 10!', '💡 Boss spawns 4 assistants at 50% HP (5 after wave 25)', '💡 V2.9: Divine Heroes throw projectiles!', '💡 Vampire steals 20% of damage as HP', '💡 Berserker grows stronger each kill', '💡 Necromancer raises fallen enemies as zombies', '💡 Shop upgrades cost +30% more each level', '💡 Speed Control: play at 1×, 2×, or 3×!', '💡 SM30 code: redeemable unlimited times!'];
     const MSGS = ['Awakening the dungeon…', 'Summoning warriors…', 'Forging spell crystals…', 'Building the shop…', 'Arranging leaderboard…', 'Opening the dark gate…', 'Darkness rises…'];
 
     function spawnEmbers() { const w = document.getElementById('embers'); for (let i = 0; i < 22; i++) { const e = document.createElement('div'); e.className = 'emb'; const d = (Math.random() - .5) * 130; e.style.cssText = `left:${Math.random() * 100}%;bottom:0;--d:${d}px;width:${Math.random() * 3 + 1}px;height:${Math.random() * 3 + 1}px;background:hsl(${20 + Math.random() * 20},100%,${50 + Math.random() * 20}%);animation-duration:${3 + Math.random() * 5}s;animation-delay:${Math.random() * 5}s;opacity:${Math.random() * .7 + .2}`; w.appendChild(e); } }
@@ -5344,7 +5586,7 @@
     function finishLoad() { show('pre', false); if (CU) { show('home', true); afterLogin(); } else show('auth', true); }
 
     /* ══════════════════════════════════════════════════
-       GAME ENGINE — V2.8.8
+       GAME ENGINE — V2.9
     ══════════════════════════════════════════════════ */
     const gc = document.getElementById('gc'), ctx = gc.getContext('2d');
     let W, H, pathY, pathH;
@@ -5876,9 +6118,15 @@
       minions = []; heroes = []; particles = []; meteors = []; zombies = []; projectiles = [];
       freezeT = 0; rageT = 0; shadowT = 0; actSpl = null; gT = 0; mT = 0; sT = 0; hT = 0; matchBossesKilled = 0; waveStartTime = Date.now();
 
-      // V2.8.8: Reset partial-credit trackers for new session
+      // V2.9: Reset partial-credit trackers for new session
       partialCoinsAwarded = 0;
       killsCreditedToStats = false;
+
+      // Track quest: Play matches
+      if (CU) {
+        CU.questsToday = CU.questsToday || {};
+        CU.questsToday.play_matches = (CU.questsToday.play_matches || 0) + 1;
+      }
 
       Object.values(SPELLS).forEach(s => s.until = 0);
       loadActiveSpellLoadout();
@@ -5892,7 +6140,7 @@
       GA = true; paused = false; document.getElementById('pov').classList.remove('on');
       document.getElementById('gw').classList.add('on');
       lastTs = performance.now(); requestAnimationFrame(loop);
-      startAutoSave(); // V2.8.8: start mid-exit auto-save (no double-count)
+      startAutoSave(); // V2.9: start mid-exit auto-save (no double-count)
       if (CU) { CU.gamesPlayed = (CU.gamesPlayed || 0) + 1; CU.sessionDays = CU.sessionDays || []; CU.sessionDays.push(Date.now()); if (CU.sessionDays.length > 60) CU.sessionDays = CU.sessionDays.slice(-60); saveUser(); }
     }
 
@@ -5915,6 +6163,14 @@
           CU.totalGold = (CU.totalGold || 0) + Math.floor(goldE);
           killsCreditedToStats = true;
         }
+        
+        // Track quests: earn coins and defeat enemies
+        CU.questsToday = CU.questsToday || {};
+        CU.questsToday.earn_coins = (CU.questsToday.earn_coins || 0) + sessionTotal;
+        CU.questsToday.defeat_enemies = (CU.questsToday.defeat_enemies || 0) + kills;
+        CU.questsToday.win_rounds = Math.max(CU.questsToday.win_rounds || 0, wave);
+        CU.questsToday.daily_login = true;
+        
         saveUser();
       }
 
@@ -5960,7 +6216,7 @@
       try { const users = LS.g('do_users') || {}; users[CU.email] = CU; LS.s('do_users', users); LS.s('do_current', CU.email); } catch (e) { console.warn('saveUser failed:', e); }
     }
 
-    // V2.8.8: Save on tab hide / minimize — credit delta only, no double-count
+    // V2.9: Save on tab hide / minimize — credit delta only, no double-count
     document.addEventListener('visibilitychange', () => {
       if (document.hidden) {
         if (GA && CU && kills > 0) {
@@ -5972,7 +6228,7 @@
       }
     });
 
-    // V2.8.8: Save on browser close — commit everything
+    // V2.9: Save on browser close — commit everything
     window.addEventListener('beforeunload', () => {
       if (GA && CU && kills > 0) {
         creditPartialCoins(true); // include kills/gold stats on close
