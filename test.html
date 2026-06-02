@@ -1925,39 +1925,53 @@
       padding: 18px 16px;
       position: sticky;
       top: 0;
-      background: linear-gradient(135deg, rgba(20, 8, 40, .96), rgba(15, 5, 25, .94));
+      background: linear-gradient(135deg, rgba(100, 10, 200, .96), rgba(60, 5, 120, .94));
       z-index: 15;
-      border-bottom: 2px solid rgba(100, 0, 255, .18);
+      border-bottom: 2px solid rgba(150, 100, 255, .25);
       border-radius: 0 0 14px 14px;
       backdrop-filter: blur(12px);
-      box-shadow: 0 8px 32px rgba(100, 50, 255, .12), 0 0 0 1px rgba(100, 0, 255, .1);
-      margin-bottom: 16px
+      box-shadow: 0 8px 32px rgba(100, 50, 255, .18), 0 0 0 1px rgba(150, 100, 255, .15);
+      margin-bottom: 16px;
+    }
+
+    .quest-hdr::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom, rgba(150, 100, 255, .1), transparent);
+      pointer-events: none;
+      border-radius: 0 0 14px 14px;
     }
 
     .quest-title {
-      font-size: 1.1rem;
+      font-size: 1.15rem;
       font-weight: 700;
       color: #fff;
       font-family: var(--ft);
-      letter-spacing: 1px;
+      letter-spacing: 1.2px;
       flex: 1;
-      text-transform: uppercase
+      text-transform: uppercase;
+      position: relative;
+      z-index: 1;
     }
 
     .quest-info {
       text-align: center;
       margin: 14px 0 20px;
-      padding: 10px;
-      background: rgba(100, 0, 255, .08);
-      border-radius: 10px;
-      border: 1px solid rgba(100, 0, 255, .2)
+      padding: 14px 16px;
+      background: linear-gradient(135deg, rgba(100, 0, 255, .12), rgba(150, 50, 255, .08));
+      border-radius: 12px;
+      border: 1.5px solid rgba(150, 100, 255, .3);
+      box-shadow: 0 4px 12px rgba(100, 0, 255, .1), inset 0 1px 0 rgba(255, 255, 255, .05);
     }
 
     .quest-reward-pool {
-      font-size: .9rem;
+      font-size: .95rem;
       color: #ffd700;
-      font-weight: 600;
-      letter-spacing: .5px
+      font-weight: 700;
+      letter-spacing: .8px;
+      font-family: var(--ft);
+      text-transform: uppercase;
     }
 
     .quest-list {
@@ -1968,28 +1982,45 @@
     }
 
     .quest-card {
-      background: linear-gradient(135deg, rgba(20, 10, 30, .85), rgba(30, 10, 25, .75));
-      border: 1.5px solid rgba(100, 0, 255, .25);
+      background: linear-gradient(135deg, rgba(100, 20, 200, .15), rgba(50, 10, 100, .1));
+      border: 2px solid rgba(150, 100, 255, .3);
       border-radius: 14px;
-      padding: 14px;
+      padding: 16px 14px;
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 14px;
       position: relative;
       overflow: hidden;
       transition: .22s;
-      cursor: pointer
+      cursor: pointer;
+      box-shadow: 0 4px 16px rgba(100, 0, 200, .08), inset 0 1px 0 rgba(255, 255, 255, .05);
+    }
+
+    .quest-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(255, 255, 255, .05), transparent);
+      pointer-events: none;
+      border-radius: 14px;
     }
 
     .quest-card:hover {
-      border-color: rgba(100, 0, 255, .45);
-      transform: translateX(4px);
-      box-shadow: 0 8px 20px rgba(100, 0, 255, .15)
+      border-color: rgba(150, 100, 255, .55);
+      transform: translateY(-2px);
+      box-shadow: 0 12px 28px rgba(100, 0, 200, .2), inset 0 1px 0 rgba(255, 255, 255, .08);
+      background: linear-gradient(135deg, rgba(120, 30, 220, .22), rgba(60, 15, 120, .15));
     }
 
     .quest-card.completed {
-      opacity: .6;
-      border-color: rgba(0, 200, 0, .3)
+      background: linear-gradient(135deg, rgba(0, 150, 0, .12), rgba(0, 80, 0, .08));
+      border-color: rgba(0, 220, 100, .4);
+      opacity: 1;
+    }
+
+    .quest-card.completed:hover {
+      border-color: rgba(0, 220, 100, .6);
+      box-shadow: 0 12px 28px rgba(0, 200, 100, .15), inset 0 1px 0 rgba(255, 255, 255, .08);
     }
 
     .quest-emoji {
@@ -2045,16 +2076,20 @@
 
     .quest-footer {
       text-align: center;
-      padding: 12px;
-      background: rgba(100, 0, 255, .05);
-      border-radius: 10px;
-      border: 1px solid rgba(100, 0, 255, .15)
+      padding: 14px 16px;
+      background: linear-gradient(135deg, rgba(100, 0, 255, .08), rgba(80, 0, 150, .05));
+      border-radius: 12px;
+      border: 1.5px solid rgba(150, 100, 255, .25);
+      box-shadow: 0 4px 12px rgba(100, 0, 255, .08), inset 0 1px 0 rgba(255, 255, 255, .03);
+      margin-top: 16px;
     }
 
     .quest-reset-txt {
-      font-size: .75rem;
-      color: rgba(255, 255, 255, .6);
-      letter-spacing: .5px
+      font-size: .8rem;
+      color: rgba(255, 215, 0, .8);
+      letter-spacing: .6px;
+      font-weight: 600;
+      font-family: var(--ft);
     }
 
     @keyframes gridFadeIn {
@@ -2222,12 +2257,13 @@
       background: linear-gradient(135deg, rgba(20, 10, 30, .85), rgba(30, 10, 25, .75));
       border: 1.5px solid rgba(155, 0, 255, .2);
       border-radius: 16px;
-      padding: 16px 14px;
+      padding: 14px 12px;
       display: flex;
       flex-direction: column;
       gap: 10px;
       box-shadow: 0 10px 24px rgba(0, 0, 0, .18);
       transition: .22s;
+      min-height: 280px;
     }
 
     .evo-card:hover {
@@ -2242,14 +2278,23 @@
     }
 
     .evo-face {
-      font-size: 1.8rem;
-      width: 46px;
-      height: 46px;
+      font-size: 2.4rem;
+      width: 80px;
+      height: 80px;
       border-radius: 14px;
       display: grid;
       place-items: center;
-      background: rgba(255, 255, 255, .08);
-      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .08);
+      background: linear-gradient(135deg, rgba(155, 0, 255, .15), rgba(100, 0, 200, .1));
+      box-shadow: inset 0 0 0 1.5px rgba(155, 0, 255, .25);
+      flex-shrink: 0;
+      margin-bottom: 6px;
+    }
+
+    .evo-face img {
+      width: 100%;
+      height: 100%;
+      border-radius: 12px;
+      object-fit: cover;
     }
 
     .evo-name {
@@ -4350,7 +4395,7 @@
     <div class="pc">
       <div class="psw">⚔️</div>
       <div class="plo">DUNGEON OVERLORD</div>
-      <div class="pve">V 2 . 8 . 8 · BY SOUMIL MITTAL</div>
+      <div class="pve">V 2 . 9 · BY SOUMIL MITTAL</div>
       <div class="ppc" id="ppct">0%</div>
       <div class="ptr">
         <div class="pfi" id="pfill"></div>
@@ -4435,12 +4480,10 @@
         <div class="hnm" id="nav-nm">Overlord</div>
       </div>
       <div class="hrgt">
-        <div class="dc-pill">🪙<span id="nav-dc">0</span></div>
-        <div class="dc-pill" style="background:linear-gradient(135deg,var(--gem),var(--gem2));">💎<span
-            id="nav-gems">0</span></div>
         <div class="nico" onclick="openLB()">🏆</div>
         <div class="nico" onclick="openShop()">🛒</div>
         <div class="nico" onclick="openSett()">⚙️</div>
+        <div class="nico" onclick="openQuests()">📜</div>
         <div class="nico" onclick="doLogout()">🚪</div>
       </div>
     </div>
@@ -4448,7 +4491,7 @@
       <div class="hban">
         <div class="hban-ey">You are the Darkness</div>
         <h1 class="hban-t">DUNGEON<br>OVERLORD</h1>
-        <div class="hban-sub">V 2 . 8 . 8 · SOUMIL MITTAL</div>
+        <div class="hban-sub">V 2 . 9 · SOUMIL MITTAL</div>
       </div>
       <div class="wallet-card">
         <div>
@@ -4502,10 +4545,7 @@
         <div class="hfeat">💀 Bosses</div>
         <div class="hfeat">⚡ Spells</div>
         <div class="hfeat">🏆 Leaderboard</div>
-        <div class="hfeat">📜 Daily Quests</div>
-      </div>
-      <div style="display:flex;justify-content:center;margin:16px 0">
-        <button class="btnp" onclick="openQuests()" style="background:linear-gradient(135deg,#6a00ff,#b000ff);max-width:300px">📜 DAILY QUESTS — Earn up to 10K 🪙</button>
+        <div class="hfeat">⏩ Speed Control</div>
       </div>
       <div class="hmyst">
         <div class="shd">Your Record</div>
@@ -6163,14 +6203,14 @@
           CU.totalGold = (CU.totalGold || 0) + Math.floor(goldE);
           killsCreditedToStats = true;
         }
-        
+
         // Track quests: earn coins and defeat enemies
         CU.questsToday = CU.questsToday || {};
         CU.questsToday.earn_coins = (CU.questsToday.earn_coins || 0) + sessionTotal;
         CU.questsToday.defeat_enemies = (CU.questsToday.defeat_enemies || 0) + kills;
         CU.questsToday.win_rounds = Math.max(CU.questsToday.win_rounds || 0, wave);
         CU.questsToday.daily_login = true;
-        
+
         saveUser();
       }
 
