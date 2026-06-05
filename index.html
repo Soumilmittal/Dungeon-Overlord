@@ -7,7 +7,7 @@
     content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="theme-color" content="#06000e">
-  <title>Dungeon Overlord V2.9</title>
+  <title>Dungeon Overlord V2.9.1</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
@@ -4504,7 +4504,7 @@
   <div class="scr off" id="auth">
     <div class="acard">
       <div class="alo">⚔ DUNGEON OVERLORD</div>
-      <div class="asu">V2.9 · By Soumil Mittal</div>
+      <div class="asu">V2.9.1 · By Soumil Mittal</div>
       <div class="atbs">
         <button class="atb on" id="tab-su" onclick="switchTab('su')">SIGN UP</button>
         <button class="atb" id="tab-li" onclick="switchTab('li')">SIGN IN</button>
@@ -4546,7 +4546,7 @@
           <button class="redeem-btn" onclick="doRedeem()">REDEEM</button>
         </div>
       </div>
-      <div class="adev">DEVELOPED BY SOUMIL MITTAL · DUNGEON OVERLORD V2.9 · 2026</div>
+      <div class="adev">DEVELOPED BY SOUMIL MITTAL · DUNGEON OVERLORD V2.9.1 · 2026</div>
     </div>
   </div>
 
@@ -4766,7 +4766,7 @@
         <div class="bck" onclick="closeSett()">←</div>
         <div class="set-title-wrap">
           <div class="stit">SETTINGS</div>
-          <div class="stsub">V2.9 CONTROL PANEL</div>
+          <div class="stsub">V2.9.1 CONTROL PANEL</div>
         </div>
       </div>
       <div class="ssec2">
@@ -4894,7 +4894,7 @@
         <div class="crdcard">
           <div class="crn">Soumil Mittal</div>
           <div class="crr">GAME DEVELOPER & DESIGNER</div>
-          <div class="crv">DUNGEON OVERLORD V2.9 · 2026</div>
+          <div class="crv">DUNGEON OVERLORD V2.9.1 · 2026</div>
         </div>
       </div>
     </div>
@@ -5022,7 +5022,7 @@
       <button class="rw-btn-play" onclick="startFromDeck()">⚔ PLAY AGAIN</button>
       <button class="rw-btn-home" onclick="quitHome()">🏠 Home</button>
     </div>
-    <div class="rw-dev">DUNGEON OVERLORD V2.9 · SOUMIL MITTAL</div>
+    <div class="rw-dev">DUNGEON OVERLORD V2.9.1 · SOUMIL MITTAL</div>
   </div>
 
   <!-- STREAK MODAL -->
@@ -5164,7 +5164,7 @@
       document.getElementById('em-bd').textContent = welcomeText(name);
       document.getElementById('emodal').classList.add('on');
     }
-    function welcomeText(n) { return `Subject: Your Throne Awaits, ${n}\n\nOverlord ${n},\n\nThe dungeon awakens. Eight servants answer your call:\n\n😈 Imp — Double Strike: 25% to hit twice\n👹 Orc — Berserk: +50% DMG below 30% HP\n🪨 Golem — Thorns: reflects 30% damage\n👻 Wraith — Phase: 40% evasion\n🐉 Dragon — Burn Aura: scorches nearby foes\n🧛 Vampire — Life Drain: steals 20% DMG as HP\n💀 Necromancer — Soul Harvest: raises fallen foes\n⚡ Berserker — Rage Stack: stronger each kill\n\nV2.9 UPDATES:\n• ⚡ Divine Heroes: Holy Knights & Celestial Archers throw projectiles!\n• 🎁 Infinite Redeem: SM30 can be redeemed unlimited times\n• 💰 Mid-exit auto-save: coins & records saved anytime!\n• 🖼 Wave backgrounds: dungeon evolves each wave range\n• ⏩ Speed Control: play at 1×, 2×, or 3× speed!\n• 🛒 Extended Upgrades: Spells & Boosts up to level 15\n• 📋 Daily Quests: Complete quests and earn up to 10,000 coins!\n\nDefend the gate. Let no hero pass.\n\n— The Dungeon, eternal and dark\n\nDungeon Overlord V2.9 · Developed by Soumil Mittal · 2026`; }
+    function welcomeText(n) { return `Subject: Your Throne Awaits, ${n}\n\nOverlord ${n},\n\nThe dungeon awakens. Eight servants answer your call:\n\n😈 Imp — Double Strike: 25% to hit twice\n👹 Orc — Berserk: +50% DMG below 30% HP\n🪨 Golem — Thorns: reflects 30% damage\n👻 Wraith — Phase: 40% evasion\n🐉 Dragon — Burn Aura: scorches nearby foes\n🧛 Vampire — Life Drain: steals 20% DMG as HP\n💀 Necromancer — Soul Harvest: raises fallen foes\n⚡ Berserker — Rage Stack: stronger each kill\n\nV2.9.1 UPDATES:\n• ⚡ Divine Heroes: Holy Knights & Celestial Archers throw projectiles!\n• 🎁 Infinite Redeem: SM30 can be redeemed unlimited times\n• 💰 Mid-exit auto-save: coins & records saved anytime!\n• 🖼 Wave backgrounds: dungeon evolves each wave range\n• ⏩ Speed Control: play at 1×, 2×, or 3× speed!\n• 🛒 Extended Upgrades: Spells & Boosts up to level 15\n• 📋 Daily Quests: Complete quests and earn up to 10,000 coins!\n\nDefend the gate. Let no hero pass.\n\n— The Dungeon, eternal and dark\n\nDungeon Overlord V2.9.1 · Developed by Soumil Mittal · 2026`; }
     function closeEmail() {
       document.getElementById('emodal').classList.remove('on');
       if (CU && !CU.welcomeBonusGiven) { CU.welcomeBonusGiven = true; addDarkCoins(100); saveUser(); toast('🎁 +100 🪙 Welcome Bonus!'); }
@@ -5830,7 +5830,7 @@
     function toast(msg) { const t = document.createElement('div'); t.className = 'toast'; t.textContent = msg; document.body.appendChild(t); setTimeout(() => t.remove(), 3100); }
 
     /* ════ PRELOADER ════ */
-    const TIPS = ['💡 Freeze spell — allies still attack frozen enemies!', '💡 Dragon Burn Aura: max 3 on field at once', '💡 Units evolve at level 5 & 10!', '💡 Boss spawns 4 assistants at 50% HP (5 after wave 25)', '💡 V2.9: Divine Heroes throw projectiles!', '💡 Vampire steals 20% of damage as HP', '💡 Berserker grows stronger each kill', '💡 Necromancer raises fallen enemies as zombies', '💡 Shop upgrades cost +30% more each level', '💡 Speed Control: play at 1×, 2×, or 3×!', '💡 SM30 code: redeemable unlimited times!'];
+    const TIPS = ['💡 Freeze spell — allies still attack frozen enemies!', '💡 Dragon Burn Aura: max 3 on field at once', '💡 Units evolve at level 5 & 10!', '💡 Boss spawns 4 assistants at 50% HP (5 after wave 25)', '💡 V2.9.1: Divine Heroes throw projectiles!', '💡 Vampire steals 20% of damage as HP', '💡 Berserker grows stronger each kill', '💡 Necromancer raises fallen enemies as zombies', '💡 Shop upgrades cost +30% more each level', '💡 Speed Control: play at 1×, 2×, or 3×!', '💡 SM30 code: redeemable unlimited times!'];
     const MSGS = ['Awakening the dungeon…', 'Summoning warriors…', 'Forging spell crystals…', 'Building the shop…', 'Arranging leaderboard…', 'Opening the dark gate…', 'Darkness rises…'];
 
     function spawnEmbers() { const w = document.getElementById('embers'); for (let i = 0; i < 22; i++) { const e = document.createElement('div'); e.className = 'emb'; const d = (Math.random() - .5) * 130; e.style.cssText = `left:${Math.random() * 100}%;bottom:0;--d:${d}px;width:${Math.random() * 3 + 1}px;height:${Math.random() * 3 + 1}px;background:hsl(${20 + Math.random() * 20},100%,${50 + Math.random() * 20}%);animation-duration:${3 + Math.random() * 5}s;animation-delay:${Math.random() * 5}s;opacity:${Math.random() * .7 + .2}`; w.appendChild(e); } }
@@ -5857,7 +5857,7 @@
     function finishLoad() { show('pre', false); if (CU) { show('home', true); afterLogin(); } else show('auth', true); }
 
     /* ══════════════════════════════════════════════════
-       GAME ENGINE — V2.9
+       GAME ENGINE — V2.9.1
     ══════════════════════════════════════════════════ */
     const gc = document.getElementById('gc'), ctx = gc.getContext('2d');
     let W, H, pathY, pathH;
