@@ -1930,6 +1930,7 @@
       position: relative;
       z-index: 1;
     }
+
     /* ── QUEST STYLES ── */
     .quest-inner {
       width: min(600px, 100%);
@@ -3198,6 +3199,7 @@
         font-size: .62rem;
       }
     }
+
     /* ── GAME HUD ── */
     #gw {
       position: fixed;
@@ -5660,6 +5662,92 @@
       el.textContent = `Resets in: ${hours.toString().padStart(2, '0')}:${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
     }
 
+    let holdTimeout = null;
+    let holdInterval = null;
+
+    function stopGlobalHold() {
+      if (holdTimeout) { clearTimeout(holdTimeout); holdTimeout = null; }
+      if (holdInterval) { clearInterval(holdInterval); holdInterval = null; }
+    }
+
+    window.addEventListener('mouseup', stopGlobalHold);
+    window.addEventListener('touchend', stopGlobalHold);
+    window.addEventListener('touchcancel', stopGlobalHold);
+
+    function startHold(e, callback) {
+      if (e.type === 'mousedown' && e.button !== 0) return;
+      const res = callback();
+      if (res === false) return;
+      stopGlobalHold();
+      holdTimeout = setTimeout(() => {
+        holdInterval = setInterval(() => {
+          const keepGoing = callback();
+          if (keepGoing === false) {
+            stopGlobalHold();
+          }
+        }, 100);
+      }, 450);
+    }
+
+    function upgradeUnit(unit, stat, key, upg) {
+      if (getUL(key) >= upg.max) {
+        stopGlobalHold();
+        return false;
+      }
+      const c = getUpgradeCost(upg.baseCost, getUL(key));
+      if (!spendDC(c)) {
+        toast('❌ Not enough coins!');
+        stopGlobalHold();
+        return false;
+      }
+      setUL(key, getUL(key) + 1);
+      toast(`✅ ${unit.toUpperCase()} ${upg.label}!`);
+      vib(30);
+      buildUnitUpgrades();
+      return true;
+    }
+
+    function buySpell(id, baseCost, max) {
+      const lvl = getUL(id);
+      if (lvl >= max) {
+        toast('Already maxed!');
+        stopGlobalHold();
+        return false;
+      }
+      const cost = getUpgradeCost(baseCost, lvl);
+      if (!spendDC(cost)) {
+        toast('❌ Not enough coins!');
+        stopGlobalHold();
+        return false;
+      }
+      setUL(id, lvl + 1);
+      toast('✅ Spell upgraded!');
+      vib(30);
+      buildSpellUpgrades();
+      return true;
+    }
+
+    function buyBoost(id, baseCost, max) {
+      const lvl = getUL(id);
+      if (lvl >= max) {
+        toast('Already maxed!');
+        stopGlobalHold();
+        return false;
+      }
+      const cost = getUpgradeCost(baseCost, lvl);
+      if (!spendDC(cost)) {
+        toast('❌ Not enough coins!');
+        stopGlobalHold();
+        return false;
+      }
+      setUL(id, lvl + 1);
+      toast(id.startsWith('idle') ? '✅ Idle boost upgraded!' : '✅ Boost active next match!');
+      vib(30);
+      buildBoosts();
+      updateIdleUI();
+      return true;
+    }
+
     function buildUnitUpgrades() {
       const grid = document.getElementById('uup-grid'); grid.innerHTML = '';
       Object.entries(ALL_UNITS).forEach(([unit, u]) => {
@@ -5687,7 +5775,8 @@
             const cls = upg.stat === 'hp' ? 'uup-btn-hp' : upg.stat === 'dmg' ? 'uup-btn-dmg' : 'uup-btn-spd';
             const b = document.createElement('button'); b.className = 'uup-upbtn ' + cls + (canAfford ? '' : ' uup-btn-dis');
             b.innerHTML = `${upg.label} <span style="opacity:.55;font-size:.6rem">${cost}🪙 (${lvl}/${upg.max})</span>`;
-            b.onclick = () => { const c = getUpgradeCost(upg.baseCost, getUL(key)); if (!spendDC(c)) { toast('❌ Not enough coins!'); return; } setUL(key, getUL(key) + 1); toast(`✅ ${unit.toUpperCase()} ${upg.label}!`); vib(30); buildUnitUpgrades(); };
+            b.onmousedown = (e) => startHold(e, () => upgradeUnit(unit, upg.stat, key, upg));
+            b.ontouchstart = (e) => { e.preventDefault(); startHold(e, () => upgradeUnit(unit, upg.stat, key, upg)); };
             row.appendChild(b);
           }
         });
@@ -5698,11 +5787,10 @@
       SHOP_SPELLS.forEach(sp => {
         const lvl = getUL(sp.id), maxed = lvl >= sp.max, cost = getUpgradeCost(sp.baseCost, lvl), currVal = sp.baseVal - (lvl * sp.reduce), nextVal = sp.baseVal - ((lvl + 1) * sp.reduce), canAfford = (CU?.darkCoins || 0) >= cost;
         const card = document.createElement('div'); card.className = 'spl-card';
-        card.innerHTML = `<div class="spl-ico">${sp.emoji}</div><div class="spl-info"><div class="spl-name">${sp.name}${maxed ? ' <span style="color:#00e676;font-size:.62rem">(MAX)</span>' : ''}</div><div class="spl-desc">${sp.desc}</div><div class="spl-stat">CD: <span>${(currVal / 1000).toFixed(1)}s</span>${!maxed ? ` → ${(nextVal / 1000).toFixed(1)}s` : ''} · Lv.${lvl}/${sp.max}</div></div><button class="spl-buy${maxed ? ' owned' : ''}" ${maxed || !canAfford ? 'disabled' : ''} onclick="buySpell('${sp.id}',${sp.baseCost},${sp.max})">${maxed ? '✓ MAX' : (canAfford ? cost + '🪙' : 'Low')}</button>`;
+        card.innerHTML = `<div class="spl-ico">${sp.emoji}</div><div class="spl-info"><div class="spl-name">${sp.name}${maxed ? ' <span style="color:#00e676;font-size:.62rem">(MAX)</span>' : ''}</div><div class="spl-desc">${sp.desc}</div><div class="spl-stat">CD: <span>${(currVal / 1000).toFixed(1)}s</span>${!maxed ? ` → ${(nextVal / 1000).toFixed(1)}s` : ''} · Lv.${lvl}/${sp.max}</div></div><button class="spl-buy${maxed ? ' owned' : ''}" ${maxed || !canAfford ? 'disabled' : ''} onmousedown="startHold(event, () => buySpell('${sp.id}',${sp.baseCost},${sp.max}))" ontouchstart="event.preventDefault(); startHold(event, () => buySpell('${sp.id}',${sp.baseCost},${sp.max}))">${maxed ? '✓ MAX' : (canAfford ? cost + '🪙' : 'Low')}</button>`;
         grid.appendChild(card);
       });
     }
-    function buySpell(id, baseCost, max) { const lvl = getUL(id); if (lvl >= max) { toast('Already maxed!'); return; } const cost = getUpgradeCost(baseCost, lvl); if (!spendDC(cost)) { toast('❌ Not enough coins!'); return; } setUL(id, lvl + 1); toast('✅ Spell upgraded!'); vib(30); buildSpellUpgrades(); }
     function boostStatText(b, lvl) {
       if (b.stat === 'idleMult') return `${(1 + lvl * .2).toFixed(1)}x idle coins`;
       if (b.stat === 'idleCap') return `${BASE_IDLE_CAP + lvl * 72} idle cap`;
@@ -5718,7 +5806,7 @@
         const lvl = getUL(b.id), maxed = lvl >= b.max, cost = getUpgradeCost(b.baseCost, lvl), canAfford = (CU?.darkCoins || 0) >= cost;
         const card = document.createElement('div'); card.className = 'bst-card';
         const nextText = maxed ? 'MAXED' : boostStatText(b, lvl + 1);
-        card.innerHTML = `<div class="bst-ico">${b.emoji}</div><div class="bst-name">${b.name}</div><div class="bst-desc">${b.desc}</div><div class="bst-prog"><div class="bst-prog-fill" style="width:${(lvl / b.max) * 100}%"></div></div><div class="bst-stat"><span>${boostStatText(b, lvl)}</span>${maxed ? '' : `<span>→ ${nextText}</span>`}</div><div style="font-size:.6rem;color:rgba(255,255,255,.35);margin-bottom:3px">Lv.${lvl}/${b.max}</div><button class="bst-buy${maxed ? ' owned' : ''}" ${maxed || !canAfford ? 'disabled' : ''} onclick="buyBoost('${b.id}',${b.baseCost},${b.max})">${maxed ? '✓ MAX' : (canAfford ? cost + '🪙 BUY' : 'Low')}</button>`;
+        card.innerHTML = `<div class="bst-ico">${b.emoji}</div><div class="bst-name">${b.name}</div><div class="bst-desc">${b.desc}</div><div class="bst-prog"><div class="bst-prog-fill" style="width:${(lvl / b.max) * 100}%"></div></div><div class="bst-stat"><span>${boostStatText(b, lvl)}</span>${maxed ? '' : `<span>→ ${nextText}</span>`}</div><div style="font-size:.6rem;color:rgba(255,255,255,.35);margin-bottom:3px">Lv.${lvl}/${b.max}</div><button class="bst-buy${maxed ? ' owned' : ''}" ${maxed || !canAfford ? 'disabled' : ''} onmousedown="startHold(event, () => buyBoost('${b.id}',${b.baseCost},${b.max}))" ontouchstart="event.preventDefault(); startHold(event, () => buyBoost('${b.id}',${b.baseCost},${b.max}))">${maxed ? '✓ MAX' : (canAfford ? cost + '🪙 BUY' : 'Low')}</button>`;
         grid.appendChild(card);
       });
     }
@@ -5738,7 +5826,6 @@
         grid.appendChild(card);
       });
     }
-    function buyBoost(id, baseCost, max) { const lvl = getUL(id); if (lvl >= max) { toast('Already maxed!'); return; } const cost = getUpgradeCost(baseCost, lvl); if (!spendDC(cost)) { toast('❌ Not enough coins!'); return; } setUL(id, lvl + 1); toast(id.startsWith('idle') ? '✅ Idle boost upgraded!' : '✅ Boost active next match!'); vib(30); buildBoosts(); updateIdleUI(); }
     /* ════ TOAST ════ */
     function toast(msg) { const t = document.createElement('div'); t.className = 'toast'; t.textContent = msg; document.body.appendChild(t); setTimeout(() => t.remove(), 3100); }
 
@@ -5968,7 +6055,8 @@
       if (gold < scaledCost) { toast(`💰 Need ${scaledCost}g`); return; }
       gold -= scaledCost;
       const oy = 0, evoLvl = getEvoLevel(selU);
-      minions.push({ x, y: y + oy, type: selU, ...st, maxHp: st.hp, flash: 0, enraged: Date.now() < rageT, freezeT: 0, evoLvl, berserkerKills: 0, lifedrainAmt: selU === 'vampire' ? Math.floor(st.dmg * .2) : 0, necroTimer: 0 });
+      const nearGate = x >= W - 150;
+      minions.push({ x, y: y + oy, type: selU, ...st, maxHp: st.hp, flash: 0, enraged: Date.now() < rageT, freezeT: 0, evoLvl, berserkerKills: 0, lifedrainAmt: selU === 'vampire' ? Math.floor(st.dmg * .2) : 0, necroTimer: 0, nearGate });
       if (CF.ptcl) burstp(x, y + oy, 6, ALL_UNITS[selU].col);
       if (CU) { CU.unitUsage = CU.unitUsage || {}; CU.unitUsage[selU] = (CU.unitUsage[selU] || 0) + 1; saveUser(); }
       updateHUD();
@@ -6109,6 +6197,30 @@
         if (m.flash > 0) m.flash--;
         if (m.type === 'orc') { const low = m.hp / m.maxHp < .3; if (Math.random() < (low ? .05 : .015) * gameSpeed && m.hp < m.maxHp) m.hp += low ? 2 : 1; }
         m.enraged = Date.now() < rageT;
+        if (!m.nearGate && !m.dead) {
+          let nearestHero = null;
+          let minDist = Infinity;
+          heroes.forEach(h => {
+            if (h.dead) return;
+            const dx = h.x - m.x;
+            const dy = h.y - m.y;
+            const dist = Math.sqrt(dx * dx + dy * dy);
+            if (dist < minDist) {
+              minDist = dist;
+              nearestHero = h;
+            }
+          });
+          if (nearestHero) {
+            const dx = nearestHero.x - m.x;
+            const dy = nearestHero.y - m.y;
+            const dist = Math.sqrt(dx * dx + dy * dy);
+            if (dist > (m.rad + nearestHero.rad - 2)) {
+              const speed = 0.22 * gameSpeed;
+              m.x += (dx / dist) * speed;
+              m.y += (dy / dist) * speed;
+            }
+          }
+        }
       });
       minions = minions.filter(m => !m.dead);
       zombies.forEach(z => { if (Date.now() - z.born > z.life) z.dead = true; z.x += z.spd * .5 * gameSpeed; });
