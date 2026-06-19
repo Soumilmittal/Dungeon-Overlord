@@ -7,7 +7,7 @@
     content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="theme-color" content="#06000e">
-  <title>Dungeon Overlord V2.9.1</title>
+  <title>Dungeon Overlord V2.9.2</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
@@ -4477,6 +4477,179 @@
       background: rgba(255, 255, 255, .08);
       border-radius: 2px
     }
+
+    /* ── LOG BOOK ── */
+    #logbook {
+      background: radial-gradient(circle, rgba(20, 10, 5, 0.9), rgba(6, 0, 10, 0.98));
+      z-index: 200;
+    }
+
+    .book-container {
+      width: min(94vw, 840px);
+      height: 85vh;
+      background: #2b1d0c;
+      border: 8px solid #1a1005;
+      border-radius: 16px;
+      box-shadow: 0 25px 50px rgba(0, 0, 0, 0.8), inset 0 0 20px rgba(0, 0, 0, 0.6);
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+
+    .book-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+      border-bottom: 2px solid #5a3e1a;
+      padding-bottom: 8px;
+    }
+
+    .book-title {
+      font-family: var(--fd);
+      font-size: 1.6rem;
+      color: #ffe4a0;
+      text-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+      margin: 0;
+    }
+
+    .book-close {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: #fff;
+      padding: 6px 14px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-family: var(--ft);
+      font-size: 0.8rem;
+    }
+
+    .book-close:active {
+      transform: scale(0.95);
+    }
+
+    .book-pages {
+      flex: 1;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      overflow: hidden;
+    }
+
+    @media (max-width: 768px) {
+      .book-pages {
+        grid-template-columns: 1fr;
+        overflow-y: auto;
+      }
+
+      .book-page {
+        max-height: none !important;
+      }
+    }
+
+    .book-page {
+      background: #f2e7c9;
+      color: #2b1f13;
+      border-radius: 8px;
+      padding: 18px;
+      box-shadow: inset 0 0 30px rgba(139, 94, 40, 0.35);
+      border: 1px solid #d4c29c;
+      display: flex;
+      flex-direction: column;
+      overflow-y: auto;
+      max-height: calc(85vh - 70px);
+    }
+
+    .book-page::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .book-page::-webkit-scrollbar-thumb {
+      background: #8b5e28;
+      border-radius: 4px;
+    }
+
+    .page-title {
+      font-family: var(--fd);
+      font-size: 1.25rem;
+      text-align: center;
+      margin: 0 0 14px 0;
+      border-bottom: 1.5px dashed #8b5e28;
+      padding-bottom: 6px;
+      color: #5d3f1a;
+      letter-spacing: 1px;
+    }
+
+    .log-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 12px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid rgba(139, 94, 40, 0.15);
+    }
+
+    .log-item:last-child {
+      border-bottom: none;
+    }
+
+    .log-icon {
+      font-size: 2.2rem;
+      width: 52px;
+      height: 52px;
+      background: rgba(139, 94, 40, 0.1);
+      border: 1px solid rgba(139, 94, 40, 0.25);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .log-icon img {
+      width: 44px;
+      height: 44px;
+      object-fit: contain;
+    }
+
+    .log-details {
+      flex: 1;
+    }
+
+    .log-name {
+      font-family: var(--ft);
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #3e260e;
+      text-transform: uppercase;
+      margin: 0;
+    }
+
+    .log-sub {
+      font-size: 0.72rem;
+      color: #705435;
+      font-style: italic;
+      margin: 2px 0;
+    }
+
+    .log-desc {
+      font-size: 0.78rem;
+      color: #4b3621;
+      line-height: 1.3;
+      margin: 0;
+    }
+
+    .log-badge {
+      font-size: 0.58rem;
+      padding: 1px 5px;
+      border-radius: 4px;
+      font-weight: 700;
+      text-transform: uppercase;
+      margin-left: 6px;
+      display: inline-block;
+      vertical-align: middle;
+    }
   </style>
 </head>
 
@@ -4504,7 +4677,7 @@
   <div class="scr off" id="auth">
     <div class="acard">
       <div class="alo">⚔ DUNGEON OVERLORD</div>
-      <div class="asu">V2.9.1 · By Soumil Mittal</div>
+      <div class="asu">V2.9 · By Soumil Mittal</div>
       <div class="atbs">
         <button class="atb on" id="tab-su" onclick="switchTab('su')">SIGN UP</button>
         <button class="atb" id="tab-li" onclick="switchTab('li')">SIGN IN</button>
@@ -4546,7 +4719,7 @@
           <button class="redeem-btn" onclick="doRedeem()">REDEEM</button>
         </div>
       </div>
-      <div class="adev">DEVELOPED BY SOUMIL MITTAL · DUNGEON OVERLORD V2.9.1 · 2026</div>
+      <div class="adev">DEVELOPED BY SOUMIL MITTAL · DUNGEON OVERLORD V2.9 · 2026</div>
     </div>
   </div>
 
@@ -4574,11 +4747,10 @@
         <div class="hnm" id="nav-nm">Overlord</div>
       </div>
       <div class="hrgt">
-        <div class="dc-pill">🪙<span id="nav-dc">0</span></div>
-        <div class="dc-pill">💎<span id="nav-gems">0</span></div>
         <div class="nico" onclick="openShop()">🛒</div>
-        <div class="nico" onclick="openSett()">⚙️</div>
         <div class="nico" onclick="openQuests()">📜</div>
+        <div class="nico" onclick="openLogbook()">📖</div>
+        <div class="nico" onclick="openSett()">⚙️</div>
       </div>
     </div>
     <div class="hbdy">
@@ -4766,7 +4938,7 @@
         <div class="bck" onclick="closeSett()">←</div>
         <div class="set-title-wrap">
           <div class="stit">SETTINGS</div>
-          <div class="stsub">V2.9.1 CONTROL PANEL</div>
+          <div class="stsub">V2.9 CONTROL PANEL</div>
         </div>
       </div>
       <div class="ssec2">
@@ -4894,7 +5066,7 @@
         <div class="crdcard">
           <div class="crn">Soumil Mittal</div>
           <div class="crr">GAME DEVELOPER & DESIGNER</div>
-          <div class="crv">DUNGEON OVERLORD V2.9.1 · 2026</div>
+          <div class="crv">DUNGEON OVERLORD V2.9 · 2026</div>
         </div>
       </div>
     </div>
@@ -5022,7 +5194,7 @@
       <button class="rw-btn-play" onclick="startFromDeck()">⚔ PLAY AGAIN</button>
       <button class="rw-btn-home" onclick="quitHome()">🏠 Home</button>
     </div>
-    <div class="rw-dev">DUNGEON OVERLORD V2.9.1 · SOUMIL MITTAL</div>
+    <div class="rw-dev">DUNGEON OVERLORD V2.9 · SOUMIL MITTAL</div>
   </div>
 
   <!-- STREAK MODAL -->
@@ -5041,6 +5213,31 @@
   </div>
 
   <script>
+
+    <!-- LOG BOOK -->
+  <div class="scr scr-scroll off" id="logbook">
+    <div class="book-container" style="margin:20px auto;">
+      <div class="book-header">
+        <h1 class="book-title">📖 Dungeon Codex</h1>
+        <button class="book-close" onclick="closeLogbook()">✕ CLOSE</button>
+      </div>
+      <div style="display:flex;gap:0;border-radius:10px;overflow:hidden;border:2px solid #8b5e28;margin-bottom:14px;flex-shrink:0">
+        <button id="lbook-tab-villains" onclick="logbookTab('villains')"
+          style="flex:1;padding:10px;font-family:var(--fd);font-size:.72rem;background:#c8a96e;border:none;color:#2b1d0c;cursor:pointer;letter-spacing:1px;font-weight:700;min-height:42px">
+          😈 VILLAINS
+        </button>
+        <button id="lbook-tab-heroes" onclick="logbookTab('heroes')"
+          style="flex:1;padding:10px;font-family:var(--fd);font-size:.72rem;background:#e8d5a3;border:none;color:#2b1d0c;cursor:pointer;letter-spacing:1px;font-weight:700;min-height:42px">
+          ⚔️ HEROES
+        </button>
+      </div>
+      <div class="book-pages">
+        <div class="book-page" id="logbook-left"></div>
+        <div class="book-page" id="logbook-right"></div>
+      </div>
+    </div>
+  </div>
+
     'use strict';
     /* ════ STORAGE ════ */
     const LS = { g: k => { try { return JSON.parse(localStorage.getItem(k)) } catch { return null } }, s: (k, v) => localStorage.setItem(k, JSON.stringify(v)), d: k => localStorage.removeItem(k) };
@@ -5164,7 +5361,7 @@
       document.getElementById('em-bd').textContent = welcomeText(name);
       document.getElementById('emodal').classList.add('on');
     }
-    function welcomeText(n) { return `Subject: Your Throne Awaits, ${n}\n\nOverlord ${n},\n\nThe dungeon awakens. Eight servants answer your call:\n\n😈 Imp — Double Strike: 25% to hit twice\n👹 Orc — Berserk: +50% DMG below 30% HP\n🪨 Golem — Thorns: reflects 30% damage\n👻 Wraith — Phase: 40% evasion\n🐉 Dragon — Burn Aura: scorches nearby foes\n🧛 Vampire — Life Drain: steals 20% DMG as HP\n💀 Necromancer — Soul Harvest: raises fallen foes\n⚡ Berserker — Rage Stack: stronger each kill\n\nV2.9.1 UPDATES:\n• ⚡ Divine Heroes: Holy Knights & Celestial Archers throw projectiles!\n• 🎁 Infinite Redeem: SM30 can be redeemed unlimited times\n• 💰 Mid-exit auto-save: coins & records saved anytime!\n• 🖼 Wave backgrounds: dungeon evolves each wave range\n• ⏩ Speed Control: play at 1×, 2×, or 3× speed!\n• 🛒 Extended Upgrades: Spells & Boosts up to level 15\n• 📋 Daily Quests: Complete quests and earn up to 10,000 coins!\n\nDefend the gate. Let no hero pass.\n\n— The Dungeon, eternal and dark\n\nDungeon Overlord V2.9.1 · Developed by Soumil Mittal · 2026`; }
+    function welcomeText(n) { return `Subject: Your Throne Awaits, ${n}\n\nOverlord ${n},\n\nThe dungeon awakens. Eight servants answer your call:\n\n😈 Imp — Double Strike: 25% to hit twice\n👹 Orc — Berserk: +50% DMG below 30% HP\n🪨 Golem — Thorns: reflects 30% damage\n👻 Wraith — Phase: 40% evasion\n🐉 Dragon — Burn Aura: scorches nearby foes\n🧛 Vampire — Life Drain: steals 20% DMG as HP\n💀 Necromancer — Soul Harvest: raises fallen foes\n⚡ Berserker — Rage Stack: stronger each kill\n\nV2.9 UPDATES:\n• ⚡ Divine Heroes: Holy Knights & Celestial Archers throw projectiles!\n• 🎁 Infinite Redeem: SM30 can be redeemed unlimited times\n• 💰 Mid-exit auto-save: coins & records saved anytime!\n• 🖼 Wave backgrounds: dungeon evolves each wave range\n• ⏩ Speed Control: play at 1×, 2×, or 3× speed!\n• 🛒 Extended Upgrades: Spells & Boosts up to level 15\n• 📋 Daily Quests: Complete quests and earn up to 10,000 coins!\n\nDefend the gate. Let no hero pass.\n\n— The Dungeon, eternal and dark\n\nDungeon Overlord V2.9 · Developed by Soumil Mittal · 2026`; }
     function closeEmail() {
       document.getElementById('emodal').classList.remove('on');
       if (CU && !CU.welcomeBonusGiven) { CU.welcomeBonusGiven = true; addDarkCoins(100); saveUser(); toast('🎁 +100 🪙 Welcome Bonus!'); }
@@ -5183,6 +5380,305 @@
     function closeDeckBuilder() { show('deck-builder', false); }
     function openQuests() { buildQuests(); show('quests', true); }
     function closeQuests() { show('quests', false); }
+    function openLogbook() { currentLogbookTab = 'villains'; show('logbook', true); logbookTab('villains'); }
+    function closeLogbook() { show('logbook', false); }
+
+    let currentLogbookTab = 'villains';
+
+    const VILLAIN_LORE = {
+      imp: {
+        title: 'The Imp', subtitle: 'Shadow Frenzy · Common',
+        origin: 'Born from the darkest corners of the abyss, Imps are the dungeon\'s most loyal foot soldiers.',
+        lore: 'Small but ferocious, the Imp was forged from pure malice. They crawl from cracks in the dungeon floor, chittering with excitement at the sight of intruders. Their tiny claws move so fast they blur — heroes often feel two strikes before they register one.',
+        abilities: [
+          { icon: '👊', name: 'Double Strike', desc: '25% chance to strike twice in one attack cycle.' },
+          { icon: '💨', name: 'Frenzy', desc: 'Fastest movement speed of all units. Hard to pin down.' }
+        ],
+        strengths: 'Swarm tactics, speed, cheap cost',
+        weakness: 'Very low HP — dies to splash damage',
+        quote: '"They never come alone. And they never stop." — Fallen Paladin',
+        tier: 'common', col: '#a8e6cf'
+      },
+      orc: {
+        title: 'The Orc', subtitle: 'Berserk Warrior · Common',
+        origin: 'Dragged from the war-torn Bloodfang Steppes and bound to the dungeon by dark ritual.',
+        lore: 'Orcs were once free warriors of the highland clans. Now enslaved by the Overlord\'s will, they fight with twice the fury of their former lives. The less blood they have, the more dangerous they become — a wounded Orc is a dying hero\'s worst nightmare.',
+        abilities: [
+          { icon: '🩸', name: 'Berserk', desc: 'Below 30% HP: +50% DMG and greatly increased regen.' },
+          { icon: '🛡️', name: 'War Toughness', desc: 'High base HP pool, built to absorb punishment.' }
+        ],
+        strengths: 'Tanky, powerful when low HP, great frontliner',
+        weakness: 'Slow speed — can be kited by fast heroes',
+        quote: '"I don\'t fear death. I use it." — Warchief Grommak',
+        tier: 'common', col: '#dcedc1'
+      },
+      golem: {
+        title: 'The Golem', subtitle: 'Thorns Titan · Rare',
+        origin: 'Sculpted from obsidian and ancient dungeon stone, animated by a soul crystal buried in its chest.',
+        lore: 'Golems do not feel pain. They do not tire. They were built for one purpose — to be an immovable wall between the dungeon gate and those who would destroy it. Striking a Golem is like punching a mountain. The mountain punches back.',
+        abilities: [
+          { icon: '🔁', name: 'Thorns', desc: 'Reflects 30% of all damage received back to the attacker.' },
+          { icon: '🪨', name: 'Stone Resilience', desc: 'Highest base HP in the roster. Extremely difficult to burst down.' }
+        ],
+        strengths: 'Enormous HP, punishes melee attackers',
+        weakness: 'Very slow — vulnerable to ranged divine heroes',
+        quote: '"It doesn\'t move. It doesn\'t speak. It just... endures." — Temple Scout',
+        tier: 'rare', col: '#a0897a'
+      },
+      wraith: {
+        title: 'The Wraith', subtitle: 'Phase Phantom · Rare',
+        origin: 'The tortured soul of a dungeon prisoner who refused to leave even in death.',
+        lore: 'Wraiths exist between worlds — half in the realm of the living, half beyond it. They drift through allied units like smoke through a keyhole. Heroes\' blades often pass right through them. The 40% chance to simply not be hit makes them infuriating to face.',
+        abilities: [
+          { icon: '👻', name: 'Phase', desc: '40% evasion — nearly half of all attacks simply miss.' },
+          { icon: '🌀', name: 'Drift', desc: 'Phases through allied units, never gets body-blocked.' }
+        ],
+        strengths: 'High evasion, great damage, ignores positioning',
+        weakness: 'Low HP — if hits connect, it falls fast',
+        quote: '"You cannot kill what is already dead." — Wraith\'s whisper',
+        tier: 'rare', col: '#80deea'
+      },
+      dragon: {
+        title: 'The Dragon', subtitle: 'Burn Aura Destroyer · Epic',
+        origin: 'Ancient wyrm awakened from beneath the dungeon by the Overlord\'s darkest summoning ritual.',
+        lore: 'Dragons are the crown jewel of any dungeon roster. Their very presence scorches the air — heroes stepping near them begin to burn before a single claw is raised. The Overlord limits their numbers to three on the field at once; any more and the dungeon itself would catch fire.',
+        abilities: [
+          { icon: '🔥', name: 'Burn Aura', desc: 'Passively burns ALL nearby heroes every tick — no attack needed.' },
+          { icon: '💪', name: 'Ancient Power', desc: 'Highest damage stat in the game. Devastating in melee.' }
+        ],
+        strengths: 'Passive AOE burn, massive HP and DMG',
+        weakness: 'Max 3 on field at once. Expensive to deploy.',
+        quote: '"Three dragons and a gate. That\'s all you need." — Veteran Overlord',
+        tier: 'epic', col: '#ff8a80'
+      },
+      vampire: {
+        title: 'The Vampire', subtitle: 'Life Drain Predator · Rare',
+        origin: 'An ancient noble cursed for betraying the Sun Kingdom — now eternally serving the dark.',
+        lore: 'Vampires don\'t just fight — they feed. Every wound they inflict heals them. Against high-damage heroes, a Vampire can sustain itself indefinitely, leeching life faster than the enemy can deal it. They move with unsettling elegance, unhurried, knowing they will outlast anything they face.',
+        abilities: [
+          { icon: '🩸', name: 'Life Drain', desc: 'Steals 20% of all damage dealt as HP. Heals continuously in combat.' },
+          { icon: '🦇', name: 'Dark Nobility', desc: 'Balanced speed and damage — adapts to any situation.' }
+        ],
+        strengths: 'Self-sustaining, never needs retreat',
+        weakness: 'Moderate HP base — burst damage bypasses drain',
+        quote: '"Every hero I face feeds me. They just don\'t know it yet." — Lord Vael',
+        tier: 'rare', col: '#ce93d8'
+      },
+      necromancer: {
+        title: 'The Necromancer', subtitle: 'Soul Harvest Summoner · Epic',
+        origin: 'A former court wizard who discovered forbidden resurrection arts and was exiled — straight into the dungeon\'s open arms.',
+        lore: 'The Necromancer does not fight alone — it never has to. Every hero slain near it rises again as a zombie slave. A single Necromancer can turn a losing battle into a horde, overwhelming heroes with their own fallen comrades. It also slows advancing enemies through cursed rituals.',
+        abilities: [
+          { icon: '💀', name: 'Soul Harvest', desc: '50% chance to raise a fallen hero as a zombie ally.' },
+          { icon: '🐌', name: 'Curse', desc: 'Gradually reduces hero movement speed through necro timer ticks.' }
+        ],
+        strengths: 'Creates zombies, slows enemies, snowballs in long fights',
+        weakness: 'Low speed and HP — must be protected by tanks',
+        quote: '"Death is not the end. It is a recruitment." — The Necromancer',
+        tier: 'epic', col: '#80cbc4'
+      },
+      berserker: {
+        title: 'The Berserker', subtitle: 'Rage Stack Legend · Legendary',
+        origin: 'A warrior who shattered the chains of every dungeon that tried to hold them — until the Overlord offered a purpose instead of a cage.',
+        lore: 'The Berserker is unique — it grows stronger with every kill. A freshly spawned Berserker is already dangerous. A Berserker that has slain five heroes is catastrophic. Veteran Overlords save their Berserkers for late waves when the kill count is high.',
+        abilities: [
+          { icon: '📈', name: 'Rage Stack', desc: '+10% DMG permanently per kill this match. Stacks infinitely.' },
+          { icon: '⚡', name: 'War Rush', desc: 'High base speed and damage — closes gap fast.' }
+        ],
+        strengths: 'Scales to infinity, devastating in long matches',
+        weakness: 'Must get kills to ramp up — fragile early game',
+        quote: '"The longer the fight, the more I enjoy it." — The Berserker',
+        tier: 'legend', col: '#ffcc02'
+      }
+    };
+
+    const HERO_LORE = [
+      {
+        title: 'The Footsoldier', subtitle: 'Waves 1–10 · Basic Infantry',
+        img: 'characters/heroes/hero10.png', emoji: '🗡️',
+        origin: 'Recruited from frontier villages, armed with basic steel and a lot of courage.',
+        lore: 'Footsoldiers are the first wave of the kingdom\'s attempt to reclaim the dungeon. They are brave but inexperienced — their tactics simple, their equipment standard. Individually easy to defeat, they become dangerous in numbers as early waves flood the gate.',
+        abilities: [
+          { icon: '🏃', name: 'Steady March', desc: 'Consistent movement speed, never stops advancing.' },
+          { icon: '⚔️', name: 'Standard Strike', desc: 'Reliable melee damage — no special tricks.' }
+        ],
+        strengths: 'Cheap to send, constant pressure, volume',
+        weakness: 'Weak HP and damage — any evolved unit handles them',
+        quote: '"We outnumber the darkness. We just have to keep walking." — Infantry Captain',
+        bossTitle: 'The Warlord (Wave 5)',
+        bossDesc: 'A hardened commander leading the first assault. 2.8× HP and damage. Spawns 4 assistants at 50% HP.'
+      },
+      {
+        title: 'The Crusader', subtitle: 'Waves 11–20 · Armoured Knight',
+        img: 'characters/heroes/hero20.png', emoji: '🛡️',
+        origin: 'Holy warriors trained in sacred combat arts, sent when footsoldiers failed.',
+        lore: 'When the first reports came back that simple soldiers couldn\'t breach the dungeon, the kingdom sent its Crusaders. Clad in blessed armour and wielding sanctified blades, they are significantly harder to stop. Their higher HP means your front line must be strong before they arrive.',
+        abilities: [
+          { icon: '✝️', name: 'Holy Resolve', desc: 'High HP pool reinforced by holy blessing. Absorbs punishment.' },
+          { icon: '🗡️', name: 'Sacred Blade', desc: 'Deals increased damage, cutting through normal defences.' }
+        ],
+        strengths: 'Tanky, high damage, forces you to have upgraded units',
+        weakness: 'No evasion — heavy hitters like Dragons eat them',
+        quote: '"The light will pierce this darkness. I am its vessel." — Crusader Vael',
+        bossTitle: 'The Paladin Lord (Wave 10, 15, 20)',
+        bossDesc: 'An anointed commander with massive HP. Spawns 4 sacred knights at 50% HP.'
+      },
+      {
+        title: 'The Battle Mage', subtitle: 'Waves 21–30 · Arcane Warrior',
+        img: 'characters/heroes/hero30.png', emoji: '🔮',
+        origin: 'Royal war mages who have merged martial training with destructive spellcraft.',
+        lore: 'Battle Mages represent a turning point in the kingdom\'s strategy. Pure strength hadn\'t worked — so they sent magic. These warriors weave arcane power into every strike, hitting harder than anything seen before. By wave 25, boss assistants increase from 4 to 5, making each wave a true siege.',
+        abilities: [
+          { icon: '🔮', name: 'Arcane Strike', desc: 'Infuses each attack with magic — bypasses physical defence.' },
+          { icon: '⚡', name: 'Mana Surge', desc: 'Increases speed as the battle progresses — hard to outrun.' }
+        ],
+        strengths: 'Magic damage, increasing speed, very high DPS',
+        weakness: 'Moderate HP — burst them before they accelerate',
+        quote: '"Steel rusts. Magic doesn\'t." — Archmage Serath',
+        bossTitle: 'The Arcane Overlord (Wave 25, 30)',
+        bossDesc: 'A towering mage with devastating magic. Spawns 5 assistants at 50% HP from wave 25 onward.'
+      },
+      {
+        title: 'The Divine Champion', subtitle: 'Waves 31–40 · Celestial Warrior',
+        img: 'characters/heroes/hero40.png', emoji: '✨',
+        origin: 'Blessed directly by the Sun God, descended to end the dungeon\'s existence.',
+        lore: 'Divine Champions are the pinnacle of the kingdom\'s military might. These warriors glow with celestial energy and are accompanied by specialised divine units — Holy Knights who hurl hammers and Celestial Archers who rain golden bolts. Nothing before wave 30 prepares you for these warriors.',
+        abilities: [
+          { icon: '🌟', name: 'Divine Aura', desc: 'Radiates holy energy that weakens nearby dungeon units over time.' },
+          { icon: '💫', name: 'Celestial Strike', desc: 'Highest damage in the game — only fully evolved units can match it.' }
+        ],
+        strengths: 'Highest stats, accompanied by ranged divine units',
+        weakness: 'Rare and slow to spawn — gives you time to prepare',
+        quote: '"The dungeon ends today. The light has spoken." — Divine Champion Aelos',
+        bossTitle: 'The God-King (Wave 35, 40)',
+        bossDesc: 'An almost unkillable divine warrior. Spawns 5 divine assistants at 50% HP.'
+      }
+    ];
+
+    const DIVINE_LORE = [
+      {
+        title: 'The Holy Knight', emoji: '⚒️', subtitle: 'Ranged Divine — Wave 3+',
+        lore: 'Holy Knights are elite divine warriors who hurl consecrated warhammers at dungeon units from range. Unlike standard heroes who must close into melee, Holy Knights bombard your minions continuously with projectile attacks, making them priority targets.',
+        ability: 'Throws a ⚒️ projectile at a random minion every 600ms.',
+        col: '#ffeb3b'
+      },
+      {
+        title: 'The Celestial Archer', emoji: '🔱', subtitle: 'Ranged Divine — Wave 3+',
+        lore: 'Celestial Archers channel starlight into golden tridents that pierce dungeon flesh with holy fire. Slightly slower than Holy Knights but hitting more targets, they are the ranged backbone of any divine assault and must be neutralised quickly.',
+        ability: 'Fires a 🔱 projectile every 800ms targeting random minions.',
+        col: '#87ceeb'
+      }
+    ];
+
+    function logbookTab(tab) {
+      currentLogbookTab = tab;
+      const vBtn = document.getElementById('lbook-tab-villains');
+      const hBtn = document.getElementById('lbook-tab-heroes');
+      if (vBtn) { vBtn.style.background = tab === 'villains' ? '#8b5e28' : '#c8a96e'; vBtn.style.color = tab === 'villains' ? '#ffe4a0' : '#2b1d0c'; }
+      if (hBtn) { hBtn.style.background = tab === 'heroes' ? '#8b5e28' : '#e8d5a3'; hBtn.style.color = tab === 'heroes' ? '#ffe4a0' : '#2b1d0c'; }
+      if (tab === 'villains') buildVillainPages();
+      else buildHeroPages();
+    }
+
+    function buildVillainPages() {
+      const left = document.getElementById('logbook-left');
+      const right = document.getElementById('logbook-right');
+      if (!left || !right) return;
+      const keys = Object.keys(VILLAIN_LORE);
+      left.innerHTML = '<h2 class="page-title">😈 Dungeon Minions</h2>';
+      right.innerHTML = '<h2 class="page-title">😈 Dungeon Minions</h2>';
+      keys.slice(0, 4).forEach(k => buildVillainEntry(left, k));
+      keys.slice(4).forEach(k => buildVillainEntry(right, k));
+    }
+
+    function buildVillainEntry(page, key) {
+      const v = VILLAIN_LORE[key];
+      const tierColors = { common: '#888', rare: '#4fc3f7', epic: '#ce93d8', legend: '#ffd700' };
+      const col = tierColors[v.tier] || '#888';
+      const entry = document.createElement('div');
+      entry.className = 'log-item';
+      entry.style.cssText = 'flex-direction:column;align-items:flex-start;padding:14px 10px;border-bottom:2px dashed rgba(139,94,40,.3);margin-bottom:6px';
+      entry.innerHTML = `
+        <div style="display:flex;align-items:center;gap:10px;width:100%;margin-bottom:8px">
+          <div class="log-icon" style="background:${v.col}18;border-color:${v.col}44;flex-shrink:0">${unitFace(key, 'unit-img')}</div>
+          <div style="flex:1">
+            <div class="log-name" style="color:#3e260e;font-size:.95rem">${v.title}</div>
+            <div class="log-sub" style="color:${col};font-style:normal;font-weight:700;font-size:.68rem">${v.subtitle}</div>
+            <div style="font-size:.62rem;color:#705435;margin-top:2px;font-style:italic">${v.origin}</div>
+          </div>
+        </div>
+        <div style="font-size:.74rem;color:#4b3621;line-height:1.5;margin-bottom:8px;padding:8px;background:rgba(139,94,40,.08);border-radius:6px;border-left:3px solid ${v.col}88">${v.lore}</div>
+        <div style="width:100%;margin-bottom:6px">
+          ${v.abilities.map(a => `<div style="display:flex;align-items:flex-start;gap:7px;margin-bottom:5px;padding:6px 8px;background:rgba(139,94,40,.06);border-radius:6px"><span style="font-size:1rem;flex-shrink:0">${a.icon}</span><div><div style="font-size:.72rem;font-weight:700;color:#3e260e;font-family:var(--ft)">${a.name}</div><div style="font-size:.65rem;color:#705435">${a.desc}</div></div></div>`).join('')}
+        </div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:6px">
+          <div style="font-size:.62rem;padding:3px 8px;background:rgba(0,180,80,.12);border-radius:4px;color:#2d6a2d;border:1px solid rgba(0,180,80,.25)">✅ ${v.strengths}</div>
+          <div style="font-size:.62rem;padding:3px 8px;background:rgba(180,0,0,.1);border-radius:4px;color:#8b0000;border:1px solid rgba(180,0,0,.2)">❌ ${v.weakness}</div>
+        </div>
+        <div style="font-size:.68rem;color:#6b4c2a;font-style:italic;border-top:1px dashed rgba(139,94,40,.25);padding-top:6px;width:100%">${v.quote}</div>
+      `;
+      page.appendChild(entry);
+    }
+
+    function buildHeroPages() {
+      const left = document.getElementById('logbook-left');
+      const right = document.getElementById('logbook-right');
+      if (!left || !right) return;
+      left.innerHTML = '<h2 class="page-title">⚔️ Kingdom Heroes</h2>';
+      right.innerHTML = '<h2 class="page-title">✨ Divine Units</h2>';
+      HERO_LORE.forEach((h, i) => {
+        const page = i < 2 ? left : right;
+        const entry = document.createElement('div');
+        entry.className = 'log-item';
+        entry.style.cssText = 'flex-direction:column;align-items:flex-start;padding:14px 10px;border-bottom:2px dashed rgba(139,94,40,.3);margin-bottom:6px';
+        entry.innerHTML = `
+          <div style="display:flex;align-items:center;gap:10px;width:100%;margin-bottom:8px">
+            <div class="log-icon" style="background:rgba(200,160,90,.15);border-color:rgba(200,160,90,.35);flex-shrink:0;font-size:2rem">
+              <img src="${h.img}" style="width:44px;height:44px;object-fit:contain" onerror="this.style.display='none';this.parentNode.textContent='${h.emoji}'">
+            </div>
+            <div style="flex:1">
+              <div class="log-name" style="color:#3e260e">${h.title}</div>
+              <div class="log-sub" style="color:#8b0000;font-style:normal;font-weight:700;font-size:.68rem">${h.subtitle}</div>
+              <div style="font-size:.62rem;color:#705435;margin-top:2px;font-style:italic">${h.origin}</div>
+            </div>
+          </div>
+          <div style="font-size:.74rem;color:#4b3621;line-height:1.5;margin-bottom:8px;padding:8px;background:rgba(180,50,50,.06);border-radius:6px;border-left:3px solid rgba(180,50,50,.4)">${h.lore}</div>
+          <div style="width:100%;margin-bottom:6px">
+            ${h.abilities.map(a => `<div style="display:flex;align-items:flex-start;gap:7px;margin-bottom:5px;padding:6px 8px;background:rgba(139,94,40,.06);border-radius:6px"><span style="font-size:1rem;flex-shrink:0">${a.icon}</span><div><div style="font-size:.72rem;font-weight:700;color:#3e260e;font-family:var(--ft)">${a.name}</div><div style="font-size:.65rem;color:#705435">${a.desc}</div></div></div>`).join('')}
+          </div>
+          <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:6px">
+            <div style="font-size:.62rem;padding:3px 8px;background:rgba(180,0,0,.1);border-radius:4px;color:#8b0000;border:1px solid rgba(180,0,0,.2)">⚠️ ${h.strengths}</div>
+            <div style="font-size:.62rem;padding:3px 8px;background:rgba(0,100,180,.1);border-radius:4px;color:#003d6b;border:1px solid rgba(0,100,180,.2)">💡 ${h.weakness}</div>
+          </div>
+          <div style="font-size:.68rem;color:#6b4c2a;font-style:italic;border-top:1px dashed rgba(139,94,40,.25);padding-top:6px;width:100%;margin-bottom:6px">${h.quote}</div>
+          <div style="width:100%;padding:7px 10px;background:rgba(180,0,0,.07);border-radius:6px;border:1px solid rgba(180,0,0,.15)">
+            <div style="font-size:.68rem;font-weight:700;color:#8b0000;font-family:var(--ft);margin-bottom:3px">💀 ${h.bossTitle}</div>
+            <div style="font-size:.64rem;color:#705435">${h.bossDesc}</div>
+          </div>
+        `;
+        page.appendChild(entry);
+      });
+      const divider = document.createElement('div');
+      divider.style.cssText = 'border-top:2px solid #8b5e28;margin:12px 0 10px;padding-top:8px';
+      right.appendChild(divider);
+      DIVINE_LORE.forEach(d => {
+        const entry = document.createElement('div');
+        entry.className = 'log-item';
+        entry.style.cssText = 'flex-direction:column;align-items:flex-start;padding:12px 10px;border-bottom:1px dashed rgba(139,94,40,.2);margin-bottom:6px';
+        entry.innerHTML = `
+          <div style="display:flex;align-items:center;gap:10px;width:100%;margin-bottom:7px">
+            <div class="log-icon" style="background:${d.col}22;border-color:${d.col}55;flex-shrink:0;font-size:1.6rem">${d.emoji}</div>
+            <div>
+              <div class="log-name" style="color:#3e260e">${d.title}</div>
+              <div class="log-sub" style="color:${d.col === '#ffeb3b' ? '#b8860b' : '#4682b4'};font-style:normal;font-weight:700;font-size:.65rem">${d.subtitle}</div>
+            </div>
+          </div>
+          <div style="font-size:.72rem;color:#4b3621;line-height:1.5;margin-bottom:7px;padding:7px;background:${d.col}18;border-radius:6px;border-left:3px solid ${d.col}88">${d.lore}</div>
+          <div style="font-size:.67rem;padding:5px 9px;background:rgba(0,100,200,.08);border-radius:5px;color:#003080;border:1px solid rgba(0,100,200,.18)">⚡ <strong>Ability:</strong> ${d.ability}</div>
+        `;
+        right.appendChild(entry);
+      });
+    }
     function goToShopFromReward() { show('reward-screen', false); openShop(); }
     function goToDeckFromReward() { show('reward-screen', false); openDeckBuilder(); }
 
@@ -5830,7 +6326,7 @@
     function toast(msg) { const t = document.createElement('div'); t.className = 'toast'; t.textContent = msg; document.body.appendChild(t); setTimeout(() => t.remove(), 3100); }
 
     /* ════ PRELOADER ════ */
-    const TIPS = ['💡 Freeze spell — allies still attack frozen enemies!', '💡 Dragon Burn Aura: max 3 on field at once', '💡 Units evolve at level 5 & 10!', '💡 Boss spawns 4 assistants at 50% HP (5 after wave 25)', '💡 V2.9.1: Divine Heroes throw projectiles!', '💡 Vampire steals 20% of damage as HP', '💡 Berserker grows stronger each kill', '💡 Necromancer raises fallen enemies as zombies', '💡 Shop upgrades cost +30% more each level', '💡 Speed Control: play at 1×, 2×, or 3×!', '💡 SM30 code: redeemable unlimited times!'];
+    const TIPS = ['💡 Freeze spell — allies still attack frozen enemies!', '💡 Dragon Burn Aura: max 3 on field at once', '💡 Units evolve at level 5 & 10!', '💡 Boss spawns 4 assistants at 50% HP (5 after wave 25)', '💡 V2.9: Divine Heroes throw projectiles!', '💡 Vampire steals 20% of damage as HP', '💡 Berserker grows stronger each kill', '💡 Necromancer raises fallen enemies as zombies', '💡 Shop upgrades cost +30% more each level', '💡 Speed Control: play at 1×, 2×, or 3×!', '💡 SM30 code: redeemable unlimited times!'];
     const MSGS = ['Awakening the dungeon…', 'Summoning warriors…', 'Forging spell crystals…', 'Building the shop…', 'Arranging leaderboard…', 'Opening the dark gate…', 'Darkness rises…'];
 
     function spawnEmbers() { const w = document.getElementById('embers'); for (let i = 0; i < 22; i++) { const e = document.createElement('div'); e.className = 'emb'; const d = (Math.random() - .5) * 130; e.style.cssText = `left:${Math.random() * 100}%;bottom:0;--d:${d}px;width:${Math.random() * 3 + 1}px;height:${Math.random() * 3 + 1}px;background:hsl(${20 + Math.random() * 20},100%,${50 + Math.random() * 20}%);animation-duration:${3 + Math.random() * 5}s;animation-delay:${Math.random() * 5}s;opacity:${Math.random() * .7 + .2}`; w.appendChild(e); } }
@@ -5857,7 +6353,7 @@
     function finishLoad() { show('pre', false); if (CU) { show('home', true); afterLogin(); } else show('auth', true); }
 
     /* ══════════════════════════════════════════════════
-       GAME ENGINE — V2.9.1
+       GAME ENGINE — V2.9
     ══════════════════════════════════════════════════ */
     const gc = document.getElementById('gc'), ctx = gc.getContext('2d');
     let W, H, pathY, pathH;
@@ -5930,7 +6426,7 @@
     }
 
     function getSessionEarnings() {
-      return calcBaseCoins(kills, wave) + calcBossBonus(matchBossesKilled);
+      return calcBaseCoins(kills, Math.max(1, wave - 1)) + calcBossBonus(matchBossesKilled);
     }
 
     // Credits only the delta between total earned and already-credited amount.
@@ -6038,8 +6534,18 @@
         vib([20, 40, 20]);
       }
       updateHUD();
-    }                                    // ✅ closes actSpell properly
-    function castMeteor(x, y) { }          // ✅ now a top-level function
+    }
+    function castMeteor(x, y) {
+      if (!GA || paused) return;
+      const sp = SPELLS['meteor'];
+      meteors.push({ x, y, r: 4, maxR: 55, life: 38 });
+      if (CF.ptcl) burstp(x, y, 18, '#ff8800');
+      if (CF.dmg) flt('☄️', x, y - 30, '#ffaa00', 18);
+      actSpl = null;
+      gc.style.cursor = 'default';
+      document.getElementById('sb-meteor').classList.remove('asp');
+      vib([40, 20, 80]);
+    }        // ✅ now a top-level function
     function setCD(t, ms) { const btn = document.getElementById('sb-' + t); btn.classList.add('cd'); let r = Math.ceil(ms / 1000); const iv = setInterval(() => { r--; if (r <= 0) { clearInterval(iv); btn.classList.remove('cd'); btn.style.opacity = '1'; } }, 1000); }
 
     /* UNIT SELECT */

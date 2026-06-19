@@ -5930,7 +5930,7 @@
     }
 
     function getSessionEarnings() {
-      return calcBaseCoins(kills, wave) + calcBossBonus(matchBossesKilled);
+      return calcBaseCoins(kills, Math.max(1, wave - 1)) + calcBossBonus(matchBossesKilled);
     }
 
     // Credits only the delta between total earned and already-credited amount.
