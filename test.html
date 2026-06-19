@@ -5212,16 +5212,17 @@
     </div>
   </div>
 
-  
 
-    <!-- LOG BOOK -->
+
+  <!-- LOG BOOK -->
   <div class="scr scr-scroll off" id="logbook">
     <div class="book-container" style="margin:20px auto;">
       <div class="book-header">
         <h1 class="book-title">📖 Dungeon Codex</h1>
         <button class="book-close" onclick="closeLogbook()">✕ CLOSE</button>
       </div>
-      <div style="display:flex;gap:0;border-radius:10px;overflow:hidden;border:2px solid #8b5e28;margin-bottom:14px;flex-shrink:0">
+      <div
+        style="display:flex;gap:0;border-radius:10px;overflow:hidden;border:2px solid #8b5e28;margin-bottom:14px;flex-shrink:0">
         <button id="lbook-tab-villains" onclick="logbookTab('villains')"
           style="flex:1;padding:10px;font-family:var(--fd);font-size:.72rem;background:#c8a96e;border:none;color:#2b1d0c;cursor:pointer;letter-spacing:1px;font-weight:700;min-height:42px">
           😈 VILLAINS
@@ -5239,7 +5240,7 @@
   </div>
 
   <script>
-'use strict';
+    'use strict';
     /* ════ STORAGE ════ */
     const LS = { g: k => { try { return JSON.parse(localStorage.getItem(k)) } catch { return null } }, s: (k, v) => localStorage.setItem(k, JSON.stringify(v)), d: k => localStorage.removeItem(k) };
 
