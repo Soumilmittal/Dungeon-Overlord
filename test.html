@@ -7383,35 +7383,35 @@
     }, { passive: true });
 
     /* 5. SCREEN SLIDE TRANSITIONS — fixed so back buttons work */
-const _origShow = show;
-let lastShowDir = 1;
-window.show = function (id, v) {
-  const el = document.getElementById(id);
-  if (!el) return;
-  if (v) {
-    // Clear any leftover inline styles from a previous hide
-    el.style.transition = 'none';
-    el.style.transform = `translateX(${lastShowDir * 28}px)`;
-    el.style.opacity = '0';
-    el.style.pointerEvents = '';
-    el.classList.remove('off');
-    requestAnimationFrame(() => {
-      el.style.transition = 'opacity .32s ease, transform .32s ease';
-      el.style.transform = 'translateX(0)';
-      el.style.opacity = '1';
-    });
-  } else {
-    // CRITICAL: clear inline styles FIRST so .off class can take effect
-    el.style.transition = 'opacity .22s ease';
-    el.style.opacity = '0';
-    setTimeout(() => {
-      el.style.transition = '';
-      el.style.transform = '';
-      el.style.opacity = '';
-      el.classList.add('off');
-    }, 220);
-  }
-};
+    const _origShow = show;
+    let lastShowDir = 1;
+    window.show = function (id, v) {
+      const el = document.getElementById(id);
+      if (!el) return;
+      if (v) {
+        // Clear any leftover inline styles from a previous hide
+        el.style.transition = 'none';
+        el.style.transform = `translateX(${lastShowDir * 28}px)`;
+        el.style.opacity = '0';
+        el.style.pointerEvents = '';
+        el.classList.remove('off');
+        requestAnimationFrame(() => {
+          el.style.transition = 'opacity .32s ease, transform .32s ease';
+          el.style.transform = 'translateX(0)';
+          el.style.opacity = '1';
+        });
+      } else {
+        // CRITICAL: clear inline styles FIRST so .off class can take effect
+        el.style.transition = 'opacity .22s ease';
+        el.style.opacity = '0';
+        setTimeout(() => {
+          el.style.transition = '';
+          el.style.transform = '';
+          el.style.opacity = '';
+          el.classList.add('off');
+        }, 220);
+      }
+    };
 
     /* 6. GOLD EARNED FLASH — flash wallet briefly when gold lands from battle */
     let lastKnownGold = 0;
