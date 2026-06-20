@@ -4650,6 +4650,118 @@
       display: inline-block;
       vertical-align: middle;
     }
+
+    /* ── CHANGELOG ── */
+    .changelog-list {
+      display: flex;
+      flex-direction: column;
+      gap: 6px
+    }
+
+    .cl-version-badge {
+      font-family: var(--fd);
+      font-size: .72rem;
+      color: var(--gold);
+      letter-spacing: 3px;
+      padding: 6px 12px;
+      background: linear-gradient(135deg, rgba(255, 215, 0, .1), rgba(255, 140, 0, .05));
+      border: 1px solid rgba(255, 215, 0, .2);
+      border-radius: 8px;
+      text-align: center;
+      margin-bottom: 4px;
+      text-shadow: 0 0 12px rgba(255, 215, 0, .3)
+    }
+
+    .cl-item {
+      border: 1px solid rgba(255, 255, 255, .07);
+      border-radius: 10px;
+      background: rgba(255, 255, 255, .025);
+      overflow: hidden;
+      cursor: pointer;
+      transition: border-color .2s, background .2s
+    }
+
+    .cl-item:hover {
+      border-color: rgba(255, 215, 0, .18);
+      background: rgba(255, 255, 255, .04)
+    }
+
+    .cl-item.expanded {
+      border-color: rgba(255, 215, 0, .22);
+      background: rgba(255, 215, 0, .04)
+    }
+
+    .cl-head {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      padding: 11px 13px;
+      min-height: 46px
+    }
+
+    .cl-title {
+      flex: 1;
+      font-size: .78rem;
+      font-weight: 700;
+      color: rgba(255, 255, 255, .85);
+      font-family: var(--ft)
+    }
+
+    .cl-arrow {
+      font-size: 1.1rem;
+      color: #333;
+      transition: transform .2s;
+      line-height: 1
+    }
+
+    .cl-item.expanded .cl-arrow {
+      transform: rotate(90deg);
+      color: var(--gold)
+    }
+
+    .cl-body {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height .3s ease, padding .3s;
+      font-size: .71rem;
+      color: rgba(255, 255, 255, .5);
+      line-height: 1.6;
+      padding: 0 13px
+    }
+
+    .cl-item.expanded .cl-body {
+      max-height: 120px;
+      padding: 0 13px 13px
+    }
+
+    .cl-tag {
+      font-size: .52rem;
+      font-weight: 900;
+      letter-spacing: 1.2px;
+      padding: 3px 7px;
+      border-radius: 5px;
+      text-transform: uppercase;
+      flex-shrink: 0;
+      font-family: var(--ft)
+    }
+
+    .cl-tag.new {
+      background: rgba(0, 200, 100, .15);
+      color: #00e676;
+      border: 1px solid rgba(0, 200, 100, .25)
+    }
+
+    .cl-tag.buff {
+      background: rgba(255, 180, 0, .15);
+      color: var(--gold);
+      border: 1px solid rgba(255, 180, 0, .25)
+    }
+
+    .cl-tag.fix {
+      background: rgba(0, 180, 255, .12);
+      color: #00c8ff;
+      border: 1px solid rgba(0, 180, 255, .2)
+    }
   </style>
 </head>
 
@@ -4677,7 +4789,7 @@
   <div class="scr off" id="auth">
     <div class="acard">
       <div class="alo">⚔ DUNGEON OVERLORD</div>
-      <div class="asu">V2.9 · By Soumil Mittal</div>
+      <div class="asu">V2.9.2 · By Soumil Mittal</div>
       <div class="atbs">
         <button class="atb on" id="tab-su" onclick="switchTab('su')">SIGN UP</button>
         <button class="atb" id="tab-li" onclick="switchTab('li')">SIGN IN</button>
@@ -4719,7 +4831,7 @@
           <button class="redeem-btn" onclick="doRedeem()">REDEEM</button>
         </div>
       </div>
-      <div class="adev">DEVELOPED BY SOUMIL MITTAL · DUNGEON OVERLORD V2.9 · 2026</div>
+      <div class="adev">DEVELOPED BY SOUMIL MITTAL · DUNGEON OVERLORD V2.9.2 · 2026</div>
     </div>
   </div>
 
@@ -4938,10 +5050,120 @@
         <div class="bck" onclick="closeSett()">←</div>
         <div class="set-title-wrap">
           <div class="stit">SETTINGS</div>
-          <div class="stsub">V2.9 CONTROL PANEL</div>
+          <div class="stsub">V2.9.2 CONTROL PANEL</div>
         </div>
       </div>
       <div class="ssec2">
+
+        <!-- V2.9 CHANGELOG — paste after the "About" ssec2 block in #sett -->
+        <div class="ssec2" id="changelog-section">
+          <div class="slbl2">🆕 What's New</div>
+          <div class="changelog-list">
+
+            <div class="cl-version-badge">V 2 . 9 . 2</div>
+
+            <div class="cl-item" onclick="this.classList.toggle('expanded')">
+              <div class="cl-head">
+                <span class="cl-tag new">NEW</span>
+                <span class="cl-title">Daily Quests System</span>
+                <span class="cl-arrow">›</span>
+              </div>
+              <div class="cl-body">Complete daily objectives to earn up to 10,000 🪙 and 10 💎 every day. Quests reset
+                at midnight. Tap 📜 from the home screen.</div>
+            </div>
+
+            <div class="cl-item" onclick="this.classList.toggle('expanded')">
+              <div class="cl-head">
+                <span class="cl-tag new">NEW</span>
+                <span class="cl-title">Divine Heroes with Projectiles</span>
+                <span class="cl-arrow">›</span>
+              </div>
+              <div class="cl-body">Holy Knights ⚒️ and Celestial Archers 🔱 now appear from Wave 3+. They throw
+                projectiles at your minions from range — prioritise taking them out!</div>
+            </div>
+
+            <div class="cl-item" onclick="this.classList.toggle('expanded')">
+              <div class="cl-head">
+                <span class="cl-tag new">NEW</span>
+                <span class="cl-title">Speed Control (1× 2× 3×)</span>
+                <span class="cl-arrow">›</span>
+              </div>
+              <div class="cl-body">Play at your own pace. Toggle between Normal, 2× and 3× speed from the in-game HUD.
+                Speed affects all entities, spells, and gold income.</div>
+            </div>
+
+            <div class="cl-item" onclick="this.classList.toggle('expanded')">
+              <div class="cl-head">
+                <span class="cl-tag new">NEW</span>
+                <span class="cl-title">Mid-Exit Auto-Save</span>
+                <span class="cl-arrow">›</span>
+              </div>
+              <div class="cl-body">Your coins and records are saved every 30 seconds automatically during battle.
+                Closing the tab mid-fight? No coins lost. A 💾 banner confirms each save.</div>
+            </div>
+
+            <div class="cl-item" onclick="this.classList.toggle('expanded')">
+              <div class="cl-head">
+                <span class="cl-tag new">NEW</span>
+                <span class="cl-title">Wave Backgrounds</span>
+                <span class="cl-arrow">›</span>
+              </div>
+              <div class="cl-body">The dungeon transforms every 10 waves. New battlefield artwork unlocks as you push
+                deeper — reach Wave 50, 100, 150+ to see all scenes.</div>
+            </div>
+
+            <div class="cl-item" onclick="this.classList.toggle('expanded')">
+              <div class="cl-head">
+                <span class="cl-tag new">NEW</span>
+                <span class="cl-title">Dungeon Codex (Logbook)</span>
+                <span class="cl-arrow">›</span>
+              </div>
+              <div class="cl-body">Tap 📖 on the home screen to read full lore entries for every villain and hero —
+                origin stories, abilities, strengths, weaknesses, and boss notes.</div>
+            </div>
+
+            <div class="cl-item" onclick="this.classList.toggle('expanded')">
+              <div class="cl-head">
+                <span class="cl-tag buff">BUFF</span>
+                <span class="cl-title">Infinite Redeem: SM30</span>
+                <span class="cl-arrow">›</span>
+              </div>
+              <div class="cl-body">The code <span
+                  style="color:var(--gold);font-family:var(--ft);letter-spacing:1px">SM30</span> can now be redeemed
+                unlimited times. Earn 75,000 🪙 every time you use it — no cap.</div>
+            </div>
+
+            <div class="cl-item" onclick="this.classList.toggle('expanded')">
+              <div class="cl-head">
+                <span class="cl-tag buff">BUFF</span>
+                <span class="cl-title">Extended Shop Upgrades</span>
+                <span class="cl-arrow">›</span>
+              </div>
+              <div class="cl-body">Spells and Boosts can now be upgraded up to Level 15. Unit upgrades extended to 100
+                levels. All costs scaled at +10% per level.</div>
+            </div>
+
+            <div class="cl-item" onclick="this.classList.toggle('expanded')">
+              <div class="cl-head">
+                <span class="cl-tag fix">FIX</span>
+                <span class="cl-title">Coin Double-Count Fixed</span>
+                <span class="cl-arrow">›</span>
+              </div>
+              <div class="cl-body">A bug where auto-save could duplicate coin rewards on game over has been resolved.
+                The system now tracks credited amounts precisely.</div>
+            </div>
+
+            <div class="cl-version-badge" style="background:rgba(255,255,255,.04);color:#333;margin-top:14px">V 2 . 8 —
+              Previous</div>
+            <div
+              style="font-size:.66rem;color:#2a2a2a;line-height:1.6;padding:10px 12px;background:rgba(255,255,255,.02);border-radius:8px;border:1px solid rgba(255,255,255,.04)">
+              Spell loadout selection · Daily Spin wheel · Streak system · Evolution stages 1–4 · Deck Builder with
+              5-unit selection · Idle earnings engine · Avatar picker · Boss assistant spawns
+            </div>
+
+          </div>
+        </div>
+
         <div class="slbl2">📊 Analytics</div>
         <div class="real-note">ℹ️ Real data only — no fabricated numbers.</div>
         <div class="anlgr">
@@ -5066,7 +5288,7 @@
         <div class="crdcard">
           <div class="crn">Soumil Mittal</div>
           <div class="crr">GAME DEVELOPER & DESIGNER</div>
-          <div class="crv">DUNGEON OVERLORD V2.9 · 2026</div>
+          <div class="crv">DUNGEON OVERLORD V2.9.2 · 2026</div>
         </div>
       </div>
     </div>
@@ -5194,7 +5416,7 @@
       <button class="rw-btn-play" onclick="startFromDeck()">⚔ PLAY AGAIN</button>
       <button class="rw-btn-home" onclick="quitHome()">🏠 Home</button>
     </div>
-    <div class="rw-dev">DUNGEON OVERLORD V2.9 · SOUMIL MITTAL</div>
+    <div class="rw-dev">DUNGEON OVERLORD V2.9.2 · SOUMIL MITTAL</div>
   </div>
 
   <!-- STREAK MODAL -->
@@ -5363,7 +5585,7 @@
       document.getElementById('em-bd').textContent = welcomeText(name);
       document.getElementById('emodal').classList.add('on');
     }
-    function welcomeText(n) { return `Subject: Your Throne Awaits, ${n}\n\nOverlord ${n},\n\nThe dungeon awakens. Eight servants answer your call:\n\n😈 Imp — Double Strike: 25% to hit twice\n👹 Orc — Berserk: +50% DMG below 30% HP\n🪨 Golem — Thorns: reflects 30% damage\n👻 Wraith — Phase: 40% evasion\n🐉 Dragon — Burn Aura: scorches nearby foes\n🧛 Vampire — Life Drain: steals 20% DMG as HP\n💀 Necromancer — Soul Harvest: raises fallen foes\n⚡ Berserker — Rage Stack: stronger each kill\n\nV2.9 UPDATES:\n• ⚡ Divine Heroes: Holy Knights & Celestial Archers throw projectiles!\n• 🎁 Infinite Redeem: SM30 can be redeemed unlimited times\n• 💰 Mid-exit auto-save: coins & records saved anytime!\n• 🖼 Wave backgrounds: dungeon evolves each wave range\n• ⏩ Speed Control: play at 1×, 2×, or 3× speed!\n• 🛒 Extended Upgrades: Spells & Boosts up to level 15\n• 📋 Daily Quests: Complete quests and earn up to 10,000 coins!\n\nDefend the gate. Let no hero pass.\n\n— The Dungeon, eternal and dark\n\nDungeon Overlord V2.9 · Developed by Soumil Mittal · 2026`; }
+    function welcomeText(n) { return `Subject: Your Throne Awaits, ${n}\n\nOverlord ${n},\n\nThe dungeon awakens. Eight servants answer your call:\n\n😈 Imp — Double Strike: 25% to hit twice\n👹 Orc — Berserk: +50% DMG below 30% HP\n🪨 Golem — Thorns: reflects 30% damage\n👻 Wraith — Phase: 40% evasion\n🐉 Dragon — Burn Aura: scorches nearby foes\n🧛 Vampire — Life Drain: steals 20% DMG as HP\n💀 Necromancer — Soul Harvest: raises fallen foes\n⚡ Berserker — Rage Stack: stronger each kill\n\nV2.9.2 UPDATES:\n• ⚡ Divine Heroes: Holy Knights & Celestial Archers throw projectiles!\n• 🎁 Infinite Redeem: SM30 can be redeemed unlimited times\n• 💰 Mid-exit auto-save: coins & records saved anytime!\n• 🖼 Wave backgrounds: dungeon evolves each wave range\n• ⏩ Speed Control: play at 1×, 2×, or 3× speed!\n• 🛒 Extended Upgrades: Spells & Boosts up to level 15\n• 📋 Daily Quests: Complete quests and earn up to 10,000 coins!\n\nDefend the gate. Let no hero pass.\n\n— The Dungeon, eternal and dark\n\nDungeon Overlord V2.9.2 · Developed by Soumil Mittal · 2026`; }
     function closeEmail() {
       document.getElementById('emodal').classList.remove('on');
       if (CU && !CU.welcomeBonusGiven) { CU.welcomeBonusGiven = true; addDarkCoins(100); saveUser(); toast('🎁 +100 🪙 Welcome Bonus!'); }
@@ -6328,7 +6550,7 @@
     function toast(msg) { const t = document.createElement('div'); t.className = 'toast'; t.textContent = msg; document.body.appendChild(t); setTimeout(() => t.remove(), 3100); }
 
     /* ════ PRELOADER ════ */
-    const TIPS = ['💡 Freeze spell — allies still attack frozen enemies!', '💡 Dragon Burn Aura: max 3 on field at once', '💡 Units evolve at level 5 & 10!', '💡 Boss spawns 4 assistants at 50% HP (5 after wave 25)', '💡 V2.9: Divine Heroes throw projectiles!', '💡 Vampire steals 20% of damage as HP', '💡 Berserker grows stronger each kill', '💡 Necromancer raises fallen enemies as zombies', '💡 Shop upgrades cost +30% more each level', '💡 Speed Control: play at 1×, 2×, or 3×!', '💡 SM30 code: redeemable unlimited times!'];
+    const TIPS = ['💡 Freeze spell — allies still attack frozen enemies!', '💡 Dragon Burn Aura: max 3 on field at once', '💡 Units evolve at level 5 & 10!', '💡 Boss spawns 4 assistants at 50% HP (5 after wave 25)', '💡 V2.9.2: Divine Heroes throw projectiles!', '💡 Vampire steals 20% of damage as HP', '💡 Berserker grows stronger each kill', '💡 Necromancer raises fallen enemies as zombies', '💡 Shop upgrades cost +30% more each level', '💡 Speed Control: play at 1×, 2×, or 3×!', '💡 SM30 code: redeemable unlimited times!'];
     const MSGS = ['Awakening the dungeon…', 'Summoning warriors…', 'Forging spell crystals…', 'Building the shop…', 'Arranging leaderboard…', 'Opening the dark gate…', 'Darkness rises…'];
 
     function spawnEmbers() { const w = document.getElementById('embers'); for (let i = 0; i < 22; i++) { const e = document.createElement('div'); e.className = 'emb'; const d = (Math.random() - .5) * 130; e.style.cssText = `left:${Math.random() * 100}%;bottom:0;--d:${d}px;width:${Math.random() * 3 + 1}px;height:${Math.random() * 3 + 1}px;background:hsl(${20 + Math.random() * 20},100%,${50 + Math.random() * 20}%);animation-duration:${3 + Math.random() * 5}s;animation-delay:${Math.random() * 5}s;opacity:${Math.random() * .7 + .2}`; w.appendChild(e); } }
@@ -6355,7 +6577,7 @@
     function finishLoad() { show('pre', false); if (CU) { show('home', true); afterLogin(); } else show('auth', true); }
 
     /* ══════════════════════════════════════════════════
-       GAME ENGINE — V2.9
+       GAME ENGINE — V2.9.2
     ══════════════════════════════════════════════════ */
     const gc = document.getElementById('gc'), ctx = gc.getContext('2d');
     let W, H, pathY, pathH;
@@ -6932,7 +7154,7 @@
       minions = []; heroes = []; particles = []; meteors = []; zombies = []; projectiles = [];
       freezeT = 0; rageT = 0; shadowT = 0; actSpl = null; gT = 0; mT = 0; sT = 0; hT = 0; matchBossesKilled = 0; waveStartTime = Date.now();
 
-      // V2.9: Reset partial-credit trackers for new session
+      // V2.9.2: Reset partial-credit trackers for new session
       partialCoinsAwarded = 0;
       killsCreditedToStats = false;
       waveGemsAwarded = false;
@@ -6955,7 +7177,7 @@
       GA = true; paused = false; document.getElementById('pov').classList.remove('on');
       document.getElementById('gw').classList.add('on');
       lastTs = performance.now(); requestAnimationFrame(loop);
-      startAutoSave(); // V2.9: start mid-exit auto-save (no double-count)
+      startAutoSave(); // V2.9.2: start mid-exit auto-save (no double-count)
       if (CU) { CU.gamesPlayed = (CU.gamesPlayed || 0) + 1; CU.sessionDays = CU.sessionDays || []; CU.sessionDays.push(Date.now()); if (CU.sessionDays.length > 60) CU.sessionDays = CU.sessionDays.slice(-60); saveUser(); }
     }
 
@@ -7053,6 +7275,199 @@
         saveUser();
       }
     });
+    /* ════ MICRO-ANIMATIONS & UX V2.9.2 ════ */
+
+    /* 1. COIN BURST on wallet card click */
+    document.querySelector('.wallet-card')?.addEventListener('click', function () {
+      for (let i = 0; i < 8; i++) {
+        const coin = document.createElement('div');
+        const angle = (i / 8) * Math.PI * 2;
+        const dist = 40 + Math.random() * 30;
+        coin.textContent = '🪙';
+        coin.style.cssText = `
+      position:fixed;
+      left:50%;top:50%;
+      font-size:${14 + Math.random() * 8}px;
+      pointer-events:none;
+      z-index:9999;
+      transition:all .7s cubic-bezier(.17,.67,.12,.99);
+      transform:translate(-50%,-50%);
+      opacity:1
+    `;
+        document.body.appendChild(coin);
+        requestAnimationFrame(() => {
+          coin.style.transform = `translate(calc(-50% + ${Math.cos(angle) * dist}px), calc(-50% + ${Math.sin(angle) * dist}px)) scale(0)`;
+          coin.style.opacity = '0';
+        });
+        setTimeout(() => coin.remove(), 750);
+      }
+    });
+
+    /* 2. BUTTON RIPPLE on all .abtn, .btnp, .streak-claim clicks */
+    function addRipple(el) {
+      el.addEventListener('click', function (e) {
+        const rip = document.createElement('span');
+        const rect = this.getBoundingClientRect();
+        const size = Math.max(rect.width, rect.height);
+        rip.style.cssText = `
+      position:absolute;
+      width:${size}px;height:${size}px;
+      left:${e.clientX - rect.left - size / 2}px;
+      top:${e.clientY - rect.top - size / 2}px;
+      background:rgba(255,255,255,.18);
+      border-radius:50%;
+      transform:scale(0);
+      animation:ripAnim .55s ease-out forwards;
+      pointer-events:none;z-index:1
+    `;
+        this.style.position = 'relative';
+        this.style.overflow = 'hidden';
+        this.appendChild(rip);
+        setTimeout(() => rip.remove(), 600);
+      });
+    }
+    document.querySelectorAll('.abtn,.btnp,.streak-claim,.rw-btn-play,.rw-btn-shop,.db-confirm').forEach(addRipple);
+
+    /* Inject ripple keyframe once */
+    if (!document.getElementById('ripple-style')) {
+      const st = document.createElement('style');
+      st.id = 'ripple-style';
+      st.textContent = `@keyframes ripAnim{to{transform:scale(2.5);opacity:0}}`;
+      document.head.appendChild(st);
+    }
+
+    /* 3. STAT COUNTER ANIMATION — rolls up numbers smoothly */
+    function animateCounter(el, target, duration = 900) {
+      if (!el) return;
+      const start = parseInt(el.textContent) || 0;
+      if (start === target) return;
+      const startTime = performance.now();
+      function step(now) {
+        const progress = Math.min((now - startTime) / duration, 1);
+        const ease = 1 - Math.pow(1 - progress, 3);
+        el.textContent = Math.floor(start + (target - start) * ease);
+        if (progress < 1) requestAnimationFrame(step);
+        else el.textContent = target;
+      }
+      requestAnimationFrame(step);
+    }
+
+    /* Patch refreshHome to animate coin display */
+    const _origRefreshHome = refreshHome;
+    window.refreshHome = function () {
+      _origRefreshHome.call(this);
+      if (!CU) return;
+      ['wc-val', 'my-dc', 'my-wave', 'my-games', 'my-kills'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) {
+          const val = parseInt(el.textContent) || 0;
+          animateCounter(el, val);
+        }
+      });
+    };
+
+    /* 4. UNIT CARD PRESS — scale + glow on touch */
+    document.addEventListener('touchstart', function (e) {
+      const uc = e.target.closest('.uc');
+      if (!uc) return;
+      uc.style.transform = 'scale(0.91)';
+      uc.style.transition = 'transform .08s';
+      uc.style.boxShadow = '0 0 18px rgba(255,215,0,.28)';
+    }, { passive: true });
+    document.addEventListener('touchend', function (e) {
+      const uc = e.target.closest('.uc');
+      if (!uc) return;
+      uc.style.transform = '';
+      uc.style.boxShadow = '';
+      setTimeout(() => { uc.style.transition = ''; }, 200);
+    }, { passive: true });
+
+    /* 5. SCREEN SLIDE TRANSITIONS — fixed so back buttons work */
+const _origShow = show;
+let lastShowDir = 1;
+window.show = function (id, v) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  if (v) {
+    // Clear any leftover inline styles from a previous hide
+    el.style.transition = 'none';
+    el.style.transform = `translateX(${lastShowDir * 28}px)`;
+    el.style.opacity = '0';
+    el.style.pointerEvents = '';
+    el.classList.remove('off');
+    requestAnimationFrame(() => {
+      el.style.transition = 'opacity .32s ease, transform .32s ease';
+      el.style.transform = 'translateX(0)';
+      el.style.opacity = '1';
+    });
+  } else {
+    // CRITICAL: clear inline styles FIRST so .off class can take effect
+    el.style.transition = 'opacity .22s ease';
+    el.style.opacity = '0';
+    setTimeout(() => {
+      el.style.transition = '';
+      el.style.transform = '';
+      el.style.opacity = '';
+      el.classList.add('off');
+    }, 220);
+  }
+};
+
+    /* 6. GOLD EARNED FLASH — flash wallet briefly when gold lands from battle */
+    let lastKnownGold = 0;
+    function checkGoldFlash() {
+      if (!CU) return;
+      const cur = CU.darkCoins || 0;
+      if (cur > lastKnownGold && lastKnownGold > 0) {
+        const wc = document.querySelector('.wallet-card');
+        if (wc) {
+          wc.style.transition = 'box-shadow .15s';
+          wc.style.boxShadow = '0 0 32px rgba(255,215,0,.45)';
+          setTimeout(() => { wc.style.boxShadow = ''; }, 420);
+        }
+      }
+      lastKnownGold = cur;
+    }
+    setInterval(checkGoldFlash, 2000);
+
+    /* 7. IDLE CLAIM PULSE — throb animation on idle claim button when claimable */
+    function pulseIdleBtn() {
+      const btn = document.getElementById('idle-btn');
+      if (!btn) return;
+      if (!btn.classList.contains('dis')) {
+        btn.style.animation = 'idlePulse 1.4s ease-in-out infinite';
+      } else {
+        btn.style.animation = '';
+      }
+    }
+    const idlePulseStyle = document.createElement('style');
+    idlePulseStyle.textContent = `
+  @keyframes idlePulse {
+    0%,100% { box-shadow: 0 0 0px rgba(0,200,255,.2) }
+    50% { box-shadow: 0 0 18px rgba(0,200,255,.55), 0 0 8px rgba(0,200,255,.3) }
+  }
+`;
+    document.head.appendChild(idlePulseStyle);
+    setInterval(pulseIdleBtn, 3000);
+
+    /* 8. SWIPE BETWEEN HOME CARDS — subtle swipe feel on mobile */
+    (function () {
+      let startX = 0;
+      const body = document.getElementById('home');
+      if (!body) return;
+      body.addEventListener('touchstart', e => { startX = e.touches[0].clientX; }, { passive: true });
+      body.addEventListener('touchend', e => {
+        const dx = e.changedTouches[0].clientX - startX;
+        if (Math.abs(dx) > 60) {
+          // Subtle tilt feedback on swipe
+          const hbdy = document.querySelector('.hbdy');
+          if (!hbdy) return;
+          hbdy.style.transition = 'transform .18s';
+          hbdy.style.transform = `translateX(${dx > 0 ? 4 : -4}px)`;
+          setTimeout(() => { hbdy.style.transform = ''; hbdy.style.transition = 'transform .3s'; }, 180);
+        }
+      }, { passive: true });
+    })();
   </script>
 </body>
 
