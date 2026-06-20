@@ -7471,209 +7471,212 @@
     })();
 
     /* ════ GSAP POWER ANIMATIONS ════ */
-/* Only runs if GSAP is loaded */
-if (typeof gsap !== 'undefined') {
+    /* Only runs if GSAP is loaded */
+    if (typeof gsap !== 'undefined') {
 
-  /* ── 1. COIN FLIGHT: coins fly from battlefield to wallet on game over ── */
-  function animateCoinFlight(amount, fromX, fromY) {
-    const wallet = document.querySelector('.wallet-card');
-    if (!wallet) return;
-    const wRect = wallet.getBoundingClientRect();
-    const destX = wRect.left + wRect.width * 0.3;
-    const destY = wRect.top + wRect.height * 0.5;
-    const count = Math.min(12, Math.ceil(amount / 100));
+      /* ── 1. COIN FLIGHT: coins fly from battlefield to wallet on game over ── */
+      function animateCoinFlight(amount, fromX, fromY) {
+        const wallet = document.querySelector('.wallet-card');
+        if (!wallet) return;
+        const wRect = wallet.getBoundingClientRect();
+        const destX = wRect.left + wRect.width * 0.3;
+        const destY = wRect.top + wRect.height * 0.5;
+        const count = Math.min(12, Math.ceil(amount / 100));
 
-    for (let i = 0; i < count; i++) {
-      const coin = document.createElement('div');
-      coin.textContent = '🪙';
-      coin.style.cssText = `
+        for (let i = 0; i < count; i++) {
+          const coin = document.createElement('div');
+          coin.textContent = '🪙';
+          coin.style.cssText = `
         position:fixed;left:${fromX}px;top:${fromY}px;
         font-size:${18 + Math.random() * 8}px;
         pointer-events:none;z-index:9999;
         filter:drop-shadow(0 0 6px rgba(255,215,0,.8))
       `;
-      document.body.appendChild(coin);
+          document.body.appendChild(coin);
 
-      gsap.to(coin, {
-        x: destX - fromX + (Math.random() - 0.5) * 60,
-        y: destY - fromY,
-        rotation: (Math.random() - 0.5) * 720,
-        scale: 0.3,
-        duration: 0.7 + Math.random() * 0.4,
-        delay: i * 0.06,
-        ease: 'power2.in',
-        onComplete: () => {
-          coin.remove();
-          // Wallet pulse on each coin landing
-          gsap.fromTo('.wallet-card', 
-            { scale: 1 }, 
-            { scale: 1.04, duration: 0.1, yoyo: true, repeat: 1, ease: 'power2.out' }
+          gsap.to(coin, {
+            x: destX - fromX + (Math.random() - 0.5) * 60,
+            y: destY - fromY,
+            rotation: (Math.random() - 0.5) * 720,
+            scale: 0.3,
+            duration: 0.7 + Math.random() * 0.4,
+            delay: i * 0.06,
+            ease: 'power2.in',
+            onComplete: () => {
+              coin.remove();
+              // Wallet pulse on each coin landing
+              gsap.fromTo('.wallet-card',
+                { scale: 1 },
+                { scale: 1.04, duration: 0.1, yoyo: true, repeat: 1, ease: 'power2.out' }
+              );
+            }
+          });
+        }
+      }
+
+      /* ── 2. WALLET PUMP — number jumps when coins update ── */
+      const _origUpdateDCDisplays = updateDCDisplays;
+      window.updateDCDisplays = function () {
+        const prevVal = parseInt(document.getElementById('wc-val')?.textContent) || 0;
+        _origUpdateDCDisplays.call(this);
+        const newVal = parseInt(document.getElementById('wc-val')?.textContent) || 0;
+        if (newVal > prevVal) {
+          gsap.fromTo('#wc-val',
+            { scale: 1.5, color: '#ffffff' },
+            { scale: 1, color: '#ffd700', duration: 0.4, ease: 'back.out(2)' }
           );
         }
-      });
-    }
-  }
+      };
 
-  /* ── 2. WALLET PUMP — number jumps when coins update ── */
-  const _origUpdateDCDisplays = updateDCDisplays;
-  window.updateDCDisplays = function() {
-    const prevVal = parseInt(document.getElementById('wc-val')?.textContent) || 0;
-    _origUpdateDCDisplays.call(this);
-    const newVal = parseInt(document.getElementById('wc-val')?.textContent) || 0;
-    if (newVal > prevVal) {
-      gsap.fromTo('#wc-val',
-        { scale: 1.5, color: '#ffffff' },
-        { scale: 1, color: '#ffd700', duration: 0.4, ease: 'back.out(2)' }
-      );
-    }
-  };
-
-  /* ── 3. GAME OVER COIN COUNT-UP ── */
-  const _origGameOver = gameOver;
-  window.gameOver = function() {
-    _origGameOver.call(this);
-    const earned = parseInt(document.getElementById('rw-earned')?.textContent) || 0;
-    const el = document.getElementById('rw-earned');
-    if (!el || earned === 0) return;
-    el.textContent = '0';
-    gsap.to({ val: 0 }, {
-      val: earned,
-      duration: 1.4,
-      ease: 'power2.out',
-      delay: 0.3,
-      onUpdate: function() {
-        el.textContent = Math.round(this.targets()[0].val).toLocaleString();
-      }
-    });
-    // Also animate the coin icon
-    gsap.fromTo('.rw-coin-ico',
-      { rotation: -180, scale: 0 },
-      { rotation: 0, scale: 1, duration: 0.8, ease: 'back.out(2)', delay: 0.1 }
-    );
-  };
-
-  /* ── 4. STREAK CLAIM CELL BURST ── */
-  const _origClaimStreak = claimStreak;
-  window.claimStreak = function() {
-    _origClaimStreak.call(this);
-    const today = document.querySelector('.sd.today, .sd.done:last-child');
-    if (today) {
-      gsap.fromTo(today,
-        { scale: 1, boxShadow: '0 0 0px rgba(255,180,0,0)' },
-        { scale: 1.25, boxShadow: '0 0 24px rgba(255,180,0,.7)',
-          duration: 0.25, yoyo: true, repeat: 1, ease: 'power2.out' }
-      );
-    }
-    // Burst coins from streak grid
-    const grid = document.getElementById('streak-grid');
-    if (grid) {
-      const rect = grid.getBoundingClientRect();
-      animateCoinFlight(50, rect.left + rect.width / 2, rect.top);
-    }
-  };
-
-  /* ── 5. SHOP UPGRADE SUCCESS ANIMATION ── */
-  const _origUpgradeUnit = upgradeUnit;
-  window.upgradeUnit = function(unit, stat, key, upg) {
-    const result = _origUpgradeUnit.call(this, unit, stat, key, upg);
-    if (result !== false) {
-      const card = document.querySelector(`#upgrow-${unit}`);
-      if (card) {
-        gsap.fromTo(card,
-          { y: 0 },
-          { y: -6, duration: 0.12, yoyo: true, repeat: 1, ease: 'power2.out' }
+      /* ── 3. GAME OVER COIN COUNT-UP ── */
+      const _origGameOver = gameOver;
+      window.gameOver = function () {
+        _origGameOver.call(this);
+        const earned = parseInt(document.getElementById('rw-earned')?.textContent) || 0;
+        const el = document.getElementById('rw-earned');
+        if (!el || earned === 0) return;
+        el.textContent = '0';
+        gsap.to({ val: 0 }, {
+          val: earned,
+          duration: 1.4,
+          ease: 'power2.out',
+          delay: 0.3,
+          onUpdate: function () {
+            el.textContent = Math.round(this.targets()[0].val).toLocaleString();
+          }
+        });
+        // Also animate the coin icon
+        gsap.fromTo('.rw-coin-ico',
+          { rotation: -180, scale: 0 },
+          { rotation: 0, scale: 1, duration: 0.8, ease: 'back.out(2)', delay: 0.1 }
         );
-      }
-      // Bar fill animation — already CSS-transitioned but add a flash
-      const bar = document.querySelector(`#upgrow-${unit}`)?.closest('.uup-card')?.querySelector('.uup-lvlbar-fill');
-      if (bar) {
-        gsap.fromTo(bar,
-          { filter: 'brightness(3)' },
-          { filter: 'brightness(1)', duration: 0.5, ease: 'power2.out' }
-        );
-      }
-    }
-    return result;
-  };
+      };
 
-  /* ── 6. DECK CARD SELECTION FLOAT ── */
-  document.addEventListener('click', (e) => {
-    const ruCard = e.target.closest('.ru-card');
-    if (!ruCard) return;
-    gsap.fromTo(ruCard,
-      { scale: 1, y: 0 },
-      { scale: 0.94, y: 4, duration: 0.08, yoyo: true, repeat: 1, ease: 'power2.inOut',
-        onComplete: () => {
-          if (ruCard.classList.contains('in-deck')) {
-            gsap.to(ruCard, { 
-              boxShadow: '0 0 20px rgba(255,215,0,.35)', 
-              duration: 0.3, yoyo: true, repeat: 1 
-            });
+      /* ── 4. STREAK CLAIM CELL BURST ── */
+      const _origClaimStreak = claimStreak;
+      window.claimStreak = function () {
+        _origClaimStreak.call(this);
+        const today = document.querySelector('.sd.today, .sd.done:last-child');
+        if (today) {
+          gsap.fromTo(today,
+            { scale: 1, boxShadow: '0 0 0px rgba(255,180,0,0)' },
+            {
+              scale: 1.25, boxShadow: '0 0 24px rgba(255,180,0,.7)',
+              duration: 0.25, yoyo: true, repeat: 1, ease: 'power2.out'
+            }
+          );
+        }
+        // Burst coins from streak grid
+        const grid = document.getElementById('streak-grid');
+        if (grid) {
+          const rect = grid.getBoundingClientRect();
+          animateCoinFlight(50, rect.left + rect.width / 2, rect.top);
+        }
+      };
+
+      /* ── 5. SHOP UPGRADE SUCCESS ANIMATION ── */
+      const _origUpgradeUnit = upgradeUnit;
+      window.upgradeUnit = function (unit, stat, key, upg) {
+        const result = _origUpgradeUnit.call(this, unit, stat, key, upg);
+        if (result !== false) {
+          const card = document.querySelector(`#upgrow-${unit}`);
+          if (card) {
+            gsap.fromTo(card,
+              { y: 0 },
+              { y: -6, duration: 0.12, yoyo: true, repeat: 1, ease: 'power2.out' }
+            );
+          }
+          // Bar fill animation — already CSS-transitioned but add a flash
+          const bar = document.querySelector(`#upgrow-${unit}`)?.closest('.uup-card')?.querySelector('.uup-lvlbar-fill');
+          if (bar) {
+            gsap.fromTo(bar,
+              { filter: 'brightness(3)' },
+              { filter: 'brightness(1)', duration: 0.5, ease: 'power2.out' }
+            );
           }
         }
-      }
-    );
-  });
+        return result;
+      };
 
-  /* ── 7. SCREEN ENTRANCE: stagger children when screen opens ── */
-  const _patchedShow = window.show;
-  window.show = function(id, v) {
-    _patchedShow.call(this, id, v);
-    if (!v) return;
-    const staggerTargets = {
-      'shop': '.uup-card, .spl-card, .bst-card',
-      'quests': '.quest-card',
-      'deck-builder': '.ru-card',
-      'lb': '.lb-row'
-    };
-    const sel = staggerTargets[id];
-    if (sel) {
-      setTimeout(() => {
-        const els = document.querySelectorAll(sel);
-        if (els.length) {
-          gsap.fromTo(els,
-            { y: 20, opacity: 0 },
-            { y: 0, opacity: 1, duration: 0.3, stagger: 0.05, ease: 'power2.out' }
+      /* ── 6. DECK CARD SELECTION FLOAT ── */
+      document.addEventListener('click', (e) => {
+        const ruCard = e.target.closest('.ru-card');
+        if (!ruCard) return;
+        gsap.fromTo(ruCard,
+          { scale: 1, y: 0 },
+          {
+            scale: 0.94, y: 4, duration: 0.08, yoyo: true, repeat: 1, ease: 'power2.inOut',
+            onComplete: () => {
+              if (ruCard.classList.contains('in-deck')) {
+                gsap.to(ruCard, {
+                  boxShadow: '0 0 20px rgba(255,215,0,.35)',
+                  duration: 0.3, yoyo: true, repeat: 1
+                });
+              }
+            }
+          }
+        );
+      });
+
+      /* ── 7. SCREEN ENTRANCE: stagger children when screen opens ── */
+      const _patchedShow = window.show;
+      window.show = function (id, v) {
+        _patchedShow.call(this, id, v);
+        if (!v) return;
+        const staggerTargets = {
+          'shop': '.uup-card, .spl-card, .bst-card',
+          'quests': '.quest-card',
+          'deck-builder': '.ru-card',
+          'lb': '.lb-row'
+        };
+        const sel = staggerTargets[id];
+        if (sel) {
+          setTimeout(() => {
+            const els = document.querySelectorAll(sel);
+            if (els.length) {
+              gsap.fromTo(els,
+                { y: 20, opacity: 0 },
+                { y: 0, opacity: 1, duration: 0.3, stagger: 0.05, ease: 'power2.out' }
+              );
+            }
+          }, 50);
+        }
+      };
+
+      /* ── 8. BOSS KILL SCREEN SHAKE (GSAP version, smoother than CSS) ── */
+      const _origShowBossBonusFX = showBossBonusFX;
+      window.showBossBonusFX = function (x, y) {
+        _origShowBossBonusFX.call(this, x, y);
+        animateCoinFlight(50, x, y);
+        if (CF.shake) {
+          gsap.to('#gw', {
+            x: -8, duration: 0.05, yoyo: true, repeat: 7, ease: 'none',
+            onComplete: () => gsap.set('#gw', { x: 0 })
+          });
+        }
+      };
+
+      /* ── 9. NAV ICON BOUNCE on click ── */
+      document.querySelectorAll('.nico').forEach(btn => {
+        btn.addEventListener('click', () => {
+          gsap.fromTo(btn,
+            { scale: 1 },
+            { scale: 0.82, duration: 0.09, yoyo: true, repeat: 1, ease: 'power2.out' }
+          );
+        });
+      });
+
+      /* ── 10. IDLE CLAIM SHAKE when coins are ready ── */
+      setInterval(() => {
+        const btn = document.getElementById('idle-btn');
+        if (btn && !btn.classList.contains('dis')) {
+          gsap.fromTo(btn,
+            { rotation: 0 },
+            { rotation: 4, duration: 0.07, yoyo: true, repeat: 3, ease: 'none' }
           );
         }
-      }, 50);
+      }, 8000);
     }
-  };
-
-  /* ── 8. BOSS KILL SCREEN SHAKE (GSAP version, smoother than CSS) ── */
-  const _origShowBossBonusFX = showBossBonusFX;
-  window.showBossBonusFX = function(x, y) {
-    _origShowBossBonusFX.call(this, x, y);
-    animateCoinFlight(50, x, y);
-    if (CF.shake) {
-      gsap.to('#gw', {
-        x: -8, duration: 0.05, yoyo: true, repeat: 7, ease: 'none',
-        onComplete: () => gsap.set('#gw', { x: 0 })
-      });
-    }
-  };
-
-  /* ── 9. NAV ICON BOUNCE on click ── */
-  document.querySelectorAll('.nico').forEach(btn => {
-    btn.addEventListener('click', () => {
-      gsap.fromTo(btn,
-        { scale: 1 },
-        { scale: 0.82, duration: 0.09, yoyo: true, repeat: 1, ease: 'power2.out' }
-      );
-    });
-  });
-
-  /* ── 10. IDLE CLAIM SHAKE when coins are ready ── */
-  setInterval(() => {
-    const btn = document.getElementById('idle-btn');
-    if (btn && !btn.classList.contains('dis')) {
-      gsap.fromTo(btn,
-        { rotation: 0 },
-        { rotation: 4, duration: 0.07, yoyo: true, repeat: 3, ease: 'none' }
-      );
-    }
-  }, 8000);
-}
   </script>
 </body>
 
