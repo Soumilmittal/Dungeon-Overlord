@@ -11,6 +11,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/canvas-confetti/1.9.3/confetti.browser.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.19.0/matter.min.js"></script>
   <link
     href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Cinzel:wght@400;600;700;900&family=Rajdhani:wght@400;500;600;700&display=swap"
     rel="stylesheet">
@@ -6547,8 +6549,29 @@
         grid.appendChild(card);
       });
     }
+    
     /* ════ TOAST ════ */
-    function toast(msg) { const t = document.createElement('div'); t.className = 'toast'; t.textContent = msg; document.body.appendChild(t); setTimeout(() => t.remove(), 3100); }
+    function toast(msg) {
+      function confettiGold(originX = 0.5, originY = 0.5) {
+  if (typeof confetti === 'undefined') return;
+  confetti({ particleCount: 60, spread: 70, startVelocity: 38, origin: { x: originX, y: originY }, colors: ['#ffd700', '#ffb800', '#ff8c00', '#fff4cc'], scalar: 0.9, ticks: 140 });
+}
+function confettiEvolution() {
+  if (typeof confetti === 'undefined') return;
+  confetti({ particleCount: 45, angle: 60, spread: 55, startVelocity: 45, origin: { x: 0.15, y: 0.65 }, colors: ['#9b00ff', '#ce93d8', '#ffd700'] });
+  confetti({ particleCount: 45, angle: 120, spread: 55, startVelocity: 45, origin: { x: 0.85, y: 0.65 }, colors: ['#9b00ff', '#ce93d8', '#ffd700'] });
+  setTimeout(() => confetti({ particleCount: 80, spread: 100, startVelocity: 55, origin: { x: 0.5, y: 0.5 }, colors: ['#ffd700', '#ffeb3b', '#9b00ff'], shapes: ['star'], scalar: 1.1 }), 180);
+}
+function confettiBoss() {
+  if (typeof confetti === 'undefined') return;
+  const end = Date.now() + 500;
+  (function frame() {
+    confetti({ particleCount: 4, angle: 60, spread: 80, startVelocity: 50, origin: { x: 0, y: 0.6 }, colors: ['#e82020', '#ffd700', '#ff4422'] });
+    confetti({ particleCount: 4, angle: 120, spread: 80, startVelocity: 50, origin: { x: 1, y: 0.6 }, colors: ['#e82020', '#ffd700', '#ff4422'] });
+    if (Date.now() < end) requestAnimationFrame(frame);
+  })();
+}
+      const t = document.createElement('div'); t.className = 'toast'; t.textContent = msg; document.body.appendChild(t); setTimeout(() => t.remove(), 3100); }
 
     /* ════ PRELOADER ════ */
     const TIPS = ['💡 Freeze spell — allies still attack frozen enemies!', '💡 Dragon Burn Aura: max 3 on field at once', '💡 Units evolve at level 5 & 10!', '💡 Boss spawns 4 assistants at 50% HP (5 after wave 25)', '💡 V2.9.2: Divine Heroes throw projectiles!', '💡 Vampire steals 20% of damage as HP', '💡 Berserker grows stronger each kill', '💡 Necromancer raises fallen enemies as zombies', '💡 Shop upgrades cost +30% more each level', '💡 Speed Control: play at 1×, 2×, or 3×!', '💡 SM30 code: redeemable unlimited times!'];
@@ -6633,6 +6656,10 @@
     let goldIncomeBonus = 0, startGoldBonus = 0, manaSpeedBonus = 0, comboMult = 1;
     let matchBossesKilled = 0;
     let activeDeck = [];
+    let hitStopT = 0;
+let screenFlashA = 0;
+function triggerHitStop(ms) { hitStopT = Math.max(hitStopT, ms); }
+function triggerFlash(a) { screenFlashA = Math.max(screenFlashA, a); }
 
     /* ── CHANGE 1: ROBUST MID-EXIT CREDIT SYSTEM ──
        Tracks exactly how many coins have already been credited this session
@@ -6787,7 +6814,7 @@
       gold -= scaledCost;
       const oy = 0, evoLvl = getEvoLevel(selU);
       const nearGate = x >= W - 150;
-      minions.push({ x, y: y + oy, type: selU, ...st, maxHp: st.hp, flash: 0, enraged: Date.now() < rageT, freezeT: 0, evoLvl, berserkerKills: 0, lifedrainAmt: selU === 'vampire' ? Math.floor(st.dmg * .2) : 0, necroTimer: 0, nearGate });
+      minions.push({ x, y: y + oy, type: selU, ...st, maxHp: st.hp, flash: 0, enraged: Date.now() < rageT, freezeT: 0, evoLvl, berserkerKills: 0, lifedrainAmt: selU === 'vampire' ? Math.floor(st.dmg * .2) : 0, necroTimer: 0, nearGate, scaleX: 0.3, scaleY: 1.6, spawnT: 0 });
       if (CF.ptcl) burstp(x, y + oy, 6, ALL_UNITS[selU].col);
       if (CU) { CU.unitUsage = CU.unitUsage || {}; CU.unitUsage[selU] = (CU.unitUsage[selU] || 0) + 1; saveUser(); }
       updateHUD();
@@ -6823,14 +6850,20 @@
     }
 
     /* MAIN LOOP — deltaTime scaled by gameSpeed */
-    function loop(ts) {
-      if (!GA || paused) return;
-      const rawDt = Math.min(ts - lastTs, 50);
-      lastTs = ts;
-      const dt = rawDt * gameSpeed;
-      update(dt, rawDt); render();
-      requestAnimationFrame(loop);
-    }
+   function loop(ts) {
+  if (!GA || paused) return;
+  const rawDt = Math.min(ts - lastTs, 50);
+  lastTs = ts;
+  if (hitStopT > 0) {
+    hitStopT -= rawDt;
+    render();
+    requestAnimationFrame(loop);
+    return;
+  }
+  const dt = rawDt * gameSpeed;
+  update(dt, rawDt); render();
+  requestAnimationFrame(loop);
+}
 
     function update(dt, rawDt) {
       const now = Date.now();
@@ -6924,6 +6957,12 @@
       heroes = heroes.filter(h => !h.dead);
 
       minions.forEach(m => {
+        if (m.spawnT < 1) {
+  m.spawnT = Math.min(1, m.spawnT + dt / 220);
+  const b = 1 - Math.pow(1 - m.spawnT, 3);
+  m.scaleX = 0.3 + 0.85 * b + Math.sin(b * Math.PI) * 0.18;
+  m.scaleY = 1.6 - 0.75 * b - Math.sin(b * Math.PI) * 0.12;
+} else { m.scaleX += (1 - m.scaleX) * 0.2; m.scaleY += (1 - m.scaleY) * 0.2; }
         if (m.hp <= 0) { m.dead = true; if (CF.ptcl) burstp(m.x, m.y, 10, ALL_UNITS[m.type].col); addXP(m.type, 20); gold += 3; goldE += 3; if (CF.kf) addKF('😵 ' + m.type + ' fell'); updateHUD(); }
         if (m.flash > 0) m.flash--;
         if (m.type === 'orc') { const low = m.hp / m.maxHp < .3; if (Math.random() < (low ? .05 : .015) * gameSpeed && m.hp < m.maxHp) m.hp += low ? 2 : 1; }
@@ -6932,6 +6971,8 @@
           let nearestHero = null;
           let minDist = Infinity;
           heroes.forEach(h => {
+            triggerHitStop(h.isBoss ? 90 : 45);
+triggerFlash(h.isBoss ? 0.35 : 0.12);
             if (h.dead) return;
             const dx = h.x - m.x;
             const dy = h.y - m.y;
@@ -7043,16 +7084,28 @@
         const u = ALL_UNITS[m.type], evoLvl = m.evoLvl || 0, evo = getEvoData(m.type, evoLvl), displayEmoji = evo?.emoji || u.emoji;
         const displayImg = UNIT_IMAGES[m.type];
         ctx.save();
-        drawEnt(m.x, m.y, m.rad, displayEmoji, u.col, m.flash > 0, false, m.enraged || (m.type === 'orc' && m.hp / m.maxHp < .3), false, displayImg);
+       drawEnt(m.x, m.y, m.rad, displayEmoji, u.col, m.flash > 0, false, m.enraged || (m.type === 'orc' && m.hp / m.maxHp < .3), false, displayImg, m.scaleX || 1, m.scaleY || 1);
         if (m.hp < m.maxHp) { const hc = m.type === 'orc' && m.hp / m.maxHp < .3 ? '#ff8800' : m.type === 'vampire' ? '#ce93d8' : '#00e676'; drawHPbar(m.x, m.y - m.rad - 10, m.rad * 2.2, m.hp, m.maxHp, hc); }
         if (m.type === 'berserker' && m.berserkerKills > 0) { ctx.fillStyle = 'rgba(255,200,0,.9)'; ctx.font = `bold ${Math.floor(m.rad * .55)}px Cinzel`; ctx.textAlign = 'center'; ctx.fillText('×' + m.berserkerKills, m.x, m.y - m.rad - 22); }
         if (!displayImg && evoLvl === 2) { ctx.strokeStyle = 'rgba(155,0,255,.4)'; ctx.lineWidth = 3; ctx.beginPath(); ctx.arc(m.x, m.y, m.rad + 6, 0, Math.PI * 2); ctx.stroke(); }
         ctx.restore();
       });
+      if (screenFlashA > 0.001) {
+
+  ctx.save();
+  ctx.globalAlpha = screenFlashA;
+  ctx.fillStyle = '#fff';
+  ctx.fillRect(0, 0, W, H);
+  ctx.restore();
+  screenFlashA *= 0.82;
+}
     }
 
     function drawEnt(x, y, r, emoji, col, flash, frozen, enraged, burning, img = null) {
       ctx.save();
+      ctx.translate(x, y);
+  ctx.scale(scaleX, scaleY);
+  ctx.translate(-x, -y);
       if (img && !img.failed) {
         if (img.complete && img.naturalWidth > 0) {
           const size = r * 2.45;
