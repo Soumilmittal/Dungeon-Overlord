@@ -7,7 +7,7 @@
         content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="theme-color" content="#06000e">
-    <title>Dungeon Overlord V2.9.2</title>
+    <title>Dungeon Overlord V2.9.4</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
@@ -15,6 +15,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.19.0/matter.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tsparticles/3.5.0/tsparticles.engine.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tsparticles-slim/3.5.0/tsparticles.slim.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link
         href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Cinzel:wght@400;600;700;900&family=Rajdhani:wght@400;500;600;700&display=swap"
         rel="stylesheet">
@@ -54,11 +55,28 @@
             padding: 0;
             width: 100%;
             height: 100%;
-            background: var(--bg);
+            background: #06000e;
+            background-image: 
+                linear-gradient(135deg, rgba(0, 20, 50, 0.6) 0%, rgba(5, 0, 8, 0.9) 40%, rgba(50, 0, 10, 0.6) 100%),
+                repeating-linear-gradient(45deg, transparent, transparent 15px, rgba(0, 80, 255, 0.04) 15px, rgba(0, 80, 255, 0.04) 17px),
+                repeating-linear-gradient(-45deg, transparent, transparent 15px, rgba(255, 0, 50, 0.04) 15px, rgba(255, 0, 50, 0.04) 17px);
+            background-attachment: fixed;
             font-family: var(--fb);
             color: #fff;
             overflow: hidden;
             overscroll-behavior: none
+        }
+
+        body::after {
+            content: '';
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+            background: 
+                linear-gradient(135deg, rgba(0, 20, 50, 0.6) 0%, rgba(5, 0, 8, 0.9) 40%, rgba(50, 0, 10, 0.6) 100%),
+                repeating-linear-gradient(45deg, transparent, transparent 15px, rgba(0, 80, 255, 0.04) 15px, rgba(0, 80, 255, 0.04) 17px),
+                repeating-linear-gradient(-45deg, transparent, transparent 15px, rgba(255, 0, 50, 0.04) 15px, rgba(255, 0, 50, 0.04) 17px);
+            pointer-events: none;
         }
 
         /* ── SCREENS ── */
@@ -70,7 +88,8 @@
             align-items: center;
             justify-content: center;
             z-index: 100;
-            transition: opacity .4s, transform .4s
+            transition: opacity .4s, transform .4s;
+            background: transparent;
         }
 
         .scr.off {
@@ -92,7 +111,7 @@
         /* ── PRELOADER ── */
         #pre {
             z-index: 999;
-            background: #04020b;
+            background: transparent;
             overflow: hidden;
             color: #fff;
             display: flex;
@@ -104,7 +123,7 @@
             position: absolute;
             inset: 0;
             background: url('images/pre_loaderimg.jpg') center top/contain no-repeat;
-            background-color: #04020b;
+            background-color: transparent;
             filter: saturate(1.05) brightness(1);
         }
 
@@ -204,7 +223,7 @@
 
         /* ── AUTH ── */
         #auth {
-            background: radial-gradient(ellipse at 50% -10%, #200030 0%, #06000e 65%)
+            background: transparent
         }
 
         .acard {
@@ -525,7 +544,7 @@
 
         /* ── HOME (MINIMALIST & TERROR) ── */
         #home {
-            background: #050008;
+            background: transparent;
             position: relative;
         }
 
@@ -1023,7 +1042,7 @@
 
         /* ── DECK BUILDER ── */
         #deck-builder {
-            background: radial-gradient(ellipse at 50% -10%, rgba(0, 200, 100, .08) 0%, transparent 50%), #06000e;
+            background: transparent;
             z-index: 150
         }
 
@@ -1040,7 +1059,7 @@
             padding: 14px 0 18px;
             position: sticky;
             top: 0;
-            background: #06000e;
+            background: transparent;
             z-index: 5;
             border-bottom: 1px solid rgba(255, 255, 255, .04)
         }
@@ -1424,7 +1443,7 @@
 
         /* ── LEADERBOARD ── */
         #lb {
-            background: radial-gradient(ellipse at 50% -10%, rgba(255, 180, 0, .08) 0%, transparent 50%), #03000c
+            background: transparent
         }
 
         .lb-inner {
@@ -1440,7 +1459,7 @@
             padding: 14px 0 18px;
             position: sticky;
             top: 0;
-            background: #03000c;
+            background: transparent;
             z-index: 5;
             border-bottom: 1px solid rgba(255, 255, 255, .04)
         }
@@ -1603,7 +1622,7 @@
 
         /* ── SHOP ── */
         #shop {
-            background: linear-gradient(135deg, rgba(255, 180, 0, .12) 0%, rgba(155, 0, 255, .08) 50%, rgba(232, 32, 32, .08) 100%), #020005;
+            background: transparent;
             position: relative;
             overflow-y: auto;
             scroll-behavior: smooth;
@@ -1827,7 +1846,7 @@
 
         #quests {
             z-index: 170;
-            background: radial-gradient(circle at 22% 12%, rgba(255, 215, 0, .14), transparent 28%), radial-gradient(circle at 82% 18%, rgba(155, 0, 255, .18), transparent 30%), linear-gradient(180deg, rgba(8, 5, 16, .96), rgba(15, 6, 18, .98));
+            background: transparent;
             backdrop-filter: blur(10px);
         }
 
@@ -2683,7 +2702,7 @@
 
         /* ── SETTINGS ── */
         #sett {
-            background: radial-gradient(circle at 50% -12%, rgba(255, 215, 0, .12), transparent 34%), radial-gradient(circle at 0% 22%, rgba(0, 210, 255, .07), transparent 28%), linear-gradient(180deg, #08020f 0%, #040008 58%, #020005 100%)
+            background: transparent
         }
 
         .seti {
@@ -3163,32 +3182,6 @@
             backdrop-filter: blur(4px)
         }
 
-        .rdo {
-            width: 9px;
-            height: 9px;
-            border-radius: 50%;
-            flex-shrink: 0
-        }
-
-        .rdg {
-            background: radial-gradient(#ffd700, #b8860b)
-        }
-
-        .rdm {
-            background: radial-gradient(#00c8ff, #005568)
-        }
-
-        .rds {
-            background: radial-gradient(#cc44ff, #550099)
-        }
-
-        .rtx {
-            font-family: var(--ft);
-            font-size: .72rem;
-            font-weight: 700;
-            white-space: nowrap
-        }
-
         .wbg {
             background: rgba(0, 0, 0, .68);
             border: 1px solid rgba(255, 50, 50, .28);
@@ -3196,7 +3189,10 @@
             padding: 5px 11px;
             font-family: var(--ft);
             font-size: .75rem;
-            color: #ff5555
+            color: #ff5555;
+            display: flex;
+            align-items: center;
+            gap: 6px;
         }
 
         .hspells {
@@ -3246,6 +3242,11 @@
 
         .spb:active {
             transform: scale(.93)
+        }
+
+        .spb i {
+            font-size: 1.1rem;
+            margin-bottom: 2px;
         }
 
         .spm {
@@ -3648,7 +3649,7 @@
 
         /* ── REWARD ── */
         #reward-screen {
-            background: radial-gradient(ellipse at 50% 0%, rgba(255, 180, 0, .1) 0%, transparent 55%), #030010;
+            background: transparent;
             padding: 22px 16px;
             overflow-y: auto;
             -webkit-overflow-scrolling: touch;
@@ -4386,7 +4387,7 @@
 
         /* ── LOG BOOK ── */
         #logbook {
-            background: radial-gradient(circle, rgba(20, 10, 5, 0.9), rgba(6, 0, 10, 0.98));
+            background: transparent;
             z-index: 200;
         }
 
@@ -4678,9 +4679,9 @@
         <div class="pbg"></div>
         <div id="embers"></div>
         <div class="pc">
-            <div class="psw">⚔️</div>
+            <div class="psw"><i class="fa-solid fa-dungeon"></i></div>
             <div class="plo">DUNGEON OVERLORD</div>
-            <div class="pve">V 2 . 9 · BY SOUMIL MITTAL</div>
+            <div class="pve">V 2 . 9 . 4 · BY SOUMIL MITTAL</div>
             <div class="ppc" id="ppct">0%</div>
             <div class="ptr">
                 <div class="pfi" id="pfill"></div>
@@ -4694,8 +4695,8 @@
     <!-- AUTH -->
     <div class="scr off" id="auth">
         <div class="acard">
-            <div class="alo">⚔ DUNGEON OVERLORD</div>
-            <div class="asu">V2.9.2 · By Soumil Mittal</div>
+            <div class="alo"><i class="fa-solid fa-dungeon"></i> DUNGEON OVERLORD</div>
+            <div class="asu">V2.9.4 · By Soumil Mittal</div>
             <div class="atbs">
                 <button class="atb on" id="tab-su" onclick="switchTab('su')">SIGN UP</button>
                 <button class="atb" id="tab-li" onclick="switchTab('li')">SIGN IN</button>
@@ -4730,21 +4731,21 @@
             <div style="margin-top:14px;border-top:1px solid rgba(255,255,255,.06);padding-top:12px">
                 <div
                     style="font-size:.62rem;letter-spacing:2px;color:#333;text-transform:uppercase;margin-bottom:7px;font-family:var(--ft)">
-                    🎁 Redeem Code</div>
+                    <i class="fa-solid fa-gift"></i> Redeem Code</div>
                 <div class="redeem-row">
                     <input class="redeem-fi" id="redeem-input" type="text" placeholder="Enter code…" maxlength="12"
                         autocorrect="off" autocapitalize="characters">
                     <button class="redeem-btn" onclick="doRedeem()">REDEEM</button>
                 </div>
             </div>
-            <div class="adev">DEVELOPED BY SOUMIL MITTAL · DUNGEON OVERLORD V2.9.2 · 2026</div>
+            <div class="adev">DEVELOPED BY SOUMIL MITTAL · DUNGEON OVERLORD V2.9.4 · 2026</div>
         </div>
     </div>
 
     <!-- EMAIL MODAL -->
     <div class="emb-bg" id="emodal">
         <div class="emb-m">
-            <span class="em-ic">📜</span>
+            <span class="em-ic"><i class="fa-solid fa-scroll"></i></span>
             <div class="em-ti">WELCOME SCROLL DISPATCHED</div>
             <div class="em-to" id="em-to">To: —</div>
             <div class="em-bd" id="em-bd">
@@ -4753,7 +4754,7 @@
                 </div>
             </div>
             <div class="em-nt">⚠ Simulated email preview. Generated locally.</div>
-            <button class="em-cl" onclick="closeEmail()">✓ UNDERSTOOD — ENTER THE REALM</button>
+            <button class="em-cl" onclick="closeEmail()"><i class="fa-solid fa-check"></i> UNDERSTOOD — ENTER THE REALM</button>
         </div>
     </div>
 
@@ -4767,10 +4768,10 @@
                 <div class="hnm" id="nav-nm">Overlord</div>
             </div>
             <div class="hrgt">
-                <div class="nico" onclick="openShop()">🛒</div>
-                <div class="nico" onclick="openQuests()">📜</div>
-                <div class="nico" onclick="openLogbook()">📖</div>
-                <div class="nico" onclick="openSett()">⚙️</div>
+                <div class="nico" onclick="openShop()"><i class="fa-solid fa-store"></i></div>
+                <div class="nico" onclick="openQuests()"><i class="fa-solid fa-scroll"></i></div>
+                <div class="nico" onclick="openLogbook()"><i class="fa-solid fa-book-skull"></i></div>
+                <div class="nico" onclick="openSett()"><i class="fa-solid fa-gears"></i></div>
             </div>
         </div>
 
@@ -4778,31 +4779,31 @@
             <div class="hban">
                 <div class="hban-ey">You are the Darkness</div>
                 <h1 class="hban-t">DUNGEON<br>OVERLORD</h1>
-                <div class="hban-sub">V 2 . 9 · SOUMIL MITTAL</div>
+                <div class="hban-sub">V 2 . 9 . 4 · SOUMIL MITTAL</div>
             </div>
 
             <div class="glass-card wallet-card" style="cursor:pointer">
                 <div class="wc-left">
                     <div class="wc-lbl">Treasury</div>
-                    <div class="wc-val">🪙 <span id="wc-val">0</span></div>
-                    <div class="wc-val-sub">💎 <span id="wc-gems">0</span></div>
+                    <div class="wc-val"><i class="fa-solid fa-coins" style="color:var(--gold)"></i> <span id="wc-val">0</span></div>
+                    <div class="wc-val-sub"><i class="fa-solid fa-gem" style="color:var(--gem2)"></i> <span id="wc-gems">0</span></div>
                 </div>
-                <div class="wc-icon">🏦</div>
+                <div class="wc-icon"><i class="fa-solid fa-warehouse"></i></div>
             </div>
 
             <div class="h-grid">
                 <div class="glass-card mini-card">
-                    <div class="mc-ico">💤</div>
+                    <div class="mc-ico"><i class="fa-solid fa-hourglass-half" style="color:var(--blue)"></i></div>
                     <div class="mc-info">
                         <div class="mc-lbl">Idle</div>
-                        <div class="mc-val"><span id="idle-amt">0</span> 🪙</div>
+                        <div class="mc-val"><span id="idle-amt">0</span> <i class="fa-solid fa-coins" style="font-size:.9rem;color:var(--gold)"></i></div>
                     </div>
                     <div class="mc-sub" id="idle-sub">+1 / 5m</div>
                     <button class="mc-btn" id="idle-btn" onclick="claimIdle()">CLAIM</button>
                 </div>
 
                 <div class="glass-card mini-card">
-                    <div class="mc-ico">🎡</div>
+                    <div class="mc-ico"><i class="fa-solid fa-arrows-spin" style="color:var(--purple)"></i></div>
                     <div class="mc-info">
                         <div class="mc-lbl">Daily Spin</div>
                         <div class="mc-val" id="spin-title">Ready</div>
@@ -4814,7 +4815,7 @@
 
             <div class="glass-card streak-card">
                 <div class="streak-top">
-                    <div style="display:flex;align-items:center;gap:9px"><span class="streak-ico">🔥</span>
+                    <div style="display:flex;align-items:center;gap:9px"><span class="streak-ico"><i class="fa-solid fa-fire" style="color:var(--orange)"></i></span>
                         <div>
                             <div class="streak-tt">DAILY STREAK</div>
                             <div class="streak-day" id="streak-day-txt">Day 0</div>
@@ -4826,7 +4827,7 @@
                 <button class="streak-claim" id="streak-btn" onclick="claimStreak()">CLAIM TODAY'S REWARD</button>
             </div>
 
-            <div class="hplay"><button class="btnp" onclick="openDeckBuilder()">⚔ BUILD DECK & PLAY</button></div>
+            <div class="hplay"><button class="btnp" onclick="openDeckBuilder()"><i class="fa-solid fa-shield-halved"></i> BUILD DECK & PLAY</button></div>
 
             <div class="stats-container">
                 <div class="stat-row">
@@ -4851,12 +4852,12 @@
             </div>
 
             <div class="hfrow">
-                <div class="hfeat">🃏 Deck Builder</div>
-                <div class="hfeat">✨ Evolution</div>
-                <div class="hfeat">💀 Bosses</div>
-                <div class="hfeat">⚡ Spells</div>
-                <div class="hfeat">🏆 Leaderboard</div>
-                <div class="hfeat">⏩ Speed Control</div>
+                <div class="hfeat"><i class="fa-solid fa-clone"></i> Deck Builder</div>
+                <div class="hfeat"><i class="fa-solid fa-wand-magic-sparkles"></i> Evolution</div>
+                <div class="hfeat"><i class="fa-solid fa-skull"></i> Bosses</div>
+                <div class="hfeat"><i class="fa-solid fa-bolt"></i> Spells</div>
+                <div class="hfeat"><i class="fa-solid fa-trophy"></i> Leaderboard</div>
+                <div class="hfeat"><i class="fa-solid fa-forward"></i> Speed Control</div>
             </div>
         </div>
     </div>
@@ -4865,8 +4866,8 @@
     <div class="scr scr-scroll off" id="deck-builder">
         <div class="db-inner">
             <div class="db-hdr">
-                <div class="bck" onclick="closeDeckBuilder()">←</div>
-                <div class="db-title">🃏 DECK BUILDER</div>
+                <div class="bck" onclick="closeDeckBuilder()"><i class="fa-solid fa-chevron-left"></i></div>
+                <div class="db-title"><i class="fa-solid fa-clone"></i> DECK BUILDER</div>
                 <div class="db-info" id="db-count-txt">0/5 chosen</div>
             </div>
             <div class="db-note">Choose exactly 5 units and 3 spells. Duplicates cost +20% each. Max 3 dragons.</div>
@@ -4880,7 +4881,7 @@
             <div class="spell-roster-grid" id="spell-roster-grid"></div>
             <div class="roster-title">All Units — Tap to Add</div>
             <div class="roster-grid" id="roster-grid"></div>
-            <button class="db-confirm disabled" id="db-go-btn" onclick="startFromDeck()">⚔ ENTER THE DUNGEON</button>
+            <button class="db-confirm disabled" id="db-go-btn" onclick="startFromDeck()"><i class="fa-solid fa-shield-halved"></i> ENTER THE DUNGEON</button>
         </div>
     </div>
 
@@ -4889,15 +4890,15 @@
         <div class="lb-inner">
             <div class="lb-hdr">
                 <div style="display:flex;align-items:center;gap:12px">
-                    <div class="bck" onclick="closeLB()">←</div>
-                    <div class="lb-title">🏆 LEADERBOARD</div>
+                    <div class="bck" onclick="closeLB()"><i class="fa-solid fa-chevron-left"></i></div>
+                    <div class="lb-title"><i class="fa-solid fa-trophy"></i> LEADERBOARD</div>
                 </div>
             </div>
-            <div class="lb-info">🌐 Rankings of all Overlords on this device.</div>
+            <div class="lb-info"><i class="fa-solid fa-globe"></i> Rankings of all Overlords on this device.</div>
             <div class="lb-tabs">
-                <button class="lb-tab on" id="lbt-wave" onclick="lbTab('wave')">🌊 WAVE</button>
-                <button class="lb-tab" id="lbt-kills" onclick="lbTab('kills')">💀 KILLS</button>
-                <button class="lb-tab" id="lbt-coins" onclick="lbTab('coins')">🪙 COINS</button>
+                <button class="lb-tab on" id="lbt-wave" onclick="lbTab('wave')"><i class="fa-solid fa-water"></i> WAVE</button>
+                <button class="lb-tab" id="lbt-kills" onclick="lbTab('kills')"><i class="fa-solid fa-skull"></i> KILLS</button>
+                <button class="lb-tab" id="lbt-coins" onclick="lbTab('coins')"><i class="fa-solid fa-coins"></i> COINS</button>
             </div>
             <div id="lb-list"></div>
         </div>
@@ -4908,16 +4909,16 @@
         <div class="shop-inner">
             <div class="shop-hdr">
                 <div class="shop-hdr-left">
-                    <div class="bck" onclick="closeShop()">←</div>
-                    <div class="shop-title">🛒 SHOP</div>
+                    <div class="bck" onclick="closeShop()"><i class="fa-solid fa-chevron-left"></i></div>
+                    <div class="shop-title"><i class="fa-solid fa-store"></i> SHOP</div>
                 </div>
-                <div class="shop-bal">🪙 <span id="shop-bal">0</span></div>
+                <div class="shop-bal"><i class="fa-solid fa-coins" style="color:var(--gold)"></i> <span id="shop-bal">0</span></div>
             </div>
             <div class="stabs">
-                <button class="stab on" id="stab-units" onclick="shopTab('units')">⚔ UNITS</button>
-                <button class="stab" id="stab-spells" onclick="shopTab('spells')">✨ SPELLS</button>
-                <button class="stab" id="stab-evolution" onclick="shopTab('evolution')">🧬 EVOLUTION</button>
-                <button class="stab" id="stab-boosts" onclick="shopTab('boosts')">⚡ BOOSTS</button>
+                <button class="stab on" id="stab-units" onclick="shopTab('units')"><i class="fa-solid fa-users"></i> UNITS</button>
+                <button class="stab" id="stab-spells" onclick="shopTab('spells')"><i class="fa-solid fa-wand-sparkles"></i> SPELLS</button>
+                <button class="stab" id="stab-evolution" onclick="shopTab('evolution')"><i class="fa-solid fa-dna"></i> EVOLUTION</button>
+                <button class="stab" id="stab-boosts" onclick="shopTab('boosts')"><i class="fa-solid fa-bolt"></i> BOOSTS</button>
             </div>
             <div id="shop-units">
                 <div class="ssec-t">Upgrade Minions — Up to 15 Levels Each (cost +10% per level)</div>
@@ -4942,15 +4943,15 @@
     <div class="scr scr-scroll off" id="quests">
         <div class="quest-inner">
             <div class="quest-hdr">
-                <div class="bck" onclick="closeQuests()">←</div>
-                <div class="quest-title">📜 DAILY QUESTS</div>
+                <div class="bck" onclick="closeQuests()"><i class="fa-solid fa-chevron-left"></i></div>
+                <div class="quest-title"><i class="fa-solid fa-scroll"></i> DAILY QUESTS</div>
             </div>
             <div class="quest-info">
-                <div class="quest-reward-pool">Earn up to 10,000 🪙 and 10 💎 daily</div>
+                <div class="quest-reward-pool">Earn up to 10,000 <i class="fa-solid fa-coins" style="color:var(--gold)"></i> and 10 <i class="fa-solid fa-gem" style="color:var(--gem2)"></i> daily</div>
             </div>
             <div class="quest-list" id="quest-list"></div>
             <div class="quest-footer">
-                <div class="quest-reset-txt" id="quest-reset-txt">Resets in: --:--:--</div>
+                <div class="quest-reset-txt" id="quest-reset-txt"><i class="fa-solid fa-clock"></i> Resets in: --:--:--</div>
             </div>
         </div>
     </div>
@@ -4959,17 +4960,17 @@
     <div class="scr scr-scroll off" id="sett">
         <div class="seti">
             <div class="seth">
-                <div class="bck" onclick="closeSett()">←</div>
+                <div class="bck" onclick="closeSett()"><i class="fa-solid fa-chevron-left"></i></div>
                 <div class="set-title-wrap">
                     <div class="stit">SETTINGS</div>
-                    <div class="stsub">V2.9.2 CONTROL PANEL</div>
+                    <div class="stsub">V2.9.4 CONTROL PANEL</div>
                 </div>
             </div>
             <div class="ssec2">
                 <div class="ssec2" id="changelog-section">
-                    <div class="slbl2">🆕 What's New</div>
+                    <div class="slbl2"><i class="fa-solid fa-circle-plus"></i> What's New</div>
                     <div class="changelog-list">
-                        <div class="cl-version-badge">V 2 . 9 . 2</div>
+                        <div class="cl-version-badge">V 2 . 9 . 4</div>
                         <div class="cl-item" onclick="this.classList.toggle('expanded')">
                             <div class="cl-head">
                                 <span class="cl-tag new">NEW</span>
@@ -5062,8 +5063,8 @@
                     </div>
                 </div>
 
-                <div class="slbl2">📊 Analytics</div>
-                <div class="real-note">ℹ️ Real data only — no fabricated numbers.</div>
+                <div class="slbl2"><i class="fa-solid fa-chart-pie"></i> Analytics</div>
+                <div class="real-note"><i class="fa-solid fa-circle-info"></i> Real data only — no fabricated numbers.</div>
                 <div class="anlgr">
                     <div class="ac">
                         <div class="alb">Best Wave</div>
@@ -5127,13 +5128,13 @@
                 </div>
             </div>
             <div class="ssec2">
-                <div class="slbl2">🎁 Redeem Code</div>
+                <div class="slbl2"><i class="fa-solid fa-gift"></i> Redeem Code</div>
                 <div class="redeem-row"><input class="redeem-fi" id="redeem-sett" type="text" placeholder="Enter code…"
                         maxlength="12" autocorrect="off" autocapitalize="characters"><button class="redeem-btn"
                         onclick="doRedeemSett()">REDEEM</button></div>
             </div>
             <div class="ssec2">
-                <div class="slbl2">🎮 Game Settings</div>
+                <div class="slbl2"><i class="fa-solid fa-gamepad"></i> Game Settings</div>
                 <div class="togrow">
                     <div>
                         <div class="togl">Screen Shake</div>
@@ -5164,7 +5165,7 @@
                 </div>
             </div>
             <div class="ssec2">
-                <div class="slbl2">👤 Account</div>
+                <div class="slbl2"><i class="fa-solid fa-user-astronaut"></i> Account</div>
                 <div class="ac s2" style="margin-bottom:7px">
                     <div class="alb">Signed in as</div>
                     <div style="font-size:1rem;font-weight:700;margin-top:3px" id="sett-nm">—</div>
@@ -5178,15 +5179,15 @@
                     <div>
                         <div class="togl" style="color:#ff6060">Sign Out</div>
                         <div class="togs">Return to login</div>
-                    </div><span style="color:#ff6060;font-size:1.2rem">→</span>
+                    </div><span style="color:#ff6060;font-size:1.2rem"><i class="fa-solid fa-right-from-bracket"></i></span>
                 </div>
             </div>
             <div class="ssec2">
-                <div class="slbl2">ℹ About</div>
+                <div class="slbl2"><i class="fa-solid fa-circle-info"></i> About</div>
                 <div class="crdcard">
                     <div class="crn">Soumil Mittal</div>
                     <div class="crr">GAME DEVELOPER & DESIGNER</div>
-                    <div class="crv">DUNGEON OVERLORD V2.9.2 · 2026</div>
+                    <div class="crv">DUNGEON OVERLORD V2.9.4 · 2026</div>
                 </div>
             </div>
         </div>
@@ -5198,29 +5199,29 @@
         <div class="hudtop">
             <div class="hres">
                 <div class="rp">
-                    <div class="rdo rdg"></div><span class="rtx" id="hg">0</span>
+                    <i class="fa-solid fa-coins" style="color:var(--gold);font-size:.8rem"></i><span class="rtx" id="hg">0</span>
                 </div>
                 <div class="rp">
-                    <div class="rdo rdm"></div><span class="rtx" id="hm">0/100</span>
+                    <i class="fa-solid fa-droplet" style="color:var(--blue);font-size:.8rem"></i><span class="rtx" id="hm">0/100</span>
                 </div>
                 <div class="rp">
-                    <div class="rdo rds"></div><span class="rtx" id="hsk">0</span>
+                    <i class="fa-solid fa-skull" style="color:var(--purple);font-size:.8rem"></i><span class="rtx" id="hsk">0</span>
                 </div>
             </div>
-            <div class="wbg">WAVE <span id="hw">1</span></div>
+            <div class="wbg"><i class="fa-solid fa-flag"></i> WAVE <span id="hw">1</span></div>
             <div class="hspells">
-                <button class="spb spm" id="sb-meteor" onclick="actSpell('meteor')">☄️ METEOR</button>
-                <button class="spb spf" id="sb-freeze" onclick="actSpell('freeze')">❄️ FREEZE</button>
-                <button class="spb spr" id="sb-rage" onclick="actSpell('rage')">🔥 RAGE</button>
-                <button class="spb spl" id="sb-lightning" onclick="actSpell('lightning')">⚡ LIGHTNING</button>
-                <button class="spb ss" id="sb-shadow" onclick="actSpell('shadow')">🌑 SHADOW</button>
+                <button class="spb spm" id="sb-meteor" onclick="actSpell('meteor')"><i class="fa-solid fa-meteor"></i> METEOR</button>
+                <button class="spb spf" id="sb-freeze" onclick="actSpell('freeze')"><i class="fa-solid fa-snowflake"></i> FREEZE</button>
+                <button class="spb spr" id="sb-rage" onclick="actSpell('rage')"><i class="fa-solid fa-fire-flame-curved"></i> RAGE</button>
+                <button class="spb spl" id="sb-lightning" onclick="actSpell('lightning')"><i class="fa-solid fa-bolt"></i> LIGHTNING</button>
+                <button class="spb ss" id="sb-shadow" onclick="actSpell('shadow')"><i class="fa-solid fa-eye"></i> SHADOW</button>
             </div>
             <div class="speed-row">
                 <button class="spd-btn on" id="spd-1" onclick="setSpeed(1)">1×</button>
                 <button class="spd-btn" id="spd-2" onclick="setSpeed(2)">2×</button>
                 <button class="spd-btn" id="spd-3" onclick="setSpeed(3)">3×</button>
             </div>
-            <div class="pico" onclick="togglePause()">⏸</div>
+            <div class="pico" onclick="togglePause()"><i class="fa-solid fa-pause"></i></div>
         </div>
         <div id="dragon-cap-warn" class="dragon-cap" style="display:none">🐉 MAX 3 DRAGONS!</div>
         <div class="kfw" id="kfw"></div>
@@ -5246,15 +5247,15 @@
         </div>
     </div>
 
-    <div class="save-banner" id="save-banner">💾 Progress saved!</div>
+    <div class="save-banner" id="save-banner"><i class="fa-solid fa-floppy-disk"></i> Progress saved!</div>
 
     <!-- PAUSE -->
     <div id="pov">
         <div class="povt">PAUSED</div>
-        <div class="povb" onclick="togglePause()">▶ RESUME</div>
-        <div class="povb" onclick="openShop()">🛒 Shop</div>
-        <div class="povb" onclick="openSett()">⚙ Settings</div>
-        <div class="povb" onclick="quitHome()" style="color:#ff6060;border-color:rgba(200,0,0,.16)">🏠 Quit</div>
+        <div class="povb" onclick="togglePause()"><i class="fa-solid fa-play"></i> RESUME</div>
+        <div class="povb" onclick="openShop()"><i class="fa-solid fa-store"></i> Shop</div>
+        <div class="povb" onclick="openSett()"><i class="fa-solid fa-gears"></i> Settings</div>
+        <div class="povb" onclick="quitHome()" style="color:#ff6060;border-color:rgba(200,0,0,.16)"><i class="fa-solid fa-house"></i> Quit</div>
     </div>
 
     <!-- REWARD -->
@@ -5287,7 +5288,7 @@
         </div>
         <div class="rw-earned">
             <div class="rw-coin-wrap">
-                <div class="rw-coin-ico">🪙</div>
+                <div class="rw-coin-ico"><i class="fa-solid fa-coins" style="color:var(--gold)"></i></div>
                 <div class="rw-coin-amt" id="rw-earned">0</div>
             </div>
             <div class="rw-coin-lbl">Total Dark Coins Earned</div>
@@ -5309,12 +5310,12 @@
             </div>
         </div>
         <div class="rw-btns">
-            <button class="rw-btn-shop" onclick="goToShopFromReward()">🛒 SPEND IN SHOP</button>
-            <button class="rw-btn-deck" onclick="goToDeckFromReward()">🃏 CHANGE DECK</button>
-            <button class="rw-btn-play" onclick="startFromDeck()">⚔ PLAY AGAIN</button>
-            <button class="rw-btn-home" onclick="quitHome()">🏠 Home</button>
+            <button class="rw-btn-shop" onclick="goToShopFromReward()"><i class="fa-solid fa-cart-shopping"></i> SPEND IN SHOP</button>
+            <button class="rw-btn-deck" onclick="goToDeckFromReward()"><i class="fa-solid fa-clone"></i> CHANGE DECK</button>
+            <button class="rw-btn-play" onclick="startFromDeck()"><i class="fa-solid fa-shield-halved"></i> PLAY AGAIN</button>
+            <button class="rw-btn-home" onclick="quitHome()"><i class="fa-solid fa-house"></i> Home</button>
         </div>
-        <div class="rw-dev">DUNGEON OVERLORD V2.9.2 · SOUMIL MITTAL</div>
+        <div class="rw-dev">DUNGEON OVERLORD V2.9.4 · SOUMIL MITTAL</div>
     </div>
 
     <!-- STREAK MODAL -->
@@ -5328,7 +5329,7 @@
                 <div class="sr-rew-val" id="sr-val">+10 🪙</div>
             </div>
             <div class="sr-streak-info">Streak: <span id="sr-strk">1</span> day(s) 🔥 — Come back tomorrow!</div>
-            <button class="sr-cl" onclick="closeStreakModal()">⚔ AWESOME</button>
+            <button class="sr-cl" onclick="closeStreakModal()"><i class="fa-solid fa-shield-halved"></i> AWESOME</button>
         </div>
     </div>
 
@@ -5336,16 +5337,16 @@
     <div class="scr scr-scroll off" id="logbook">
         <div class="book-container" style="margin:20px auto;">
             <div class="book-header">
-                <h1 class="book-title">📖 Dungeon Codex</h1>
-                <button class="book-close" onclick="closeLogbook()">✕ CLOSE</button>
+                <h1 class="book-title"><i class="fa-solid fa-book-skull"></i> Dungeon Codex</h1>
+                <button class="book-close" onclick="closeLogbook()"><i class="fa-solid fa-xmark"></i> CLOSE</button>
             </div>
             <div
                 style="display:flex;gap:0;border-radius:10px;overflow:hidden;border:2px solid #8b5e28;margin-bottom:14px;flex-shrink:0">
                 <button id="lbook-tab-villains" onclick="logbookTab('villains')"
-                    style="flex:1;padding:10px;font-family:var(--fd);font-size:.72rem;background:#c8a96e;border:none;color:#2b1d0c;cursor:pointer;letter-spacing:1px;font-weight:700;min-height:42px">😈
+                    style="flex:1;padding:10px;font-family:var(--fd);font-size:.72rem;background:#c8a96e;border:none;color:#2b1d0c;cursor:pointer;letter-spacing:1px;font-weight:700;min-height:42px"><i class="fa-solid fa-ghost"></i>
                     VILLAINS</button>
                 <button id="lbook-tab-heroes" onclick="logbookTab('heroes')"
-                    style="flex:1;padding:10px;font-family:var(--fd);font-size:.72rem;background:#e8d5a3;border:none;color:#2b1d0c;cursor:pointer;letter-spacing:1px;font-weight:700;min-height:42px">⚔️
+                    style="flex:1;padding:10px;font-family:var(--fd);font-size:.72rem;background:#e8d5a3;border:none;color:#2b1d0c;cursor:pointer;letter-spacing:1px;font-weight:700;min-height:42px"><i class="fa-solid fa-shield-halved"></i>
                     HEROES</button>
             </div>
             <div class="book-pages">
@@ -5423,8 +5424,8 @@
             if (!ok) return; const users = LS.g('do_users') || {};
             if (users[email]) { toast('⚠️ Email registered — sign in instead'); switchTab('li'); return; }
             const user = ensureUser({ name, email, pass, joinedAt: Date.now() }); users[email] = user; LS.s('do_users', users); CU = user; LS.s('do_current', email);
-            const btn = document.getElementById('subtn'); btn.disabled = true; btn.style.opacity = '.5'; document.getElementById('esnd').style.display = 'flex'; composeEmail(name, email);
-            setTimeout(() => { btn.disabled = false; btn.style.opacity = '1'; document.getElementById('esnd').style.display = 'none'; }, 600);
+            const btn = document.getElementById('subtn'); btn.disabled = true; btn.style.opacity = '.5'; document.getElementById('esnd').style.display = 'flex';
+                        setTimeout(() => { btn.disabled = false; btn.style.opacity = '1'; document.getElementById('esnd').style.display = 'none'; }, 600);
         }
         function doLogin() {
             const email = document.getElementById('li-email').value.trim().toLowerCase(); const pass = document.getElementById('li-pass').value; document.getElementById('err-li').style.display = 'none';
@@ -5434,22 +5435,47 @@
         }
         function doLogout() { if (GA) quitHome(); if (idleIv) { clearInterval(idleIv); idleIv = null; } CU = null; LS.d('do_current');['sett', 'home', 'shop', 'lb', 'deck-builder', 'quests'].forEach(id => show(id, false)); show('auth', true); switchTab('su'); toast('👋 Logged out!'); }
         function composeEmail(name, email) { document.getElementById('em-to').textContent = 'To: ' + email; document.getElementById('em-bd').textContent = welcomeText(name); document.getElementById('emodal').classList.add('on'); }
-        function welcomeText(n) { return `Subject: Your Throne Awaits, ${n}\n\nOverlord ${n},\n\nThe dungeon awakens. Eight servants answer your call:\n\n😈 Imp — Double Strike: 25% to hit twice\n👹 Orc — Berserk: +50% DMG below 30% HP\n🪨 Golem — Thorns: reflects 30% damage\n👻 Wraith — Phase: 40% evasion\n🐉 Dragon — Burn Aura: scorches nearby foes\n🧛 Vampire — Life Drain: steals 20% DMG as HP\n💀 Necromancer — Soul Harvest: raises fallen foes\n⚡ Berserker — Rage Stack: stronger each kill\n\nV2.9.2 UPDATES:\n• ⚡ Divine Heroes: Holy Knights & Celestial Archers throw projectiles!\n• 🎁 Infinite Redeem: SM30 can be redeemed unlimited times\n• 💰 Mid-exit auto-save: coins & records saved anytime!\n• 🖼 Wave backgrounds: dungeon evolves each wave range\n• ⏩ Speed Control: play at 1×, 2×, or 3× speed!\n• 🛒 Extended Upgrades: Spells & Boosts up to level 15\n• 📋 Daily Quests: Complete quests and earn up to 10,000 coins!\n\nDefend the gate. Let no hero pass.\n\n— The Dungeon, eternal and dark\n\nDungeon Overlord V2.9.2 · Developed by Soumil Mittal · 2026`; }
+        function welcomeText(n) { return `Subject: Your Throne Awaits, ${n}\n\nOverlord ${n},\n\nThe dungeon awakens. Eight servants answer your call:\n\n😈 Imp — Double Strike: 25% to hit twice\n👹 Orc — Berserk: +50% DMG below 30% HP\n🪨 Golem — Thorns: reflects 30% damage\n👻 Wraith — Phase: 40% evasion\n🐉 Dragon — Burn Aura: scorches nearby foes\n🧛 Vampire — Life Drain: steals 20% DMG as HP\n💀 Necromancer — Soul Harvest: raises fallen foes\n⚡ Berserker — Rage Stack: stronger each kill\n\nV2.9.4 UPDATES:\n• ⚡ Divine Heroes: Holy Knights & Celestial Archers throw projectiles!\n• 🎁 Infinite Redeem: SM30 can be redeemed unlimited times\n• 💰 Mid-exit auto-save: coins & records saved anytime!\n• 🖼 Wave backgrounds: dungeon evolves each wave range\n• ⏩ Speed Control: play at 1×, 2×, or 3× speed!\n• 🛒 Extended Upgrades: Spells & Boosts up to level 15\n• 📋 Daily Quests: Complete quests and earn up to 10,000 coins!\n\nDefend the gate. Let no hero pass.\n\n— The Dungeon, eternal and dark\n\nDungeon Overlord V2.9.4 · Developed by Soumil Mittal · 2026`; }
         function closeEmail() { document.getElementById('emodal').classList.remove('on'); if (CU && !CU.welcomeBonusGiven) { CU.welcomeBonusGiven = true; addDarkCoins(100); saveUser(); toast('🎁 +100 🪙 Welcome Bonus!'); } show('auth', false); show('home', true); afterLogin(); }
 
         /* ════ NAVIGATION ════ */
-        function show(id, v) { document.getElementById(id)?.classList.toggle('off', !v); }
-        function openShop() { buildShop(); show('shop', true); }
+        function show(id, v) { 
+            const el = document.getElementById(id);
+            if (!el) return;
+            el.classList.toggle('off', !v);
+            if (v) {
+                el.style.transition = 'none';
+                el.style.transform = `translateX(${lastShowDir * 28}px)`;
+                el.style.opacity = '0';
+                el.style.pointerEvents = 'none';
+                requestAnimationFrame(() => {
+                    el.style.transition = 'opacity .32s ease, transform .32s ease';
+                    el.style.transform = 'translateX(0)';
+                    el.style.opacity = '1';
+                    el.style.pointerEvents = 'auto';
+                });
+            } else {
+                el.style.transition = 'opacity .22s ease';
+                el.style.opacity = '0';
+                el.style.pointerEvents = 'none';
+                setTimeout(() => {
+                    el.style.transform = '';
+                    el.style.opacity = '';
+                    el.style.transition = '';
+                }, 220);
+            }
+        }
+        function openShop() { if (GA && !paused) togglePause(); document.getElementById('pov')?.classList.remove('on'); buildShop(); show('shop', true); }
         function closeShop() { show('shop', false); }
-        function openSett() { if (GA && !paused) togglePause(); fillSett(); show('sett', true); }
+        function openSett() { if (GA && !paused) togglePause(); document.getElementById('pov')?.classList.remove('on'); fillSett(); show('sett', true); }
         function closeSett() { show('sett', false); }
-        function openLB() { buildLB(); show('lb', true); }
+        function openLB() { if (GA && !paused) togglePause(); document.getElementById('pov')?.classList.remove('on'); buildLB(); show('lb', true); }
         function closeLB() { show('lb', false); }
-        function openDeckBuilder() { currentDeck = [...(CU?.deck || ['imp', 'orc', 'golem', 'wraith', 'dragon'])]; currentSpellLoadout = [...(CU?.spellLoadout || ['meteor', 'freeze', 'rage'])]; buildDeckUI(); show('deck-builder', true); }
+        function openDeckBuilder() { if (GA && !paused) togglePause(); document.getElementById('pov')?.classList.remove('on'); currentDeck = [...(CU?.deck || ['imp', 'orc', 'golem', 'wraith', 'dragon'])]; currentSpellLoadout = [...(CU?.spellLoadout || ['meteor', 'freeze', 'rage'])]; buildDeckUI(); show('deck-builder', true); }
         function closeDeckBuilder() { show('deck-builder', false); }
-        function openQuests() { buildQuests(); show('quests', true); }
+        function openQuests() { if (GA && !paused) togglePause(); document.getElementById('pov')?.classList.remove('on'); buildQuests(); show('quests', true); }
         function closeQuests() { show('quests', false); }
-        function openLogbook() { currentLogbookTab = 'villains'; show('logbook', true); logbookTab('villains'); }
+        function openLogbook() { if (GA && !paused) togglePause(); document.getElementById('pov')?.classList.remove('on'); currentLogbookTab = 'villains'; show('logbook', true); logbookTab('villains'); }
         function closeLogbook() { show('logbook', false); }
         let currentLogbookTab = 'villains';
 
@@ -5541,6 +5567,23 @@
         const UNIT_IMAGES = {}; Object.entries(ALL_UNITS).forEach(([type, unit]) => { if (unit.img) UNIT_IMAGES[type] = makeCharImg(unit.img); });
         const CHARACTER_RANGE_ENDS = [10, 20, 30, 40]; const HERO_IMAGES = {}, BOSS_IMAGES = {};
         CHARACTER_RANGE_ENDS.forEach(endWave => { HERO_IMAGES[endWave] = makeCharImg(`characters/heroes/hero${endWave}.png`); BOSS_IMAGES[endWave] = makeCharImg(`characters/boss/boss${endWave}.png`); });
+        
+        const DIVINE_IMGS = {
+            holyKnight50: makeCharImg('characters/heroes/holy_knight50.png'),
+            holyKnight100: makeCharImg('characters/heroes/holy_knight_100.png'),
+            holyKnight150: makeCharImg('characters/heroes/holy_knight_150.png'),
+            archer50: makeCharImg('characters/heroes/archer50.png')
+        };
+        function getDivineHeroImg(type, w) {
+            if (type === 'holyKnight') {
+                if (w <= 50) return DIVINE_IMGS.holyKnight50;
+                if (w <= 100) return DIVINE_IMGS.holyKnight100;
+                return DIVINE_IMGS.holyKnight150;
+            }
+            if (type === 'celestialArcher') return DIVINE_IMGS.archer50;
+            return null;
+        }
+
         function getCharacterRangeEnd(w) { const endWave = Math.ceil(Math.max(1, w) / 10) * 10; return CHARACTER_RANGE_ENDS.find(v => endWave <= v) || CHARACTER_RANGE_ENDS[CHARACTER_RANGE_ENDS.length - 1]; }
         function getHeroImg(w, isBoss) { return (isBoss ? BOSS_IMAGES : HERO_IMAGES)[getCharacterRangeEnd(w)]; }
         function unitFace(type, className = 'unit-img') { const unit = ALL_UNITS[type]; return unit?.img ? `<img class="${className}" src="${unit.img}" alt="${type}">` : `<span>${unit?.emoji || ''}</span>`; }
@@ -5679,7 +5722,7 @@
       const hours = Math.floor(diff / (60 * 60 * 1000));
       const mins = Math.floor((diff % (60 * 60 * 1000)) / (60 * 1000));
       const secs = Math.floor((diff % (60 * 1000)) / 1000);
-      el.textContent = `Resets in: ${hours.toString().padStart(2, '0')}:${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+      el.innerHTML = `<i class="fa-solid fa-clock"></i> Resets in: ${hours.toString().padStart(2, '0')}:${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
     }
 
     let holdTimeout = null;
@@ -5903,11 +5946,11 @@
     }
 
     function toast(msg) {
-      const t = document.createElement('div'); t.className = 'toast'; t.textContent = msg; document.body.appendChild(t); setTimeout(() => t.remove(), 3100);
+      const t = document.createElement('div'); t.className = 'toast'; t.innerHTML = msg; document.body.appendChild(t); setTimeout(() => t.remove(), 3100);
     }
 
     /* ════ PRELOADER ════ */
-    const TIPS = ['💡 Freeze spell — allies still attack frozen enemies!', '💡 Dragon Burn Aura: max 3 on field at once', '💡 Units evolve at level 5 & 10!', '💡 Boss spawns 4 assistants at 50% HP (5 after wave 25)', '💡 V2.9.2: Divine Heroes throw projectiles!', '💡 Vampire steals 20% of damage as HP', '💡 Berserker grows stronger each kill', '💡 Necromancer raises fallen enemies as zombies', '💡 Shop upgrades cost +30% more each level', '💡 Speed Control: play at 1×, 2×, or 3×!', '💡 SM30 code: redeemable unlimited times!'];
+    const TIPS = ['💡 Freeze spell — allies still attack frozen enemies!', '💡 Dragon Burn Aura: max 3 on field at once', '💡 Units evolve at level 5 & 10!', '💡 Boss spawns 4 assistants at 50% HP (5 after wave 25)', '💡 V2.9.4: Divine Heroes throw projectiles!', '💡 Vampire steals 20% of damage as HP', '💡 Berserker grows stronger each kill', '💡 Necromancer raises fallen enemies as zombies', '💡 Shop upgrades cost +30% more each level', '💡 Speed Control: play at 1×, 2×, or 3×!', '💡 SM30 code: redeemable unlimited times!'];
     const MSGS = ['Awakening the dungeon…', 'Summoning warriors…', 'Forging spell crystals…', 'Building the shop…', 'Arranging leaderboard…', 'Opening the dark gate…', 'Darkness rises…'];
 
     function spawnEmbers() { const w = document.getElementById('embers'); for (let i = 0; i < 22; i++) { const e = document.createElement('div'); e.className = 'emb'; const d = (Math.random() - .5) * 130; e.style.cssText = `left:${Math.random() * 100}%;bottom:0;--d:${d}px;width:${Math.random() * 3 + 1}px;height:${Math.random() * 3 + 1}px;background:hsl(${20 + Math.random() * 20},100%,${50 + Math.random() * 20}%);animation-duration:${3 + Math.random() * 5}s;animation-delay:${Math.random() * 5}s;opacity:${Math.random() * .7 + .2}`; w.appendChild(e); } }
@@ -5946,7 +5989,7 @@
         const target = tr < .85 ? 92 * tr / .85 : 92 + (tr - .85) / .15 * 8;
         pct = Math.min(pct + Math.random() * 6 + 2, target);
         fill.style.width = Math.min(pct, 100) + '%'; ppct.textContent = Math.floor(Math.min(pct, 100)) + '%';
-        const ni = Math.floor((pct / 100) * MSGS.length); if (ni !== mi && ni < MSGS.length) { mi = ni; pmsg.textContent = MSGS[mi]; }
+        const ni = Math.floor((pct / 100) * MSGS.length); if (ni !== mi && ni < MSGS.length) { mi = ni; pmsg.textContent = MSGS[ni]; }
         if (pct >= 92 && elapsed >= MIN) { clearInterval(iv); fill.style.width = '100%'; ppct.textContent = '100%'; pmsg.textContent = 'The dungeon is ready.'; setTimeout(finishLoad, 350); }
       }, 170);
     });
@@ -5957,7 +6000,7 @@
     }
 
     /* ══════════════════════════════════════════════════
-       GAME ENGINE — V2.9.2
+       GAME ENGINE — V2.9.4
     ══════════════════════════════════════════════════ */
     const gc = document.getElementById('gc'), ctx = gc.getContext('2d');
     let W, H, pathY, pathH;
@@ -6170,10 +6213,27 @@
       const lm = 1 + (wave * .36), bm = isBoss ? 2.8 : 1;
       const dd = getDynamicDiff();
       const hp = Math.floor(HERO_BASE.hp * lm * bm * dd);
-      const isDivine = Math.random() < 0.1 && wave > 3;
+      
+      // Increased occurrence to 25% from Wave 3 onwards
+      const isDivine = Math.random() < 0.25 && wave > 3; 
       const divineType = isDivine ? (Math.random() < 0.5 ? 'holyKnight' : 'celestialArcher') : null;
       const divineEmoji = divineType === 'holyKnight' ? '🛡️' : (divineType === 'celestialArcher' ? '✨' : null);
-      const h = { x: -80, y: pathY + (Math.random() - .5) * 35, hp, maxHp: hp, dmg: Math.floor(HERO_BASE.dmg * lm * (isBoss ? 1.6 : 1) * dd), spd: HERO_BASE.spd + (wave * .022), rad: isBoss ? 44 : HERO_BASE.rad, col: isBoss ? '#bb0000' : (isDivine ? (divineType === 'holyKnight' ? '#ffeb3b' : '#87ceeb') : '#ee3333'), isBoss, freezeT: 0, halfHPTriggered: false, divineType, projectileT: 0, emoji: divineEmoji, img: isDivine ? null : getHeroImg(wave, isBoss) };
+      
+      // Dynamic Image Loading for Divine Heroes
+      const divineImg = isDivine ? getDivineHeroImg(divineType, wave) : null;
+      
+      const h = { 
+          x: -80, 
+          y: pathY + (Math.random() - .5) * 35, 
+          hp, maxHp: hp, 
+          dmg: Math.floor(HERO_BASE.dmg * lm * (isBoss ? 1.6 : 1) * dd), 
+          spd: HERO_BASE.spd + (wave * .022), 
+          rad: isBoss ? 44 : HERO_BASE.rad, 
+          col: isBoss ? '#bb0000' : (isDivine ? (divineType === 'holyKnight' ? '#ffeb3b' : '#87ceeb') : '#ee3333'), 
+          isBoss, freezeT: 0, halfHPTriggered: false, 
+          divineType, projectileT: 0, emoji: divineEmoji, 
+          img: isDivine ? divineImg : getHeroImg(wave, isBoss) 
+      };
       heroes.push(h);
       if (isBoss) for (let i = 0; i < 2; i++)setTimeout(() => spawnMini(), i * 500 + 300);
       const hw = document.getElementById('hwrn');
@@ -6394,7 +6454,7 @@
         const frozen = Date.now() < h.freezeT, burning = Date.now() < (h.burnT || 0);
         ctx.save(); if (frozen) ctx.globalAlpha = .55;
         if (h.divineType) {
-          drawEnt(h.x, h.y, h.rad, h.emoji, h.col, false, frozen, false, burning);
+          drawEnt(h.x, h.y, h.rad, h.emoji, h.col, false, frozen, false, burning, h.img);
           const hpColor = h.divineType === 'holyKnight' ? '#ffeb3b' : '#87ceeb';
           drawHPbar(h.x, h.y - h.rad - 16, h.rad * 2.8, h.hp, h.maxHp, hpColor);
           ctx.fillStyle = hpColor; ctx.font = `bold ${Math.max(10, Math.floor(W * .026))}px Cinzel`; ctx.textAlign = 'center';
@@ -6646,7 +6706,7 @@
       }
     });
 
-    /* ════ MICRO-ANIMATIONS & UX V2.9.2 ════ */
+    /* ════ MICRO-ANIMATIONS & UX V2.9.4 ════ */
 
     document.querySelector('.wallet-card')?.addEventListener('click', function () {
       for (let i = 0; i < 8; i++) {
@@ -6728,32 +6788,35 @@
       setTimeout(() => { uc.style.transition = ''; }, 200);
     }, { passive: true });
 
-    const _origShow = show;
     let lastShowDir = 1;
+    const _origShow = window.show;
     window.show = function (id, v) {
-      const el = document.getElementById(id);
-      if (!el) return;
-      if (v) {
-        el.style.transition = 'none';
-        el.style.transform = `translateX(${lastShowDir * 28}px)`;
-        el.style.opacity = '0';
-        el.style.pointerEvents = '';
-        el.classList.remove('off');
-        requestAnimationFrame(() => {
-          el.style.transition = 'opacity .32s ease, transform .32s ease';
-          el.style.transform = 'translateX(0)';
-          el.style.opacity = '1';
-        });
-      } else {
-        el.style.transition = 'opacity .22s ease';
-        el.style.opacity = '0';
-        setTimeout(() => {
-          el.style.transition = '';
-          el.style.transform = '';
-          el.style.opacity = '';
-          el.classList.add('off');
-        }, 220);
-      }
+        _origShow.call(this, id, v);
+        if (v) {
+            const el = document.getElementById(id);
+            if (!el) return;
+            el.style.transition = 'none';
+            el.style.transform = `translateX(${lastShowDir * 28}px)`;
+            el.style.opacity = '0';
+            el.style.pointerEvents = 'none';
+            requestAnimationFrame(() => {
+                el.style.transition = 'opacity .32s ease, transform .32s ease';
+                el.style.transform = 'translateX(0)';
+                el.style.opacity = '1';
+                el.style.pointerEvents = 'auto';
+            });
+        } else {
+            const el = document.getElementById(id);
+            if (!el) return;
+            el.style.transition = 'opacity .22s ease';
+            el.style.opacity = '0';
+            el.style.pointerEvents = 'none';
+            setTimeout(() => {
+                el.style.transform = '';
+                el.style.opacity = '';
+                el.style.transition = '';
+            }, 220);
+        }
     };
 
     let lastKnownGold = 0;
